@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Vehicle Price Estimator{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+ 
+<nav class="navbar">
+    <div class="nav-brand">🚗 Vehicle Price Estimator</div>
+    <div class="nav-links">
+        <a href="{% url 'index' %}">Home</a>
+        {% if request.session.user_id %}
+            <a href="{% url 'UserHome' %}">My Dashboard</a>
+            <a href="{% url 'DatasetView' %}">Dataset</a>
+            <a href="{% url 'training' %}">Train Model</a>
+            <a href="{% url 'prediction' %}">Predict</a>
+            <a href="/logout/" class="btn-logout">Logout ({{ request.session.user_name }})</a>
+        {% elif request.session.admin %}
+            <a href="{% url 'AdminHome' %}">Dashboard</a>
+            <a href="{% url 'RegisterUsersView' %}">Manage Users</a>
+            <a href="/logout/" class="btn-logout">Logout (Admin)</a>
+        {% else %}
+            <a href="{% url 'UserLogin' %}">Login</a>
+            <a href="{% url 'UserRegister' %}">Register</a>
+            <a href="{% url 'AdminLogin' %}">Admin Login</a>
+        {% endif %}
+    </div>
+</nav>
+ 
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+ 
+<footer class="footer">
+    <p>Vehicle Price Estimator &copy; 2024 | MCA Final Year Project</p>
+</footer>
+ 
+</body>
+</html>

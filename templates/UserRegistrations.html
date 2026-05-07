@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="card" style="max-width:500px;margin:40px auto;">
+    <h2>📝 Create Account</h2>
+    <p style="color:#666;font-size:13px;margin-bottom:20px;">
+      After registering, wait for admin to activate your account before logging in.</p>
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+    {% if form.errors %}
+      <div class="error">
+        {% for field in form %}{% for error in field.errors %}<p>{{ error }}</p>{% endfor %}{% endfor %}
+        {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+      </div>
+    {% endif %}
+    <form method='POST' action='/UserRegisterActions/'>
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type='submit' style='width:100%;margin-top:10px;'>Create Account</button>
+    </form>
+    <p style='text-align:center;margin-top:16px;font-size:13px;'>
+      Already have an account? <a href='/UserLogin/'>Login</a>
+    </p>
+  </div>
+</div>
+{% endblock %}
