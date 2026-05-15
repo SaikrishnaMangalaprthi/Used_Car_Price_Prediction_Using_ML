@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Registration Successful{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="card" style="max-width:500px;margin:80px auto;text-align:center;">
+    <div style="font-size:64px;margin-bottom:20px;">✅</div>
+    <h2>Registration Successful!</h2>
+    <p style="color:#666;margin:16px 0;">Your account has been created.</p>
+    <div class="warning-box">
+      <strong>⏳ Waiting for Activation</strong><br>
+      Your account is not yet active. Please wait for the admin to activate
+      your account before you can log in.
+    </div>
+    <a href='/UserLogin/' class='btn btn-primary' style='margin-top:20px;'>Go to Login</a>
+  </div>
+</div>
+{% endblock %}

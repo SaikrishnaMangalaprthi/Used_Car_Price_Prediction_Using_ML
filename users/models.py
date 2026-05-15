@@ -14,14 +14,12 @@ class UserProfile(models.Model):
  
  
 class PredictionHistory(models.Model):
-    # Stores every price prediction made by each user
-    # user FK links each prediction to the UserProfile who made it
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     brand = models.CharField(max_length=100)
-    year = models.IntegerField()
+    vehicle_age = models.IntegerField()       # was: year
     km_driven = models.IntegerField()
-    fuel = models.CharField(max_length=50)
-    transmission = models.CharField(max_length=50)
+    fuel_type = models.CharField(max_length=50)         # was: fuel
+    transmission_type = models.CharField(max_length=50) # was: transmission
     predicted_price = models.FloatField()
     lower_bound = models.FloatField(default=0)
     upper_bound = models.FloatField(default=0)
@@ -29,4 +27,4 @@ class PredictionHistory(models.Model):
  
     def __str__(self):
         return f"{self.user.name} - Rs.{self.predicted_price:.0f}"
-  AFTERNOON  
+
