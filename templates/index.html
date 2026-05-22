@@ -1,91 +1,234 @@
-/* ── Base ── */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: Arial, sans-serif; background: #f0f4f8; color: #333; }
- 
-/* ── Navbar ── */
-.navbar { background: #1F3864; padding: 14px 28px; display: flex;
-          justify-content: space-between; align-items: center; }
-.nav-brand { color: white; font-size: 18px; font-weight: bold; }
-.nav-links { display: flex; gap: 16px; align-items: center; }
-.nav-links a { color: #ccc; text-decoration: none; font-size: 14px; }
-.nav-links a:hover { color: white; }
-.btn-logout { background: #C62828; color: white !important; padding: 5px 12px;
-              border-radius: 4px; }
- 
-/* ── Hero ── */
-.hero { background: linear-gradient(135deg, #1F3864, #2E75B6);
-        color: white; text-align: center; padding: 80px 20px; }
-.hero h1 { font-size: 38px; margin-bottom: 16px; }
-.hero-subtitle { font-size: 18px; margin-bottom: 10px; opacity: 0.9; }
-.hero-desc { font-size: 14px; opacity: 0.7; margin-bottom: 32px; }
-.hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
- 
-/* ── Buttons ── */
-.btn { padding: 12px 28px; border-radius: 6px; text-decoration: none;
-       font-weight: bold; font-size: 14px; display: inline-block; cursor: pointer; border: none; }
-.btn-primary { background: #4CAF50; color: white; }
-.btn-secondary { background: white; color: #1F3864; }
-.btn-dark { background: #333; color: white; }
-.btn:hover { opacity: 0.85; }
-button[type=submit] { background: #2E75B6; color: white; padding: 10px 28px;
-                      border: none; border-radius: 6px; cursor: pointer; font-size: 14px; }
-button[type=submit]:hover { background: #1F3864; }
- 
-/* ── Features ── */
-.features { display: flex; gap: 20px; justify-content: center; padding: 40px 20px; flex-wrap: wrap; }
-.feature-card { background: white; padding: 24px; border-radius: 8px; max-width: 260px;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.08); text-align: center; }
-.feature-card h3 { color: #1F3864; margin-bottom: 10px; }
- 
-/* ── Container ── */
-.container { max-width: 960px; margin: 40px auto; padding: 0 24px; }
-.card { background: white; border-radius: 8px; padding: 32px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
- 
-/* ── Forms ── */
-.form-group { margin-bottom: 16px; }
-label { display: block; font-weight: bold; font-size: 13px; margin-bottom: 5px; color: #444; }
-input[type=text], input[type=email], input[type=password],
-input[type=number], select, textarea { width: 100%; padding: 9px 12px;
-  border: 1px solid #ccc; border-radius: 5px; font-size: 14px; }
-input:focus, select:focus { outline: none; border-color: #2E75B6; }
- 
-/* ── Tables ── */
-table { border-collapse: collapse; width: 100%; margin-top: 16px; }
-th { background: #1F3864; color: white; padding: 10px 14px; text-align: left; font-size: 13px; }
-td { padding: 9px 14px; border-bottom: 1px solid #e0e0e0; font-size: 13px; }
-tr:hover td { background: #f5f5f5; }
- 
-/* ── Alerts ── */
-.error { color: #C62828; font-size: 13px; margin: 6px 0; padding: 8px;
-         background: #FFEBEE; border-radius: 4px; }
-.success { color: #2E7D32; font-size: 13px; margin: 6px 0; padding: 8px;
-           background: #E8F5E9; border-radius: 4px; }
-.warning-box { background: #FFF8E1; border-left: 4px solid #F9A825;
-               padding: 12px 16px; border-radius: 4px; margin: 12px 0; }
- 
-/* ── Stat Cards ── */
-.stat-cards { display: flex; gap: 16px; flex-wrap: wrap; margin: 24px 0; }
-.stat-card { padding: 20px 30px; border-radius: 8px; color: white; text-align: center; min-width: 160px; }
-.stat-card .num { font-size: 40px; font-weight: bold; }
-.stat-card .lbl { font-size: 13px; opacity: 0.85; margin-top: 4px; }
- 
-/* ── Result Card ── */
-.result-card { background: linear-gradient(135deg, #2E7D32, #4CAF50);
-               color: white; text-align: center; padding: 40px; border-radius: 12px; margin: 24px 0; }
-.result-card .price { font-size: 56px; font-weight: bold; }
-.result-card .range { font-size: 16px; opacity: 0.85; margin-top: 10px; }
- 
-/* ── Footer ── */
-.footer { background: #1F3864; color: #aaa; text-align: center;
-          padding: 20px; margin-top: 60px; font-size: 13px; }
- 
-/* ── Responsive ── */
-@media (max-width: 768px) {
-  .navbar { flex-direction: column; gap: 12px; }
-  .nav-links { flex-wrap: wrap; justify-content: center; }
-  .hero h1 { font-size: 26px; }
-  .hero-buttons { flex-direction: column; align-items: center; }
-  .stat-cards { flex-direction: column; }
-  input, select, button { font-size: 16px; }
-}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Used Car Price Prediction</title>
+
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+</head>
+
+<body>
+
+<!-- ===== HERO ===== -->
+
+<section class="hero">
+
+    <div class="tag">
+        // MCA FINAL YEAR PROJECT — USED CAR PRICE PREDICTION
+    </div>
+
+    <h1>
+        Used Car Price<br>Prediction System
+    </h1>
+
+    <p class="sub">
+        An intelligent machine learning system that predicts the resale value of used cars
+        using real-world market data and regression models.
+    </p>
+
+    <div class="hero-buttons">
+
+        <a href="{% url 'prediction' %}" class="btn primary">
+            Start Prediction
+        </a>
+
+        <a href="#features" class="btn">
+            Explore Features
+        </a>
+
+    </div>
+
+</section>
+
+<!-- ===== METRICS ===== -->
+
+<section id="metrics">
+
+    <div class="section-head">
+        <div class="num">[01]</div>
+        <h2>Model Metrics</h2>
+        <div class="line"></div>
+    </div>
+
+    <div class="live-metrics">
+
+        <div class="live-card reveal">
+            <div class="label">Dataset Size</div>
+            <div class="big">15,411</div>
+            <div class="desc">
+                Cars used for training and testing
+            </div>
+        </div>
+
+        <div class="live-card reveal">
+            <div class="label">Best Model</div>
+            <div class="big">XGBoost</div>
+            <div class="desc">
+                Highest performing regression model
+            </div>
+        </div>
+
+        <div class="live-card reveal">
+            <div class="label">Accuracy</div>
+            <div class="big">94%</div>
+            <div class="desc">
+                Prediction performance score
+            </div>
+        </div>
+
+        <div class="live-card reveal">
+            <div class="label">Features Used</div>
+            <div class="big">8</div>
+            <div class="desc">
+                Inputs used for prediction
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ===== FEATURES ===== -->
+
+<section id="features">
+
+    <div class="section-head">
+        <div class="num">[02]</div>
+        <h2>Prediction Features</h2>
+        <div class="line"></div>
+    </div>
+
+    <div class="features">
+
+        <div class="feat-card reveal">
+            <div class="icon">🚗</div>
+            <h3>Brand</h3>
+            <p>
+                Car manufacturer such as Maruti, Hyundai, Honda, Tata and Toyota.
+            </p>
+        </div>
+
+        <div class="feat-card reveal">
+            <div class="icon">📅</div>
+            <h3>Year</h3>
+            <p>
+                Manufacturing year helps estimate depreciation and resale value.
+            </p>
+        </div>
+
+        <div class="feat-card reveal">
+            <div class="icon">⛽</div>
+            <h3>Fuel Type</h3>
+            <p>
+                Petrol, Diesel, CNG and Electric vehicle categories.
+            </p>
+        </div>
+
+        <div class="feat-card reveal">
+            <div class="icon">📏</div>
+            <h3>Kilometers Driven</h3>
+            <p>
+                Distance travelled directly impacts car condition and pricing.
+            </p>
+        </div>
+
+        <div class="feat-card reveal">
+            <div class="icon">⚙️</div>
+            <h3>Transmission</h3>
+            <p>
+                Manual and automatic transmission types influence market value.
+            </p>
+        </div>
+
+        <div class="feat-card reveal">
+            <div class="icon">👤</div>
+            <h3>Ownership</h3>
+            <p>
+                First owner vehicles generally have higher resale value.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ===== PIPELINE ===== -->
+
+<section id="pipeline">
+
+    <div class="section-head">
+        <div class="num">[03]</div>
+        <h2>Machine Learning Pipeline</h2>
+        <div class="line"></div>
+    </div>
+
+    <div class="pipeline">
+
+        <div class="pipe-step reveal">
+            <div class="step-num">// 01</div>
+            <div class="step-name">Data Collection</div>
+        </div>
+
+        <div class="pipe-arrow">→</div>
+
+        <div class="pipe-step reveal">
+            <div class="step-num">// 02</div>
+            <div class="step-name">Preprocessing</div>
+        </div>
+
+        <div class="pipe-arrow">→</div>
+
+        <div class="pipe-step reveal">
+            <div class="step-num">// 03</div>
+            <div class="step-name">Feature Engineering</div>
+        </div>
+
+        <div class="pipe-arrow">→</div>
+
+        <div class="pipe-step reveal">
+            <div class="step-num">// 04</div>
+            <div class="step-name">Model Training</div>
+        </div>
+
+        <div class="pipe-arrow">→</div>
+
+        <div class="pipe-step reveal">
+            <div class="step-num">// 05</div>
+            <div class="step-name">Prediction</div>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ===== CTA ===== -->
+
+<section class="cta">
+
+    <h2>Start Predicting Car Prices</h2>
+
+    <p>
+        Enter car details and get an AI-powered estimated resale price instantly.
+    </p>
+
+    <div class="cta-buttons">
+
+        <a href="{% url 'prediction' %}" class="btn primary">
+            Launch Predictor
+        </a>
+
+    </div>
+
+</section>
+
+<script src="{% static 'js/landing.js' %}"></script>
+
+
+
+  </body>
+</html>

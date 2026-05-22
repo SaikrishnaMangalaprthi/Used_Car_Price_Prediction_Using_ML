@@ -10,5 +10,5 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 @admin.register(PredictionHistory)
 class PredictionHistoryAdmin(admin.ModelAdmin):
-    list_display = ['user', 'brand', 'year', 'predicted_price', 'created_at']
-    list_filter = ['fuel', 'transmission']
+    list_display = ['user', 'brand', 'vehicle_age', 'predicted_price', 'created_at']
+    list_filter = ['fuel_type', 'transmission_type']

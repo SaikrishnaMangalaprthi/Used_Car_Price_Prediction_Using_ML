@@ -1,0 +1,54 @@
+
+{% extends 'base.html' %}
+{% block title %}Train Model{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="card">
+    <h2>🤖 Model Training</h2>
+    {% if not trained %}
+      <p>Click to train 5 ML models on 15,000+ real Indian used car sales.</p>
+      <p style="color:#666;font-size:13px;">⏳ Takes 3-5 minutes. Do not close the tab.</p>
+      <form method='POST'>
+        {% csrf_token %}
+       <button type='submit' id="trainBtn" onclick="startTraining()">
+  🚀 Start Training
+</button>
+
+<script>
+function startTraining() {
+    setTimeout(function() {
+        var btn = document.getElementById('trainBtn');
+        btn.textContent = '⏳ Training all models... please wait (3-5 mins)';
+        btn.disabled = true;
+    }, 100);  // 100ms delay — form submits first, THEN button disables
+}
+</script>
+      </form>
+    {% endif %}
+    {% if trained %}
+      <div class="success">✅ Training complete! Best model: <strong>{{ best_model }}</strong></div>
+      <h3 style="margin-top:20px;">Model Comparison Results</h3>
+      <table>
+        <tr><th>Model</th><th>MAE (Rs.)</th><th>RMSE (Rs.)</th><th>R² Score</th></tr>
+        {% for name, m in results.items %}
+        <tr>
+          <td>{{ name }}</td>
+          <td>{{ m.MAE }}</td>
+          <td>{{ m.RMSE }}</td>
+          <td><strong>{{ m.R2 }}</strong></td>
+        </tr>
+        {% endfor %}
+      </table>
+      <img src="/static/images/model_comparison.png"
+           style="width:100%;margin-top:24px;border-radius:8px;">
+      <img src="/static/images/feature_importance.png"
+           style="width:100%;margin-top:16px;border-radius:8px;">
+      <img src="/static/images/actual_vs_predicted.png"
+           style="width:60%;margin-top:16px;border-radius:8px;">
+      <div style="margin-top:20px;">
+        <a href="{% url 'prediction' %}" class='btn btn-primary'>Now Predict a Price →</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

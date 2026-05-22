@@ -1,0 +1,283 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/landing.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="tag">// MCA FINAL YEAR PROJECT — USED CAR PRICE PREDICTION</div>
+
+  <h1>Used Car Price<br>Prediction System</h1>
+
+  <p class="sub">
+    An intelligent machine learning system that predicts the resale value of used cars
+    using real-world market data, feature engineering, and regression models.
+  </p>
+
+  <div class="hero-buttons">
+    <a href="{% url 'predict' %}" class="btn primary">
+      Start Prediction
+    </a>
+
+    <a href="#features" class="btn">
+      Explore Features
+    </a>
+  </div>
+</section>
+
+<!-- ===== LIVE METRICS ===== -->
+<section id="metrics">
+
+  <div class="section-head">
+    <div class="num">[01]</div>
+    <h2>Model Metrics</h2>
+    <div class="line"></div>
+  </div>
+
+  <div class="live-metrics">
+
+    <div class="live-card reveal">
+      <div class="label">Dataset Size</div>
+      <div class="big">15,411</div>
+      <div class="desc">Cars used for training and testing</div>
+    </div>
+
+    <div class="live-card reveal">
+      <div class="label">Best Model</div>
+      <div class="big">XGBoost</div>
+      <div class="desc">Highest performing regression model</div>
+    </div>
+
+    <div class="live-card reveal">
+      <div class="label">Accuracy</div>
+      <div class="big">94%</div>
+      <div class="desc">Prediction performance score</div>
+    </div>
+
+    <div class="live-card reveal">
+      <div class="label">Features Used</div>
+      <div class="big">8</div>
+      <div class="desc">Inputs used for prediction</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== FEATURES ===== -->
+<section id="features">
+
+  <div class="section-head">
+    <div class="num">[02]</div>
+    <h2>Prediction Features</h2>
+    <div class="line"></div>
+  </div>
+
+  <div class="features">
+
+    <div class="feat-card reveal">
+      <div class="icon">🚗</div>
+      <h3>Brand</h3>
+      <p>
+        Car manufacturer such as Maruti, Hyundai, Honda, Tata, Toyota and more.
+      </p>
+    </div>
+
+    <div class="feat-card reveal">
+      <div class="icon">📅</div>
+      <h3>Year</h3>
+      <p>
+        Manufacturing year helps estimate depreciation and resale value.
+      </p>
+    </div>
+
+    <div class="feat-card reveal">
+      <div class="icon">⛽</div>
+      <h3>Fuel Type</h3>
+      <p>
+        Petrol, Diesel, CNG and Electric vehicles affect pricing trends.
+      </p>
+    </div>
+
+    <div class="feat-card reveal">
+      <div class="icon">📏</div>
+      <h3>Kilometers Driven</h3>
+      <p>
+        Total distance travelled directly impacts car condition and valuation.
+      </p>
+    </div>
+
+    <div class="feat-card reveal">
+      <div class="icon">⚙️</div>
+      <h3>Transmission</h3>
+      <p>
+        Manual and automatic transmission influence market demand and pricing.
+      </p>
+    </div>
+
+    <div class="feat-card reveal">
+      <div class="icon">👤</div>
+      <h3>Ownership</h3>
+      <p>
+        First owner vehicles generally have higher resale value.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== PIPELINE ===== -->
+<section id="pipeline">
+
+  <div class="section-head">
+    <div class="num">[03]</div>
+    <h2>Machine Learning Pipeline</h2>
+    <div class="line"></div>
+  </div>
+
+  <div class="pipeline">
+
+    <div class="pipe-step reveal">
+      <div class="step-num">// 01</div>
+      <div class="step-name">Data Collection</div>
+    </div>
+
+    <div class="pipe-arrow">→</div>
+
+    <div class="pipe-step reveal">
+      <div class="step-num">// 02</div>
+      <div class="step-name">Preprocessing</div>
+    </div>
+
+    <div class="pipe-arrow">→</div>
+
+    <div class="pipe-step reveal">
+      <div class="step-num">// 03</div>
+      <div class="step-name">Feature Engineering</div>
+    </div>
+
+    <div class="pipe-arrow">→</div>
+
+    <div class="pipe-step reveal">
+      <div class="step-num">// 04</div>
+      <div class="step-name">Model Training</div>
+    </div>
+
+    <div class="pipe-arrow">→</div>
+
+    <div class="pipe-step reveal">
+      <div class="step-num">// 05</div>
+      <div class="step-name">Prediction</div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ===== MODEL COMPARISON ===== -->
+<section id="models">
+
+  <div class="section-head">
+    <div class="num">[04]</div>
+    <h2>Model Comparison</h2>
+    <div class="line"></div>
+  </div>
+
+  <div class="models">
+
+    <div class="model-card reveal">
+      <h3>Linear Regression</h3>
+
+      <div class="model-stat">
+        <span class="k">R² Score</span>
+        <span class="v">0.71</span>
+      </div>
+
+      <div class="model-stat">
+        <span class="k">RMSE</span>
+        <span class="v">1,42,310</span>
+      </div>
+    </div>
+
+    <div class="model-card reveal">
+      <h3>Random Forest</h3>
+
+      <div class="model-stat">
+        <span class="k">R² Score</span>
+        <span class="v">0.91</span>
+      </div>
+
+      <div class="model-stat">
+        <span class="k">RMSE</span>
+        <span class="v">79,210</span>
+      </div>
+    </div>
+
+    <div class="model-card best reveal">
+      <h3>XGBoost</h3>
+
+      <div class="model-stat">
+        <span class="k">R² Score</span>
+        <span class="v">0.94</span>
+      </div>
+
+      <div class="model-stat">
+        <span class="k">RMSE</span>
+        <span class="v">68,420</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== TECH STACK ===== -->
+<section>
+
+  <div class="section-head">
+    <div class="num">[05]</div>
+    <h2>Tech Stack</h2>
+    <div class="line"></div>
+  </div>
+
+  <div class="stack">
+    <div class="pill">Python</div>
+    <div class="pill">Pandas</div>
+    <div class="pill">NumPy</div>
+    <div class="pill">Scikit-learn</div>
+    <div class="pill">XGBoost</div>
+    <div class="pill">Django</div>
+    <div class="pill">HTML</div>
+    <div class="pill">CSS</div>
+    <div class="pill">JavaScript</div>
+    <div class="pill">Bootstrap</div>
+  </div>
+
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta">
+
+  <h2>Start Predicting Car Prices</h2>
+
+  <p>
+    Enter car details and get an AI-powered estimated resale price instantly.
+  </p>
+
+  <div class="cta-buttons">
+
+    <a href="{% url 'predict' %}" class="btn primary">
+      Launch Predictor
+    </a>
+
+  </div>
+
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/landing.js' %}"></script>
+{% endblock %}

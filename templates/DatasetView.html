@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Dataset View{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="card">
+    <h2>📊 Training Dataset</h2>
+    <div style="display:flex;gap:20px;margin:16px 0;flex-wrap:wrap;">
+      <span>Total Rows: <strong>{{ total_rows }}</strong></span>
+      <span>Total Columns: <strong>{{ total_cols }}</strong></span>
+      <span>Price Min: <strong>{{ price_min }}</strong></span>
+      <span>Price Max: <strong>{{ price_max }}</strong></span>
+    </div>
+    <p style="color:#666;font-size:13px;margin-bottom:16px;">Showing first 100 rows</p>
+    <div style="overflow-x:auto;">
+      <table>
+        <tr>{% for col in columns %}<th>{{ col }}</th>{% endfor %}</tr>
+        {% for row in rows %}
+        <tr>{% for val in row %}<td>{{ val }}</td>{% endfor %}</tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

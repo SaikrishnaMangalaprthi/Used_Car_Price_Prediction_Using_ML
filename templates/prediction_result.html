@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Prediction Result{% endblock %}
+{% block content %}
+<div class="container">
+  {% if warning %}
+    <div class="warning-box">{{ warning }}</div>
+  {% endif %}
+  <div class="result-card">
+    <div style="font-size:16px;opacity:0.85;margin-bottom:8px;">Estimated Price</div>
+    <div class="price">{{ result.predicted_formatted }}</div>
+    <div class="range">Price Range: {{ result.lower_formatted }} — {{ result.upper_formatted }}</div>
+    <div style="font-size:12px;opacity:0.7;margin-top:8px;">Based on ±10% confidence interval</div>
+  </div>
+  <div class="card">
+    <h3>Vehicle Details Submitted</h3>
+    <table>
+      <tr><td><strong>Brand</strong></td><td>{{ input.brand }}</td>
+          <td><strong>Year</strong></td><td>{{ input.year }}</td></tr>
+      <tr><td><strong>KM Driven</strong></td><td>{{ input.km_driven }}</td>
+          <td><strong>Fuel</strong></td><td>{{ input.fuel }}</td></tr>
+      <tr><td><strong>Transmission</strong></td><td>{{ input.transmission }}</td>
+          <td><strong>Owner</strong></td><td>{{ input.owner }}</td></tr>
+    </table>
+    <img src="/static/images/feature_importance.png" style="width:100%;margin-top:20px;border-radius:8px;">
+    <div style='margin-top:20px;display:flex;gap:12px;'>
+      <a href="{% url 'prediction' %}" class='btn btn-primary'>Predict Another</a>
+      <a href="{% url 'prediction_history' %}" class='btn btn-secondary' style='color:#1F3864;'>View My History</a>
+      <a href="{% url 'UserHome' %}" class='btn btn-dark'>Back to Dashboard</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

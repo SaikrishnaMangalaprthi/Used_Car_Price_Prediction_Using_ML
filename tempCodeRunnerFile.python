@@ -1,2 +1,8 @@
-import xgboost
-print(xgboost.__version__)
+
+from ml_pipeline.predict import predict_price
+result = predict_price({'year':'2019','km_driven':'35000',
+   'fuel':'Petrol','seller_type':'Individual','transmission':'Manual',
+   'owner':'First Owner','brand':'Maruti','mileage':'23','engine':'1197',
+   'max_power':'82','seats':'5'})
+print(result)
+#exit()

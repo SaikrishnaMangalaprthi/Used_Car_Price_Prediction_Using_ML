@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Predict Price{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="card">
+    <h2>💰 Predict Used Vehicle Price</h2>
+    <p style="color:#666;font-size:13px;margin-bottom:20px;">Fill in the vehicle details below for a price estimate.</p>
+    {% if errors %}
+      {% for e in errors %}<div class="error">{{ e }}</div>{% endfor %}
+    {% endif %}
+    <form method='POST'>
+      {% csrf_token %}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="form-group">
+          <label>Brand</label>
+          <select name="brand">
+            <option>Maruti</option><option>Hyundai</option><option>Honda</option>
+            <option>Toyota</option><option>Ford</option><option>Tata</option>
+            <option>Mahindra</option><option>Kia</option><option>MG</option>
+            <option>Renault</option><option>Volkswagen</option><option>Skoda</option>
+            <option>Nissan</option><option>Datsun</option><option>Jeep</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Year of Manufacture</label>
+          <input type="number" name="year" min="1990" max="2025" placeholder="e.g. 2019" required>
+        </div>
+        <div class="form-group">
+          <label>Kilometres Driven</label>
+          <input type="number" name="km_driven" min="1000" max="500000" placeholder="e.g. 45000" required>
+        </div>
+        <div class="form-group">
+          <label>Fuel Type</label>
+          <select name="fuel">
+            <option>Petrol</option><option>Diesel</option>
+            <option>CNG</option><option>Electric</option><option>LPG</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Transmission</label>
+          <select name="transmission"><option>Manual</option><option>Automatic</option></select>
+        </div>
+        <div class="form-group">
+          <label>Seller Type</label>
+          <select name="seller_type">
+            <option>Individual</option><option>Dealer</option><option>Trustmark Dealer</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Owner History</label>
+          <select name="owner">
+            <option>First Owner</option><option>Second Owner</option>
+            <option>Third Owner</option><option>Fourth &amp; Above Owner</option>
+            <option>Test Drive Car</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Seats</label>
+          <select name="seats">
+            <option>2</option><option>4</option>
+            <option value="5" selected>5</option><option>7</option><option>8</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Mileage (kmpl) — optional</label>
+          <input type="number" name="mileage" step="0.1" placeholder="e.g. 23.0" value="18">
+        </div>
+        <div class="form-group">
+          <label>Engine (CC) — optional</label>
+          <input type="number" name="engine" placeholder="e.g. 1197" value="1200">
+        </div>
+        <div class="form-group">
+          <label>Max Power (bhp) — optional</label>
+          <input type="number" name="max_power" step="0.1" placeholder="e.g. 82" value="80">
+        </div>
+      </div>
+      <button type='submit' style='width:100%;margin-top:10px;'
+        onclick="this.textContent='Calculating... ⏳';this.disabled=true;">
+        🔮 Predict Price</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

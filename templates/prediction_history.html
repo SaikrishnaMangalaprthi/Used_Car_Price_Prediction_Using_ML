@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}My Prediction History{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="card">
+    <h2>📋 My Prediction History</h2>
+    <p style="color:#666;font-size:13px;">All price predictions made by {{ user.name }}</p>
+    {% if history %}
+    <table>
+      <tr><th>Date</th><th>Brand</th><th>Year</th><th>KM Driven</th>
+          <th>Fuel</th><th>Transmission</th><th>Predicted Price</th><th>Range</th></tr>
+      {% for h in history %}
+      <tr>
+        <td>{{ h.created_at|date:"d M Y" }}</td>
+        <td>{{ h.brand }}</td><td>{{ h.year }}</td>
+        <td>{{ h.km_driven|floatformat:0 }} km</td>
+        <td>{{ h.fuel }}</td><td>{{ h.transmission }}</td>
+        <td><strong>&#8377;{{ h.predicted_price|floatformat:0 }}</strong></td>
+        <td style="font-size:12px;color:#666;">
+          &#8377;{{ h.lower_bound|floatformat:0 }} – &#8377;{{ h.upper_bound|floatformat:0 }}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% else %}
+    <p style="color:#999;text-align:center;padding:40px;">No predictions yet.</p>
+    {% endif %}
+    <a href="{% url 'prediction' %}" class='btn btn-primary' style='margin-top:20px;'>Make a Prediction</a>
+  </div>
+</div>
+{% endblock %}
