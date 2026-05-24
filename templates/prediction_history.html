@@ -1,31 +1,62 @@
 {% extends 'base.html' %}
 {% block title %}My Prediction History{% endblock %}
 {% block content %}
-<div class="container">
-  <div class="card">
+<div class='container'>
+  <div class='card'>
     <h2>📋 My Prediction History</h2>
-    <p style="color:#666;font-size:13px;">All price predictions made by {{ user.name }}</p>
+ 
+    <!-- Stats Summary Row -->
+    {% if stats.total %}
+    <div style='display:flex;gap:16px;margin:20px 0;flex-wrap:wrap;'>
+      <div class='stat-card' style='background:#1565C0;padding:16px 24px;'>
+        <div class='num' style='font-size:28px;'>{{ stats.total }}</div>
+        <div class='lbl'>Total Predictions</div>
+      </div>
+      <div class='stat-card' style='background:#2E7D32;padding:16px 24px;'>
+        <div class='num' style='font-size:28px;'>&#8377;{{ stats.avg_price|floatformat:0 }}</div>
+        <div class='lbl'>Avg Predicted Price</div>
+      </div>
+      <div class='stat-card' style='background:#E65100;padding:16px 24px;'>
+        <div class='num' style='font-size:28px;'>&#8377;{{ stats.max_price|floatformat:0 }}</div>
+        <div class='lbl'>Highest Prediction</div>
+      </div>
+      <div class='stat-card' style='background:#6A1B9A;padding:16px 24px;'>
+        <div class='num' style='font-size:28px;'>&#8377;{{ stats.min_price|floatformat:0 }}</div>
+        <div class='lbl'>Lowest Prediction</div>
+      </div>
+    </div>
+    {% endif %}
+ 
     {% if history %}
     <table>
-      <tr><th>Date</th><th>Brand</th><th>Year</th><th>KM Driven</th>
-          <th>Fuel</th><th>Transmission</th><th>Predicted Price</th><th>Range</th></tr>
+      <tr><th>Date</th><th>Brand</th><th>Year</th><th>KM</th>
+          <th>Fuel</th><th>Trans</th><th>Predicted Price</th>
+          <th>Range</th><th>Action</th></tr>
       {% for h in history %}
       <tr>
-        <td>{{ h.created_at|date:"d M Y" }}</td>
-        <td>{{ h.brand }}</td><td>{{ h.year }}</td>
+        <td>{{ h.created_at|date:'d M Y' }}</td>
+        <td><strong>{{ h.brand }}</strong></td>
+        <td>{{h.display_year }}</td>
         <td>{{ h.km_driven|floatformat:0 }} km</td>
-        <td>{{ h.fuel }}</td><td>{{ h.transmission }}</td>
-        <td><strong>&#8377;{{ h.predicted_price|floatformat:0 }}</strong></td>
-        <td style="font-size:12px;color:#666;">
+        <td>{{ h.fuel }}</td>
+        <td>{{ h.transmission }}</td>
+        <td><strong style='color:#2E7D32;'>&#8377;{{ h.predicted_price|floatformat:0 }}</strong></td>
+        <td style='font-size:12px;color:#666;'>
           &#8377;{{ h.lower_bound|floatformat:0 }} – &#8377;{{ h.upper_bound|floatformat:0 }}
+        </td>
+        <td>
+          <a href='/delete_prediction/{{ h.id }}/'
+             onclick="return confirm('Delete this record?')"
+             style='color:red;font-size:12px;text-decoration:none;'>🗑 Delete</a>
         </td>
       </tr>
       {% endfor %}
     </table>
     {% else %}
-    <p style="color:#999;text-align:center;padding:40px;">No predictions yet.</p>
+    <p style='color:#999;text-align:center;padding:40px;'>No predictions yet.</p>
     {% endif %}
-    <a href="{% url 'prediction' %}" class='btn btn-primary' style='margin-top:20px;'>Make a Prediction</a>
+    <a href="{% url 'prediction' %}" class='btn btn-primary' style='margin-top:20px;'>
+      Make a Prediction</a>
   </div>
 </div>
 {% endblock %}

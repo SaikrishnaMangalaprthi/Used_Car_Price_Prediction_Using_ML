@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Comparison Result{% endblock %}
+{% block content %}
+<div class='container'>
+  {% if winner == 'car1' %}
+  <div class='success'>✅ Car 1 ({{ car1.brand }}) is the better deal — saves {{ savings }}</div>
+  {% else %}
+  <div class='success'>✅ Car 2 ({{ car2.brand }}) is the better deal — saves {{ savings }}</div>
+  {% endif %}
+ 
+  <div style='display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px;'>
+ 
+    <!-- CAR 1 RESULT -->
+    <div class='result-card'
+      style='background:{% if winner == "car1" %}linear-gradient(135deg,#1565C0,#2E75B6){% else %}linear-gradient(135deg,#555,#777){% endif %};'>
+      <div style='font-size:14px;opacity:0.85;'>🚗 {{ car1.brand }} {{ car1.year }}</div>
+      <div class='price'>{{ r1.predicted_formatted }}</div>
+      <div class='range'>{{ r1.lower_formatted }} – {{ r1.upper_formatted }}</div>
+      <div style='margin-top:12px;font-size:13px;opacity:0.75;'>
+        {{ car1.km_driven }} km · {{ car1.fuel }} · {{ car1.transmission }}</div>
+      {% if winner == 'car1' %}<div style='margin-top:8px;font-size:14px;'>
+        🏆 Better Value</div>{% endif %}
+    </div>
+ 
+    <!-- CAR 2 RESULT -->
+    <div class='result-card'
+      style='background:{% if winner == "car2" %}linear-gradient(135deg,#B71C1C,#E53935){% else %}linear-gradient(135deg,#555,#777){% endif %};'>
+      <div style='font-size:14px;opacity:0.85;'>🚙 {{ car2.brand }} {{ car2.year }}</div>
+      <div class='price'>{{ r2.predicted_formatted }}</div>
+      <div class='range'>{{ r2.lower_formatted }} – {{ r2.upper_formatted }}</div>
+      <div style='margin-top:12px;font-size:13px;opacity:0.75;'>
+        {{ car2.km_driven }} km · {{ car2.fuel }} · {{ car2.transmission }}</div>
+      {% if winner == 'car2' %}<div style='margin-top:8px;font-size:14px;'>
+        🏆 Better Value</div>{% endif %}
+    </div>
+  </div>
+ 
+  <div style='margin-top:20px;display:flex;gap:12px;'>
+    <a href="{% url 'compare_cars' %}" class='btn btn-primary'>Compare Again</a>
+    <a href="{% url 'UserHome' %}" class='btn btn-dark'>Dashboard</a>
+  </div>
+</div>
+{% endblock %}

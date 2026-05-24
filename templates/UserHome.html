@@ -1,30 +1,62 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
 {% block title %}My Dashboard{% endblock %}
 {% block content %}
 <div class="container">
   <div class="card">
     <h2>Welcome back, {{ request.session.user_name }}! 👋</h2>
-    <p style="color:#666;margin:8px 0 28px;">What would you like to do today?</p>
+    <p style="color: #666; margin: 8px 0 28px">
+      What would you like to do today?
+    </p>
     <div class="features">
       <div class="feature-card">
         <h3>📊 Dataset</h3>
         <p>View the raw training data used by the ML model</p>
-        <a href='{% url "DatasetView" %}' class='btn btn-primary' style='margin-top:12px;'>View Dataset</a>
+        <a
+          href='{% url "DatasetView" %}'
+          class="btn btn-primary"
+          style="margin-top: 12px"
+          >View Dataset</a
+        >
       </div>
       <div class="feature-card">
         <h3>🤖 Train Model</h3>
         <p>Train all 4 ML models and compare their performance</p>
-        <a href='{% url "training" %}' class='btn btn-primary' style='margin-top:12px;'>Train Model</a>
-  </div>
+        <a
+          href='{% url "training" %}'
+          class="btn btn-primary"
+          style="margin-top: 12px"
+          >Train Model</a
+        >
+      </div>
       <div class="feature-card">
         <h3>💰 Predict Price</h3>
         <p>Enter car details and get an estimated selling price</p>
-        <a href='{% url "prediction" %}' class='btn btn-primary' style='margin-top:12px;'>Predict Now</a>
+        <a
+          href='{% url "prediction" %}'
+          class="btn btn-primary"
+          style="margin-top: 12px"
+          >Predict Now</a
+        >
       </div>
       <div class="feature-card">
         <h3>📋 My History</h3>
         <p>View all your past price predictions</p>
-        <a href='{% url "prediction_history" %}' class='btn btn-primary' style='margin-top:12px;'>View History</a>
+        <a
+          href='{% url "prediction_history" %}'
+          class="btn btn-primary"
+          style="margin-top: 12px"
+          >View History</a
+        >
+      </div>
+      <div class="feature-card">
+        <h3>⚖️ Compare Cars</h3>
+        <p>Compare two cars side by side and find the better deal</p>
+        <a
+          href="{% url 'compare_cars' %}"
+          class="btn btn-primary"
+          style="margin-top: 12px"
+          >Compare Now</a
+        >
       </div>
     </div>
   </div>

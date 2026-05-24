@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}Compare Two Cars{% endblock %}
+{% block content %}
+<div class='container'>
+  <div class='card'>
+    <h2>⚖️ Compare Two Cars</h2>
+    <p style='color:#666;font-size:13px;margin-bottom:24px;'>
+      Fill in details for both cars. We will predict both prices and
+      show you which is the better deal.</p>
+    <form method='POST' action='/compare_result/'>
+      {% csrf_token %}
+      <div style='display:grid;grid-template-columns:1fr 1fr;gap:32px;'>
+ 
+        <!-- CAR 1 -->
+        <div>
+          <h3 style='color:#1F3864;margin-bottom:16px;'>🚗 Car 1</h3>
+          <div class='form-group'><label>Brand</label>
+            <select name='brand1'>
+              <option>Maruti</option><option>Hyundai</option>
+              <option>Honda</option><option>Toyota</option>
+              <option>Tata</option><option>Mahindra</option>
+              <option>Ford</option><option>Kia</option>
+            </select></div>
+          <div class='form-group'><label>Year</label>
+            <input type='number' name='year1' min='1990' max='2025'
+                   placeholder='e.g. 2018' required></div>
+          <div class='form-group'><label>KM Driven</label>
+            <input type='number' name='km1' placeholder='e.g. 45000' required></div>
+          <div class='form-group'><label>Fuel</label>
+            <select name='fuel1'><option>Petrol</option>
+              <option>Diesel</option><option>CNG</option></select></div>
+          <div class='form-group'><label>Transmission</label>
+            <select name='transmission1'>
+              <option>Manual</option><option>Automatic</option></select></div>
+          <div class='form-group'><label>Owner</label>
+            <select name='owner1'>
+              <option>First Owner</option><option>Second Owner</option>
+              <option>Third Owner</option></select></div>
+        </div>
+ 
+        <!-- CAR 2 -->
+        <div>
+          <h3 style='color:#C62828;margin-bottom:16px;'>🚙 Car 2</h3>
+          <div class='form-group'><label>Brand</label>
+            <select name='brand2'>
+              <option>Maruti</option><option>Hyundai</option>
+              <option>Honda</option><option>Toyota</option>
+              <option>Tata</option><option>Mahindra</option>
+              <option>Ford</option><option>Kia</option>
+            </select></div>
+          <div class='form-group'><label>Year</label>
+            <input type='number' name='year2' min='1990' max='2025'
+                   placeholder='e.g. 2020' required></div>
+          <div class='form-group'><label>KM Driven</label>
+            <input type='number' name='km2' placeholder='e.g. 22000' required></div>
+          <div class='form-group'><label>Fuel</label>
+            <select name='fuel2'><option>Petrol</option>
+              <option>Diesel</option><option>CNG</option></select></div>
+          <div class='form-group'><label>Transmission</label>
+            <select name='transmission2'>
+              <option>Manual</option><option>Automatic</option></select></div>
+          <div class='form-group'><label>Owner</label>
+            <select name='owner2'>
+              <option>First Owner</option><option>Second Owner</option>
+              <option>Third Owner</option></select></div>
+        </div>
+      </div>
+      <button type='submit' style='width:100%;margin-top:20px;'>
+        ⚖️ Compare Both Cars</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

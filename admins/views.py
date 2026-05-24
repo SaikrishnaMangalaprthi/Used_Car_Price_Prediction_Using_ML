@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
- 
+from django.views.decorators.cache import never_cache
 # ── MAIN PAGES ────────────────────────────────────────────────────────
 # URL: http://127.0.0.1:8000/
 # What it does: Shows the homepage with Login/Register/Admin Login buttons
@@ -41,6 +41,7 @@ def AdminLoginCheck(request):
 # URL: http://127.0.0.1:8000/AdminHome/
 # What it does: Admin dashboard — shows user count, prediction stats
 # Protected: redirects to AdminLogin if admin session not set
+@never_cache
 def AdminHome(request):
     if not request.session.get('admin'):
         return redirect('AdminLogin')
@@ -60,6 +61,7 @@ def AdminHome(request):
  
 # URL: http://127.0.0.1:8000/RegisterUsersView/
 # What it does: Shows table of all registered users with Activate buttons
+@never_cache
 def RegisterUsersView(request):
     if not request.session.get('admin'):
         return redirect('AdminLogin')

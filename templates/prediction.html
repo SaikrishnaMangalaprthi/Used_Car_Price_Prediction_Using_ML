@@ -6,7 +6,16 @@
     <h2>💰 Predict Used Vehicle Price</h2>
     <p style="color:#666;font-size:13px;margin-bottom:20px;">Fill in the vehicle details below for a price estimate.</p>
     {% if errors %}
-      {% for e in errors %}<div class="error">{{ e }}</div>{% endfor %}
+      <div style='background:#FFEBEE;border-left:4px solid #C62828;
+     padding:16px;border-radius:4px;margin-bottom:20px;'>
+  <strong style='color:#C62828;'>Please fix the following before submitting:</strong>
+  <ul style='margin:8px 0 0 16px;'>
+    {% for e in errors %}
+    <li style='color:#B71C1C;font-size:13px;margin-bottom:4px;'>{{ e }}</li>
+    {% endfor %}
+  </ul>
+</div>
+
     {% endif %}
     <form method='POST'>
       {% csrf_token %}
@@ -23,11 +32,17 @@
         </div>
         <div class="form-group">
           <label>Year of Manufacture</label>
-          <input type="number" name="year" min="1990" max="2025" placeholder="e.g. 2019" required>
+          <input type="number" name="year" min="1990" max="2025"
+       placeholder="e.g. 2019"
+       value="{{ form_data.year }}"
+       required>
         </div>
         <div class="form-group">
           <label>Kilometres Driven</label>
-          <input type="number" name="km_driven" min="1000" max="500000" placeholder="e.g. 45000" required>
+          <input type="number" name="km_driven" min="1000" max="500000"
+       placeholder="e.g. 45000"
+       value="{{ form_data.km_driven }}"
+       required>
         </div>
         <div class="form-group">
           <label>Fuel Type</label>
@@ -63,20 +78,29 @@
         </div>
         <div class="form-group">
           <label>Mileage (kmpl) — optional</label>
-          <input type="number" name="mileage" step="0.1" placeholder="e.g. 23.0" value="18">
+     <input type="number" name="mileage" step="0.1"
+       placeholder="e.g. 23.0"
+       value="{{ form_data.mileage|default:'18' }}">
         </div>
         <div class="form-group">
           <label>Engine (CC) — optional</label>
-          <input type="number" name="engine" placeholder="e.g. 1197" value="1200">
+          <input type="number" name="engine"
+       placeholder="e.g. 1197"
+       value="{{ form_data.engine|default:'1200' }}">
         </div>
         <div class="form-group">
           <label>Max Power (bhp) — optional</label>
           <input type="number" name="max_power" step="0.1" placeholder="e.g. 82" value="80">
         </div>
       </div>
-      <button type='submit' style='width:100%;margin-top:10px;'
-        onclick="this.textContent='Calculating... ⏳';this.disabled=true;">
-        🔮 Predict Price</button>
+      <button type="submit"
+    style="width:100%;margin-top:10px;"
+    onclick="
+        this.innerHTML='Calculating... ⏳';
+        setTimeout(() => { this.disabled = true; }, 100);
+    ">
+    🔮 Predict Price
+</button>
     </form>
   </div>
 </div>

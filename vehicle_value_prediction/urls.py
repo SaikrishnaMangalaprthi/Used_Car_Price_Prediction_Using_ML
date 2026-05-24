@@ -46,6 +46,10 @@ urlpatterns = [
     path('training/', usr.training, name='training'),
     path('prediction/', usr.prediction, name='prediction'),
     path('prediction_history/', usr.prediction_history, name='prediction_history'),
+    path('delete_prediction/<int:pk>/', usr.delete_prediction, name='delete_prediction'),
     path('logout/', usr.logout_user, name='logout'),
+    path('compare/', usr.compare_cars, name='compare_cars'),
+    path('compare_result/', usr.compare_result, name='compare_result'),
+
  
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
