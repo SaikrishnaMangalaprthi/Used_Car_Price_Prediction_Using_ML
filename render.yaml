@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: used-car-price-predictor
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn vehicle_value_prediction.wsgi:application"

@@ -1,0 +1,185 @@
+arning: PowerShell detected that you might be using a screen reader and has disabled PSReadLine for compatibility purposes. If you want to re-enable it, run 'Import-Module PSReadLine'.
+
+PS C:\Users\raghu\OneDrive\Desktop\project_code\used_car_project> python -u "c:\Users\raghu\OneDrive\Desktop\project_code\used_car_project\Test_model.py"
+Loading model and data...
+Final shape: (15259, 11)
+Features: ['brand', 'vehicle_age', 'km_driven', 'seller_type', 'fuel_type', 'transmission_type', 'mileage', 'engine', 'max_power', 'seats', 'car_model']
+Price range: Rs.40,000 to Rs.5,000,000
+
+=======================================================
+CORE METRICS
+=======================================================
+  R² Score         : 0.9381  (93.81%)
+  MAE              : ₹87,829
+  RMSE             : ₹154,806
+  MAPE             : 13.02%
+  Test samples     : 3052
+
+=======================================================
+PRICE RANGE ACCURACY (how often actual falls in ±X%)
+=======================================================
+  Within ± 5%     : 27.5%  (839/3052 cars)
+  Within ±10%     : 51.5%  (1573/3052 cars)
+  Within ±15%     : 69.0%  (2106/3052 cars)
+  Within ±20%     : 81.3%  (2482/3052 cars)
+
+=======================================================
+SAMPLE: PREDICTED vs ACTUAL (20 random test cars)
+=======================================================
+        Actual     Predicted       Error    Error%
+  ------------  ------------  ----------  --------
+  ₹ 1,135,000  ₹   902,151  ₹ -232,849    -20.5%  ✗
+  ₹   250,000  ₹   293,929  ₹  +43,929    +17.6%  ✗
+  ₹   370,000  ₹   336,639  ₹  -33,361     -9.0%  ✓
+  ₹   465,000  ₹   461,781  ₹   -3,219     -0.7%  ✓
+  ₹   250,000  ₹   276,460  ₹  +26,460    +10.6%  ✗
+  ₹ 2,700,000  ₹ 2,762,375  ₹  +62,375     +2.3%  ✓
+  ₹ 1,100,000  ₹   900,560  ₹ -199,440    -18.1%  ✗
+  ₹   480,000  ₹   425,199  ₹  -54,801    -11.4%  ✗
+  ₹   750,000  ₹   791,874  ₹  +41,874     +5.6%  ✓
+  ₹   550,000  ₹   626,997  ₹  +76,997    +14.0%  ✗
+  ₹   300,000  ₹   371,079  ₹  +71,079    +23.7%  ✗
+  ₹   390,000  ₹   432,124  ₹  +42,124    +10.8%  ✗
+  ₹   549,000  ₹   556,846  ₹   +7,846     +1.4%  ✓
+  ₹   470,000  ₹   542,599  ₹  +72,599    +15.4%  ✗
+  ₹   654,000  ₹   570,969  ₹  -83,031    -12.7%  ✗
+  ₹   320,000  ₹   282,742  ₹  -37,258    -11.6%  ✗
+  ₹ 1,300,000  ₹ 1,361,466  ₹  +61,466     +4.7%  ✓
+  ₹   665,000  ₹   617,439  ₹  -47,561     -7.2%  ✓
+  ₹   235,000  ₹   260,769  ₹  +25,769    +11.0%  ✗
+  ₹   495,000  ₹   501,218  ₹   +6,218     +1.3%  ✓
+
+=======================================================
+CROSS VALIDATION (5-fold on full dataset)
+=======================================================
+  Fold scores      : [np.float64(0.9426), np.float64(0.9292), np.float64(0.9241), np.float64(0.9422), np.float64(0.9336)]
+  Mean R²          : 0.9343
+  Std deviation    : 0.0072
+  STABLE
+
+=======================================================
+ERROR DISTRIBUTION
+=======================================================
+  Median error     : 9.7%
+  Mean error       : 13.0%
+  90th percentile  : 26.6%
+  Worst 5 errors   : [416.28006494331277, 138.34926956687156, 137.51451838311803, 129.734844236526, 123.27773882669509]
+
+=======================================================
+OVERFITTING CHECK
+=======================================================
+  Train R²         : 0.9748
+  Test  R²         : 0.9381
+  Gap              : 0.0367
+  ✓ No overfitting — model generalises well
+
+=======================================================
+TOP 5 FEATURES DRIVING PRICE
+=======================================================
+  1. max_power                 72.1%
+  2. vehicle_age               15.3%
+  3. engine                    2.9%
+  4. km_driven                 2.8%
+  5. car_model                 2.5%
+
+=======================================================
+SUMMARY
+=======================================================
+  Model verdict    : EXCELLENT — production ready
+  R² = 0.9381 | MAE = ₹87,829 | MAPE = 13.0%
+=======================================================
+PS C:\Users\raghu\OneDrive\Desktop\project_code\used_car_project> c:\Users\raghu\OneDrive\Desktop\project_code\used_car_project\venv\Scripts\activate
+PS C:\Users\raghu\OneDrive\Desktop\project_code\used_car_project> 
+
+
+
+
+
+
+
+
+
+
+
+
+======================================================================
+AUTO WORTH AI — MARKET PRICE VALIDATION
+======================================================================
+
+Car                                        Your Model             ±10% Range
+---------------------------------------- ------------ ----------------------
+{'brand': 'Maruti', 'car_model': 'Swift', 'year': 2019, 'km_driven': 45000, 'fuel_type': 'Petrol', 'transmission_type': 'Manual', 'seller_type': 'Individual', 'owner': 'First Owner', 'mileage': 23.2, 'engine': 1197, 'max_power': 82.0, 'seats': 5, 'vehicle_age': 7}
+Maruti Swift 2019 Petrol Manual          ₹   415,468   ₹ 373,921–₹457,015
+{'brand': 'Hyundai', 'car_model': 'Creta', 'year': 2020, 'km_driven': 38000, 'fuel_type': 'Petrol', 'transmission_type': 'Manual', 'seller_type': 'Individual', 'owner': 'First Owner', 'mileage': 16.8, 'engine': 1497, 'max_power': 113.0, 'seats': 5, 'vehicle_age': 6}
+Hyundai Creta 2020 Petrol Manual         ₹   727,107   ₹ 654,396–₹799,818
+{'brand': 'Honda', 'car_model': 'City', 'year': 2018, 'km_driven': 52000, 'fuel_type': 'Petrol', 'transmission_type': 'Automatic', 'seller_type': 'Dealer', 'owner': 'First Owner', 'mileage': 17.4, 'engine': 1498, 'max_power': 119.0, 'seats': 5, 'vehicle_age': 8}
+Honda City 2018 Petrol Automatic         ₹   522,898   ₹ 470,608–₹575,188
+{'brand': 'Toyota', 'car_model': 'Innova', 'year': 2017, 'km_driven': 70000, 'fuel_type': 'Diesel', 'transmission_type': 'Manual', 'seller_type': 'Individual', 'owner': 'First Owner', 'mileage': 13.9, 'engine': 2494, 'max_power': 148.0, 'seats': 7, 'vehicle_age': 9}
+Toyota Innova 2017 Diesel Manual         ₹   888,666   ₹ 799,799–₹977,532
+{'brand': 'Maruti', 'car_model': 'Baleno', 'year': 2021, 'km_driven': 25000, 'fuel_type': 'Petrol', 'transmission_type': 'Manual', 'seller_type': 'Dealer', 'owner': 'First Owner', 'mileage': 21.4, 'engine': 1197, 'max_power': 82.0, 'seats': 5, 'vehicle_age': 5}
+Maruti Baleno 2021 Petrol Manual         ₹   575,244   ₹ 517,720–₹632,769
+
+======================================================================
+NOW MANUALLY CHECK THESE URLs ON CARDEKHO/SPINNY/CARS24
+======================================================================
+
+For each car, check the listed price and compare with your model:
+
+1. Maruti Swift 2019 Petrol Manual
+   Your prediction : ₹415,468
+   Your ±10% range : ₹373,921 – ₹457,015
+   CarDekho URL    : https://www.cardekho.com/used-cars/used-maruti-swift-cars
+
+2. Hyundai Creta 2020 Petrol Manual
+   Your prediction : ₹727,107
+   Your ±10% range : ₹654,396 – ₹799,818
+   CarDekho URL    : https://www.cardekho.com/used-cars/used-hyundai-creta-cars
+
+3. Honda City 2018 Petrol Automatic
+   Your prediction : ₹522,898
+   Your ±10% range : ₹470,608 – ₹575,188
+   CarDekho URL    : https://www.cardekho.com/used-cars/used-honda-city-cars
+
+4. Toyota Innova 2017 Diesel Manual
+   Your prediction : ₹888,666
+   Your ±10% range : ₹799,799 – ₹977,532
+   CarDekho URL    : https://www.cardekho.com/used-cars/used-toyota-innova-cars
+
+5. Maruti Baleno 2021 Petrol Manual
+   Your prediction : ₹575,244
+   Your ±10% range : ₹517,720 – ₹632,769
+   CarDekho URL    : https://www.cardekho.com/used-cars/used-maruti-baleno-cars
+
+======================================================================
+HOW TO INTERPRET:
+======================================================================
+
+  ✓ GOOD  — Market price falls within your ±10% range
+  ~ OK    — Market price within ±20% of your prediction  
+  ✗ OFF   — Market price differs by more than 20%
+
+  Expected accuracy vs market: 70-85%
+  (Market prices vary by condition, location, negotiation)
+
+  Sites to check:
+  • CarDekho  : https://www.cardekho.com/used-cars
+  • Spinny    : https://www.spinny.com/used-cars
+  • Cars24    : https://www.cars24.com/buy-used-cars
+  • OLX Autos : https://www.olx.in/cars_c84
+
+======================================================================
+OPTIONAL: Enter market prices to auto-calculate accuracy
+======================================================================
+(Press Enter to skip any car)
+
+Market price for 'Maruti Swift 2019 Petrol Manual' (e.g. 650000): 450000
+  ✓ Your: ₹415,468 | Market: ₹450,000 | Error: 7.7%
+
+Market price for 'Hyundai Creta 2020 Petrol Manual' (e.g. 650000): 
+Market price for 'Honda City 2018 Petrol Automatic' (e.g. 650000): 
+Market price for 'Toyota Innova 2017 Diesel Manual' (e.g. 650000): 
+Market price for 'Maruti Baleno 2021 Petrol Manual' (e.g. 650000): 
+
+Your model matched market prices within ±10%: 1/1 = 100%
+✓ On par with industry standard (CarDekho model accuracy ~75-85%)
+PS C:\Users\raghu\OneDrive\Desktop\project_code\used_car_project> 
