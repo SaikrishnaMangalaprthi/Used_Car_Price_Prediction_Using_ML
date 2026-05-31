@@ -16,6 +16,7 @@ class UserProfile(models.Model):
 class PredictionHistory(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     brand = models.CharField(max_length=100)
+    car_model = models.CharField(max_length=100, default='Unknown')  
     vehicle_age = models.IntegerField()       # was: year
     km_driven = models.IntegerField()
     fuel_type = models.CharField(max_length=50)         # was: fuel

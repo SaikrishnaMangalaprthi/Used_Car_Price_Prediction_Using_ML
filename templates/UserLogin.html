@@ -1,25 +1,262 @@
 {% extends 'base.html' %}
-{% block title %}User Login{% endblock %}
+{% block title %}Login — Used Car Price Prediction{% endblock %}
 {% block content %}
-<div class="container">
-  <div class="card" style="max-width:420px;margin:60px auto;">
-    <h2>🔐 User Login</h2>
-    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+
+<!-- Page wrapper: centers card vertically + horizontally -->
+<div style='
+  min-height: calc(100vh - 64px);
+  background: var(--bg, #F0F4F8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+'>
+
+  <!-- White card — max-width 420px, rounded, shadow -->
+  <div style='
+    background: var(--card, #FFFFFF);
+    border: 1px solid var(--card-b, #E5E7EB);
+    border-radius: 14px;
+    padding: 36px 32px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  '>
+
+    <!-- Shield icon + Welcome Back heading (centered) -->
+    <div style='text-align: center; margin-bottom: 26px;'>
+
+      <!-- Blue circle with shield SVG icon -->
+      <div style='
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        background: #EFF6FF;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+      '>
+        <!-- Shield with checkmark — matches screenshot icon -->
+        <svg width='28' height='28' viewBox='0 0 24 24' fill='none'
+             stroke='#2563EB' stroke-width='2'
+             stroke-linecap='round' stroke-linejoin='round'
+             aria-hidden='true'>
+          <path d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/>
+          <polyline points='9 12 11 14 15 10'/>
+        </svg>
+      </div>
+
+      <!-- Heading -->
+      <h2 style='
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--text, #374151);
+        margin-bottom: 5px;
+      '>Welcome Back!</h2>
+
+      <!-- Sub-heading -->
+      <p style='font-size: 13px; color: var(--muted, #6B7280);'>
+        Login to your account</p>
+    </div>
+
+    <!-- Error message — shown when view sends an error -->
+    <!-- Appears above the form when credentials are wrong  -->
+    {% if error %}
+    <div style='
+      background: #FEF2F2;
+      border-left: 4px solid #991B1B;
+      padding: 10px 14px;
+      border-radius: 4px;
+      margin-bottom: 18px;
+      font-size: 12px;
+      color: #991B1B;
+      line-height: 1.5;
+    '>{{ error }}</div>
+    {% endif %}
+
+    <!-- Login form — POST to /UserLoginCheck/ -->
     <form method='POST' action='/UserLoginCheck/'>
       {% csrf_token %}
-      <div class="form-group">
-        <label>Email</label>
-        <input type='email' name='email' placeholder='your@email.com' required>
+
+      <!-- Email input -->
+      <div style='margin-bottom: 16px;'>
+        <label style='
+          display: block;
+          font-size: 12px;
+          font-weight: 600;
+          color: var(--text, #374151);
+          margin-bottom: 5px;
+        '>Email</label>
+        <input
+          type='email'
+          name='email'
+          placeholder='Enter your email'
+          required
+          style='
+            width: 100%;
+            padding: 10px 13px;
+            border: 1px solid var(--input-b, #D1D5DB);
+            border-radius: 6px;
+            font-size: 13px;
+            background: var(--input-bg, #FFFFFF);
+            color: var(--text, #374151);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+          '
+          onfocus="this.style.borderColor='#2563EB';
+                   this.style.boxShadow='0 0 0 3px rgba(37,99,235,0.12)'"
+          onblur="this.style.borderColor='';
+                  this.style.boxShadow=''"
+        >
       </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input type='password' name='password' placeholder='Password' required>
+
+      <!-- Password input with show/hide eye button -->
+      <div style='margin-bottom: 12px;'>
+        <label style='
+          display: block;
+          font-size: 12px;
+          font-weight: 600;
+          color: var(--text, #374151);
+          margin-bottom: 5px;
+        '>Password</label>
+        <!-- Wrapper div for relative positioning of eye button -->
+        <div style='position: relative;'>
+          <input
+            type='password'
+            name='password'
+            id='login-password'
+            placeholder='Enter your password'
+            required
+            style='
+              width: 100%;
+              padding: 10px 44px 10px 13px;
+              border: 1px solid var(--input-b, #D1D5DB);
+              border-radius: 6px;
+              font-size: 13px;
+              background: var(--input-bg, #FFFFFF);
+              color: var(--text, #374151);
+              outline: none;
+              transition: border-color 0.2s, box-shadow 0.2s;
+            '
+            onfocus="this.style.borderColor='#2563EB';
+                     this.style.boxShadow='0 0 0 3px rgba(37,99,235,0.12)'"
+            onblur="this.style.borderColor='';
+                    this.style.boxShadow=''"
+          >
+          <!-- Eye button: positioned inside the right side of the input -->
+          <button
+            type='button'
+            id='eye-btn'
+            onclick='togglePassword()'
+            aria-label='Show or hide password'
+            style='
+              position: absolute;
+              right: 12px;
+              top: 50%;
+              transform: translateY(-50%);
+              background: none;
+              border: none;
+              cursor: pointer;
+              color: #9CA3AF;
+              font-size: 17px;
+              padding: 0;
+              line-height: 1;
+            '
+          >&#128065;</button>
+        </div>
       </div>
-      <button type='submit' style='width:100%;'>Login</button>
-    </form>
-    <p style='text-align:center;margin-top:16px;font-size:13px;'>
-      No account? <a href='/UserRegister/'>Register here</a>
+
+      <!-- Remember me + Forgot password row -->
+      <div style='
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 22px;
+      '>
+        <!-- Remember me checkbox + label 
+        <label style='
+          display: flex;
+          align-items: center;
+          gap: 7px;
+          font-size: 12px;
+          color: var(--muted, #6B7280);
+          cursor: pointer;
+        '>
+          <input
+            type='checkbox'
+            name='remember_me'
+            style='width: 14px; height: 14px; cursor: pointer; accent-color: #2563EB;'
+          >
+          Remember me
+        </label>-->
+
+        <!-- Forgot Password link 
+        <a href='#'
+           style='font-size: 12px; color: #2563EB; text-decoration: none;'
+           onmouseover="this.style.textDecoration='underline'"
+           onmouseout="this.style.textDecoration='none'"
+        >Forgot Password?</a>
+      </div>-->
+
+<div style="margin-top: 28px;width:100%;">
+    
+    <!-- Login Button -->
+    <button type="submit"
+        style="
+        width:100%;
+        background:#2563EB;
+        
+        color:white;
+        border:none;
+        padding:14px;
+        border-radius:8px;
+        font-size:16px;
+        font-weight:600;
+        cursor:pointer;
+        display:block;
+        margin:0 auto;
+        ">
+        Login
+    </button>
+
+    <!-- Register Section -->
+<div style="text-align:center; margin-top:26px;">
+
+    <p style="
+    font-size:14px;
+    color:#2563EB;
+    margin-bottom:8px;
+    ">
+        Don't have an account?
     </p>
-  </div>
+    <a href="{% url 'UserRegister' %}"
+    style="
+    color:White;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+    ">
+        Register here
+    </a>
+
 </div>
+
+</div>
+
+<!-- Show / hide password script -->
+<script>
+function togglePassword() {
+  var inp = document.getElementById('login-password');
+  var btn = document.getElementById('eye-btn');
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    btn.innerHTML = '&#128064;';   /* open eye = password visible */
+  } else {
+    inp.type = 'password';
+    btn.innerHTML = '&#128065;';   /* closed eye = password hidden */
+  }
+}
+</script>
+
 {% endblock %}

@@ -1,0 +1,7 @@
+brand = form_data['brand'].strip()
+
+if brand not in KNOWN_BRANDS:
+    return render(request, 'not_available.html', {
+        'brand': brand,
+        'suggestions': sorted(KNOWN_BRANDS)[:10]
+    })

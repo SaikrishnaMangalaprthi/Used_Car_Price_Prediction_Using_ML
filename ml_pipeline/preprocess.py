@@ -17,7 +17,15 @@ def preprocess_data(filepath='dataset/cardekho_dataset.csv'):
     # Drop columns the model cannot use
     # car_name = full name like "Maruti Alto" — redundant, brand+model covers it
     # model = too many unique values, causes overfitting
-    df.drop(['car_name', 'model'], axis=1, inplace=True)
+    # Extract brand AND model from full car name
+    # Dataset already has 'brand' and 'model' columns — just rename model to car_model
+    if 'model' in df.columns:
+        df['car_model'] = df['model']
+        df.drop('model', axis=1, inplace=True)
+
+    # Always drop car_name — it's raw text, scaler cannot handle it
+    if 'car_name' in df.columns:
+        df.drop('car_name', axis=1, inplace=True)
 
     # Remove outliers
     df = df[df['km_driven'] < 300000]      # remove data entry errors
@@ -28,7 +36,7 @@ def preprocess_data(filepath='dataset/cardekho_dataset.csv'):
     df = df[df['vehicle_age'] <= 25]       # remove very old cars
 
     # Encode categorical columns (text → numbers)
-    cat_cols = ['brand', 'seller_type', 'fuel_type', 'transmission_type']
+    cat_cols = ['brand', 'car_model','seller_type', 'fuel_type', 'transmission_type']
     label_encoders = {}
     for col in cat_cols:
         le = LabelEncoder()

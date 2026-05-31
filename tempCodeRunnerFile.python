@@ -1,8 +1,11 @@
+import pandas as pd
 
-from ml_pipeline.predict import predict_price
-result = predict_price({'year':'2019','km_driven':'35000',
-   'fuel':'Petrol','seller_type':'Individual','transmission':'Manual',
-   'owner':'First Owner','brand':'Maruti','mileage':'23','engine':'1197',
-   'max_power':'82','seats':'5'})
-print(result)
-#exit()
+df = pd.read_csv("dataset/cardekho_dataset.csv")
+
+
+cars = sorted(df["car_name"].unique())
+
+print("Total:", len(cars))
+
+for car in cars:
+    print(car)

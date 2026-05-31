@@ -1,26 +1,283 @@
 {% extends 'base.html' %}
-{% block title %}Register{% endblock %}
+{% block title %}Create Account — Used Car Price Prediction{% endblock %}
 {% block content %}
-<div class="container">
-  <div class="card" style="max-width:500px;margin:40px auto;">
-    <h2>📝 Create Account</h2>
-    <p style="color:#666;font-size:13px;margin-bottom:20px;">
-      After registering, wait for admin to activate your account before logging in.</p>
-    {% if error %}<div class="error">{{ error }}</div>{% endif %}
-    {% if form.errors %}
-      <div class="error">
-        {% for field in form %}{% for error in field.errors %}<p>{{ error }}</p>{% endfor %}{% endfor %}
-        {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+
+<!-- Page wrapper — centers the card vertically and horizontally -->
+<div style='
+  min-height: calc(100vh - 64px);
+  background: var(--bg, #F0F4F8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+'>
+
+  <!-- White card — max-width 480px -->
+  <div style='
+    background: var(--card, #FFFFFF);
+    border: 1px solid var(--card-b, #E5E7EB);
+    border-radius: 14px;
+    padding: 36px 32px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  '>
+
+    <!-- ── Card header: heading left, car icon right ── -->
+    <div style='display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:22px;'>
+      <div>
+        <h2 style='font-size:21px; font-weight:700; color:var(--text,#374151); margin-bottom:5px;'>
+          Create Your Account</h2>
+        <p style='font-size:13px; color:var(--muted,#6B7280);'>
+          Join us to get started</p>
       </div>
+      <!-- Car + shield SVG icon in a blue circle -->
+      <div style='
+        width: 56px; height: 56px; border-radius: 12px;
+        background: #EFF6FF; flex-shrink: 0;
+        display: flex; align-items: center; justify-content: center;
+      '>
+        <svg width='30' height='30' viewBox='0 0 24 24' fill='none'
+             stroke='#2563EB' stroke-width='1.8' aria-hidden='true'>
+          <path d='M5 17H3a2 2 0 01-2-2V9a2 2 0 012-2h1l3-4h8l3 4h1a2 2 0 012 2v6a2 2 0 01-2 2h-2'/>
+          <circle cx='7.5' cy='17.5' r='2.5'/>
+          <circle cx='16.5' cy='17.5' r='2.5'/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- ── Yellow warning: admin activation needed ── -->
+    <div style='
+      background: #FEFCE8;
+      border-left: 4px solid #F59E0B;
+      padding: 10px 14px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      font-size: 12px;
+      color: #92400E;
+      line-height: 1.5;
+    '>
+      &#9203; After registering, an admin must
+      <strong>activate your account</strong>
+      before you can log in.
+    </div>
+
+    <!-- ── Error box: shown when form has errors ── -->
+    {% if error %}
+    <div style='
+      background: #FEF2F2; border-left: 4px solid #991B1B;
+      padding: 10px 14px; border-radius: 4px;
+      margin-bottom: 16px; font-size: 12px; color: #991B1B;
+    '>{{ error }}</div>
     {% endif %}
+
+    {% if form.errors %}
+    <div style='
+      background: #FEF2F2; border-left: 4px solid #991B1B;
+      padding: 10px 14px; border-radius: 4px;
+      margin-bottom: 16px; font-size: 12px; color: #991B1B;
+    '>
+      {% for field in form %}
+        {% for e in field.errors %}<p style='margin:2px 0;'>{{ e }}</p>{% endfor %}
+      {% endfor %}
+      {% for e in form.non_field_errors %}
+        <p style='margin:2px 0;'>{{ e }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- ── The registration form ── -->
     <form method='POST' action='/UserRegisterActions/'>
       {% csrf_token %}
-      {{ form.as_p }}
-      <button type='submit' style='width:100%;margin-top:10px;'>Create Account</button>
+
+      <!-- Input helper macro — reused for each field below -->
+      <!-- Full Name -->
+      <div style='margin-bottom: 15px;'>
+        <label style='
+          display: block; font-size: 12px; font-weight: 600;
+          color: var(--text, #374151); margin-bottom: 5px;
+        '>Full Name</label>
+        <input
+  type='text'
+  name='name'
+  placeholder='Enter your full name'
+  required
+  style='
+    width: 100%;
+    padding: 10px 13px;
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    font-size: 13px;
+    background: #FFFFFF;
+    color: #374151;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  '
+  onfocus="this.style.borderColor='#2563EB';this.style.boxShadow='0 0 0 3px rgba(37,99,235,0.12)'"
+  onblur="this.style.borderColor='#D1D5DB';this.style.boxShadow='none'"
+>
+      </div>
+
+      <!-- Email -->
+      <div style='margin-bottom: 15px;'>
+        <label style='
+          display: block; font-size: 12px; font-weight: 600;
+          color: var(--text, #374151); margin-bottom: 5px;
+        '>Email</label>
+        <input
+  type='email'
+  name='email'
+  placeholder='Enter your email'
+  required
+  style='
+    width: 100%;
+    padding: 10px 13px;
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    font-size: 13px;
+    background: #FFFFFF;
+    color: #374151;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  '
+  onfocus="this.style.borderColor='#2563EB';this.style.boxShadow='0 0 0 3px rgba(37,99,235,0.12)'"
+  onblur="this.style.borderColor='#D1D5DB';this.style.boxShadow='none'"
+>
+      </div>
+
+      <!-- Password with show/hide eye button -->
+      <div style='margin-bottom: 15px;'>
+        <label style='
+          display: block; font-size: 12px; font-weight: 600;
+          color: var(--text, #374151); margin-bottom: 5px;
+        '>Password</label>
+        <div style='position: relative;'>
+         <input
+  type='password'
+  name='password'
+  id='pw1'
+  placeholder='Create a password'
+  required
+  style='
+    width: 100%;
+    padding: 10px 42px 10px 13px;
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    font-size: 13px;
+    background: #FFFFFF;
+    color: #374151;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  '
+  onfocus="this.style.borderColor='#2563EB';this.style.boxShadow='0 0 0 3px rgba(37,99,235,0.12)'"
+  onblur="this.style.borderColor='#D1D5DB';this.style.boxShadow='none'"
+>
+          <!-- Eye icon — toggles password visibility -->
+          <button
+            type='button'
+            id='eye1'
+            onclick='togglePwd("pw1","eye1")'
+            aria-label='Toggle password visibility'
+            style='
+              position: absolute; right: 12px; top: 50%;
+              transform: translateY(-50%);
+              background: none; border: none;
+              cursor: pointer; color: #9CA3AF;
+              font-size: 17px; padding: 0; line-height: 1;
+            '
+          >&#128065;</button>
+        </div>
+      </div>
+
+      <!-- Confirm Password with show/hide eye button -->
+      <div style='margin-bottom: 24px;'>
+        <label style='
+          display: block; font-size: 12px; font-weight: 600;
+          color: var(--text, #374151); margin-bottom: 5px;
+        '>Confirm Password</label>
+        <div style='position: relative;'>
+         <input
+  type='password'
+  name='confirm_password'
+  id='pw2'
+  placeholder='Confirm your password'
+  required
+  style='
+    width: 100%;
+    padding: 10px 42px 10px 13px;
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    font-size: 13px;
+    background: #FFFFFF;
+    color: #374151;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  '
+  onfocus="this.style.borderColor='#2563EB';this.style.boxShadow='0 0 0 3px rgba(37,99,235,0.12)'"
+  onblur="this.style.borderColor='#D1D5DB';this.style.boxShadow='none'"
+>
+          <button
+            type='button'
+            id='eye2'
+            onclick='togglePwd("pw2","eye2")'
+            aria-label='Toggle confirm password visibility'
+            style='
+              position: absolute; right: 12px; top: 50%;
+              transform: translateY(-50%);
+              background: none; border: none;
+              cursor: pointer; color: #9CA3AF;
+              font-size: 17px; padding: 0; line-height: 1;
+            '
+          >&#128065;</button>
+        </div>
+      </div>
+
+      <!-- Blue full-width Register button -->
+      <button
+        type='submit'
+        style='
+          width: 100%;
+          padding: 12px;
+          background: #2563EB;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          font-size: 14px;
+          font-weight: 700;
+          cursor: pointer;
+          transition: background 0.15s;
+        '
+        onmouseover="this.style.background='#1F3864'"
+        onmouseout="this.style.background='#2563EB'"
+      >Register</button>
     </form>
-    <p style='text-align:center;margin-top:16px;font-size:13px;'>
-      Already have an account? <a href='/UserLogin/'>Login</a>
+
+    <!-- Footer link -->
+    <p style='text-align: center; margin-top: 18px; font-size: 12px; color: var(--muted, #6B7280);'>
+      Already have an account?
+      <a href="{% url 'UserLogin' %}"
+         style='color: #2563EB; text-decoration: none; font-weight: 600;'>
+        Login here</a>
     </p>
   </div>
 </div>
+
+<!-- Password show/hide script -->
+<script>
+function togglePwd(inputId, btnId) {
+  var inp = document.getElementById(inputId);
+  var btn = document.getElementById(btnId);
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    /* Open eye = currently showing password */
+    btn.innerHTML = '&#128064;';
+  } else {
+    inp.type = 'password';
+    /* Closed eye = currently hiding password */
+    btn.innerHTML = '&#128065;';
+  }
+}
+</script>
+
 {% endblock %}
+

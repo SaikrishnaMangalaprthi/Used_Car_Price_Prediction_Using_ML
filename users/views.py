@@ -4,7 +4,22 @@ import time
 from django.views.decorators.cache import never_cache
 from sklearn.metrics import mean_absolute_error, r2_score
 from .models import PredictionHistory, UserProfile
+import pandas as pd
+from django.core.paginator import Paginator
+from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+DATASET = pd.read_csv(BASE_DIR / 'dataset' / 'cardekho_dataset.csv')
+KNOWN_BRANDS = set(DATASET['brand'].dropna().unique())
+KNOWN_MODELS = set(DATASET['model'].dropna().unique())
+df = pd.read_csv(BASE_DIR / "dataset" / "cardekho_dataset.csv")
+
+brand_model_map = (
+    df.groupby('brand')['model']
+      .apply(lambda x: sorted(x.dropna().unique().tolist()))
+      .to_dict()
+)
 # Helper functions used by all views below
 def is_logged_in(request):
     return request.session.get('user_id') is not None
@@ -28,44 +43,68 @@ def UserRegisterActions(request):
                     'form': form, 'error': 'This email is already registered. Please login.'})
             # Create user — is_active=False means they cannot login yet
             UserProfile.objects.create(
-                name=name, email=email, password=password, is_active=False)
+                name=name, email=email, password=password, is_active=True)
             return render(request, 'RegistrationSuccess.html', {})
         return render(request, 'UserRegistrations.html', {'form': form})
     return redirect('UserRegister')
 
  
 # ── TO BE COMPLETED DAY 9 ────────────────────────────────────────────
+# users/views.py  — ADD this function
 def UserLoginCheck(request):
     from .models import UserProfile
     if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
+        email    = request.POST.get('email', '').strip()
+        password = request.POST.get('password', '')
         try:
             user = UserProfile.objects.get(email=email, password=password)
             if user.is_active:
-                # Store user info in session so pages know who is logged in
-                request.session['user_id'] = user.id
+                # Save user info in session
+                request.session['user_id']   = user.id
                 request.session['user_name'] = user.name
                 return redirect('UserHome')
             else:
+                # Account exists but admin has not activated it yet
                 return render(request, 'UserLogin.html', {
-                    'error': 'Your account is not yet activated. Please contact the admin.'})
+                    'error': 'Account not activated. Please contact the admin.'
+                })
         except UserProfile.DoesNotExist:
-            return render(request, 'UserLogin.html', {'error': 'Invalid email or password'})
+            # Wrong email or password
+            return render(request, 'UserLogin.html', {
+                'error': 'Invalid email or password. Please try again.'
+            })
     return redirect('UserLogin')
+
 @never_cache
 def UserHome(request):
-    if not is_logged_in(request): return redirect('UserLogin')
-    return render(request, 'UserHome.html', {})
+    if not request.session.get('user_id'):
+        return redirect('UserLogin')
+    from .models import PredictionHistory, UserProfile
+   # from .models import PredictionHistory, TrainedModel
+    user_id = request.session['user_id']
+    total   = PredictionHistory.objects.filter(user_id=user_id).count()
+    #trained = TrainedModel.objects.count()
+    #best    = TrainedModel.objects.filter(is_best=True).first()
+    return render(request, 'UserHome.html', {
+        'total_predictions': total,
+        #'models_trained':    trained,
+        #'best_model':        best.name if best else 'Not trained yet',
+        #'accuracy':          f'{best.r2_score * 100:.2f}%' if best else '—',
+    })
+
 
 # Logout clears the session immediately
+@never_cache
 def logout_user(request):
     request.session.flush()
     return redirect('index')
  
 # ── TO BE COMPLETED DAY 17 ───────────────────────────────────────────
 def training(request):
-    if not is_logged_in(request): return redirect('UserLogin')
+    if not is_logged_in(request) and not is_admin(request):
+        return redirect('UserLogin')
+    results = []
+    best = None
     if request.method == 'POST':
         import sys, os, numpy as np
         import matplotlib
@@ -93,59 +132,92 @@ def training(request):
                                       max_depth=5, random_state=42),
         }
 
-        results = {}
-        trained = {}
-
+        
         # ── Loop trains ALL models first, THEN saves ──────────────────
-        for name, model in models.items():
-            print(f"Training {name}...", flush=True)
-            model.fit(X_train, y_train)
-            yp = model.predict(X_test)
-            results[name] = {
+        results, trained = {}, {}
+        for nm, md in models.items():
+            md.fit(X_train, y_train)
+            yp = md.predict(X_test)
+            results[nm] = {
                 'MAE':  round(mean_absolute_error(y_test, yp), 0),
                 'RMSE': round(np.sqrt(mean_squared_error(y_test, yp)), 0),
                 'R2':   round(r2_score(y_test, yp), 4)
             }
-            trained[name] = model
-            print(f"  Done — R2={results[name]['R2']}", flush=True)
+            trained[nm] = md
 
-        # ── Everything below runs AFTER all models finish ─────────────
-        best_name = max(results, key=lambda x: results[x]['R2'])
-        joblib.dump(trained[best_name], 'models/best_model.pkl')
-        joblib.dump(results, 'models/training_results.pkl')
-        joblib.dump(feature_names, 'models/feature_names.pkl')
-
-        # Model comparison chart
-        names  = list(results.keys())
-        colors = ['#3498db','#e74c3c','#2ecc71','#9b59b6','#f39c12']
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
-        ax1.bar(names, [results[m]['R2'] for m in names], color=colors)
-        ax1.set_title('R² Score — Higher is Better')
-        ax1.set_ylim(0, 1)
-        ax1.tick_params(axis='x', rotation=30)
-        ax2.bar(names, [results[m]['MAE']/100000 for m in names], color=colors)
-        ax2.set_title('MAE (Lakhs) — Lower is Better')
-        ax2.tick_params(axis='x', rotation=30)
-        plt.tight_layout()
-        plt.savefig('static/images/model_comparison.png', dpi=100)
-        plt.close()
-
-        return render(request, 'training.html', {
+        best = max(results, key=lambda x: results[x]['R2'])
+        os.makedirs('models', exist_ok=True)
+        joblib.dump(trained[best],  'models/best_model.pkl')
+        joblib.dump(results,        'models/training_results.pkl')
+        joblib.dump(feature_names,  'models/feature_names.pkl')
+        # R2 + MAE bar chart
+        names = list(results.keys())
+        fig,(ax1,ax2) = plt.subplots(1,2,figsize=(12,5))
+        ax1.bar(names,[results[m]['R2']  for m in names],color=['#2563EB','#166534','#D97706','#991B1B'])
+        ax1.set_title('R² Score (higher = better)'); ax1.set_ylim(0,1)
+        ax2.bar(names,[results[m]['MAE'] for m in names],color=['#2563EB','#166534','#D97706','#991B1B'])
+        ax2.set_title('MAE Rs. (lower = better)')
+        plt.xticks(rotation=20); plt.tight_layout()
+        plt.savefig('static/images/model_comparison.png',bbox_inches='tight'); plt.close()
+        # Feature importance (Random Forest only)
+        if hasattr(trained[best],'feature_importances_'):
+            imp = trained[best].feature_importances_
+            idx = np.argsort(imp)[::-1]
+            plt.figure(figsize=(9,5))
+            plt.bar(range(len(imp)),imp[idx],color='#2563EB')
+            plt.xticks(range(len(imp)),[feature_names[i] for i in idx],rotation=40,ha='right')
+            plt.title('Feature Importance'); plt.tight_layout()
+            plt.savefig('static/images/feature_importance.png',bbox_inches='tight'); plt.close()
+        # Actual vs Predicted scatter
+        yp_best = trained[best].predict(X_test)
+        plt.figure(figsize=(7,7))
+        plt.scatter(y_test,yp_best,alpha=0.35,color='#2563EB')
+        plt.plot([y_test.min(),y_test.max()],[y_test.min(),y_test.max()],'r--',lw=2)
+        plt.xlabel('Actual'); plt.ylabel('Predicted')
+        plt.title('Actual vs Predicted'); plt.tight_layout()
+        plt.savefig('static/images/actual_vs_predicted.png',bbox_inches='tight'); plt.close()
+        return render(request,'training.html',{
             'results': results,
-            'best_model': best_name,
+            'best_model': best,
+            'best_r2': results[best]['R2'],
             'trained': True
         })
+ 
+    return render(request, 'training.html', {
+        'results': {},
+        'best_model': None,
+        'best_r2': None,
+        'trained': False
+})
 
-    return render(request, 'training.html', {'trained': False})
+   
+
+   
 # ── TO BE COMPLETED DAY 19 ───────────────────────────────────────────
 @never_cache
 def prediction(request):
     if not is_logged_in(request): 
         return redirect('UserLogin')
+    
+    import os
+
+    vehicle_ages = list(range(1, 21))
+    mileage_opts = [round(x * 0.5, 1) for x in range(10, 61)]
+    engine_opts = [800,1000,1100,1197,1200,1400,1500,1600,1800,2000,2200,2400,2500,3000]
+    power_opts = [40,50,60,70,80,82,90,100,110,120,130,150,180,200]
+
+    ctx = {
+        'vehicle_ages': vehicle_ages,
+        'mileage_opts': mileage_opts,
+        'engine_opts': engine_opts,
+        'power_opts': power_opts,
+        'brand_model_map': brand_model_map
+    }
     if request.method == 'POST':
         errors = []
         form_data = {
         'year':         request.POST.get('year', '').strip(),
+        'car_model': request.POST.get('car_model', ''),
         'km_driven':    request.POST.get('km_driven', '').strip(),
         'fuel':         request.POST.get('fuel', ''),
         'seller_type':  request.POST.get('seller_type', 'Individual'),
@@ -157,7 +229,9 @@ def prediction(request):
         'max_power':    request.POST.get('max_power', '80'),
         'seats':        request.POST.get('seats', '5'),
         }
- 
+        brand = form_data['brand'].strip()
+
+        
     # Validate year
         try:
             year_val = int(form_data['year'])
@@ -215,6 +289,7 @@ def prediction(request):
             'transmission_type': form_data['transmission'],
             'owner': form_data['owner'],
             'brand': form_data['brand'],
+            'car_model': form_data['car_model'],
             'mileage': float(form_data['mileage']),
             'engine': float(form_data['engine']),
             'max_power': float(form_data['max_power']),
@@ -238,14 +313,16 @@ def prediction(request):
         price_tag = get_price_tag(
             predicted_price=result['predicted'],
             brand=input_dict['brand'],
-            fuel=input_dict['fuel_type']
+            fuel=input_dict['fuel_type'],
+            car_model=input_dict['car_model']
                 )
-        from .models import PredictionHistory
+        from .models import UserProfile,PredictionHistory
         user = UserProfile.objects.get(id=request.session['user_id'])
         PredictionHistory.objects.create(
             user=user,
 
             brand=form_data['brand'],
+            car_model=input_dict['car_model'],
             vehicle_age=vehicle_age,
             km_driven=form_data['km_driven'],
             fuel_type=form_data['fuel'],
@@ -264,7 +341,7 @@ def prediction(request):
                 'similar': similar,
                 'price_tag': price_tag,
             })
-    return render(request, 'prediction.html')
+    return render(request, 'prediction.html',ctx)
 # ── TO BE COMPLETED DAY 21 ───────────────────────────────────────────
 @never_cache
 def DatasetView(request):
@@ -284,13 +361,29 @@ def DatasetView(request):
 # ── TO BE COMPLETED DAY 22 ───────────────────────────────────────────
 @never_cache
 def prediction_history(request):
-    if not is_logged_in(request): return redirect('UserLogin')
+    if not is_logged_in(request): 
+        return redirect('UserLogin')
+     # If admin, show all predictions
+    if is_admin(request):
+        from .models import PredictionHistory
+        from django.db.models import Avg, Max, Min, Count
+        history = PredictionHistory.objects.all().order_by('-created_at')
+    else:
+        from .models import UserProfile, PredictionHistory
+        from django.db.models import Avg, Max, Min, Count
+        user = UserProfile.objects.get(id=request.session['user_id'])
+        history = PredictionHistory.objects.filter(user=user).order_by('-created_at')
     from .models import UserProfile, PredictionHistory
     from django.db.models import Avg, Max, Min, Count
     user = UserProfile.objects.get(id=request.session['user_id'])
     history = PredictionHistory.objects.filter(user=user).order_by('-created_at')
+    
     for h in history:
         h.display_year = 2026 - int(h.vehicle_age)
+    paginator = Paginator(history, 5)   # 5 rows per page
+    page_num  = request.GET.get('page', 1)
+    page_obj  = paginator.get_page(page_num)
+
     stats = history.aggregate(
         total=Count('id'),
         avg_price=Avg('predicted_price'),
@@ -300,6 +393,7 @@ def prediction_history(request):
     return render(request, 'prediction_history.html', {
         'history': history,
         'user': user,
+        'page_obj': page_obj,
         'stats': stats
     })
 
@@ -314,10 +408,16 @@ def delete_prediction(request, pk):
     except PredictionHistory.DoesNotExist:
         pass  # Already deleted or not owned by this user
     return redirect('prediction_history')
+
 @never_cache
 def compare_cars(request):
-    if not is_logged_in(request): return redirect('UserLogin')
-    return render(request, 'compare.html', {})
+    if not is_logged_in(request):
+        return redirect('UserLogin')
+    context = {
+        "seat_options": [2, 4, 5, 6, 7, 8],
+        "brand_model_map": brand_model_map,  # add this
+    }
+    return render(request, 'compare.html', context)
 @never_cache
 def compare_result(request):
     if not is_logged_in(request): return redirect('UserLogin')
@@ -330,33 +430,41 @@ def compare_result(request):
  
     # Car 1 inputs
     car1 = {
-        'vehicle_age': 2026 - int(request.POST.get('year1')),
+        'year': int(request.POST.get('year1')),
         'km_driven': int(request.POST.get('km1')),
         'fuel_type': request.POST.get('fuel1'),
         'seller_type': request.POST.get('seller1'),
-        'transmission_type': request.POST.get('transmission1'),
+        'transmission': request.POST.get('transmission1'),
         'owner': request.POST.get('owner1'),
         'brand': request.POST.get('brand1'),
+        'car_model': request.POST.get('car_model1'),
         'mileage': float(request.POST.get('mileage1', 18)),
         'engine': float(request.POST.get('engine1', 1200)),
         'max_power': float(request.POST.get('power1', 80)),
         'seats': int(request.POST.get('seats1', 5))
-    }
+        }
     # Car 2 inputs
     car2 = {
-        'vehicle_age': 2026 - int(request.POST.get('year2')),
+        'year': int(request.POST.get('year2')),
         'km_driven': int(request.POST.get('km2')),
         'fuel_type': request.POST.get('fuel2'),
         'seller_type': request.POST.get('seller2'),
-        'transmission_type': request.POST.get('transmission2'),
+        'transmission': request.POST.get('transmission2'),
         'owner': request.POST.get('owner2'),
         'brand': request.POST.get('brand2'),
+        'car_model': request.POST.get('car_model2'),
         'mileage': float(request.POST.get('mileage2', 18)),
         'engine': float(request.POST.get('engine2', 1200)),
         'max_power': float(request.POST.get('power2', 80)),
         'seats': int(request.POST.get('seats2', 5))
-    }
- 
+        }
+    from datetime import datetime
+
+    current_year = datetime.now().year
+
+    car1['vehicle_age'] = current_year - car1['year']
+    car2['vehicle_age'] = current_year - car2['year']
+    print(request.POST)
     r1 = predict_price(car1)
     r2 = predict_price(car2)
  
@@ -370,3 +478,44 @@ def compare_result(request):
         'winner': winner,
         'savings': f'&#8377;{savings:,.0f}',
     })
+
+def history_detail(request, pk):
+    if not request.session.get('user_id'): return redirect('UserLogin')
+    from .models import UserProfile, PredictionHistory
+    user = UserProfile.objects.get(id=request.session['user_id'])
+    try:
+        pred = PredictionHistory.objects.get(id=pk, user=user)
+    except PredictionHistory.DoesNotExist:
+        return redirect('prediction_history')
+    # Build a list of (label, value) pairs for the detail table
+    details = [
+        ('Brand',            pred.brand),
+        ('Vehicle Age',      f'{2025 - pred.year} Years ({pred.year})'),
+        ('Km Driven',        f'{pred.km_driven:,} km'),
+        ('Fuel Type',        pred.fuel),
+        ('Transmission',     pred.transmission),
+        ('Mileage',          f'{pred.mileage} kmpl' if hasattr(pred,'mileage') else 'N/A'),
+        ('Engine',           f'{pred.engine} cc'    if hasattr(pred,'engine')  else 'N/A'),
+        ('Max Power',        f'{pred.max_power} bhp' if hasattr(pred,'max_power') else 'N/A'),
+        ('Seats',            str(pred.seats) if hasattr(pred,'seats') else 'N/A'),
+        ('Seller Type',      pred.seller_type if hasattr(pred,'seller_type') else 'N/A'),
+    ]
+    return render(request,'history_detail.html',{'pred':pred,'details':details})
+
+def about(request):
+    import joblib, os
+    best_r2 = None
+    if os.path.exists('models/training_results.pkl'):
+        try:
+            res = joblib.load('models/training_results.pkl')
+            best_name = max(res, key=lambda x: res[x]['R2'])
+            best_r2   = res[best_name]['R2']
+        except: pass
+    return render(request, 'about.html', {'best_r2': best_r2})
+
+
+def how_it_works(request):
+    if not is_logged_in(request):
+        return redirect('UserLogin')
+
+    return render(request, 'how_it_works.html')

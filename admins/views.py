@@ -15,6 +15,9 @@ def AdminLogin(request):
 # URL: http://127.0.0.1:8000/UserLogin/
 # What it does: Shows the user login form
 def UserLogin(request):
+    # If already logged in, go straight to prediction
+    if request.session.get('user_id'):
+        return redirect('prediction')
     return render(request, 'UserLogin.html', {})
  
 # URL: http://127.0.0.1:8000/UserRegister/
@@ -27,6 +30,7 @@ def UserRegister(request):
 # ── ADMIN VIEWS ───────────────────────────────────────────────────────
 # URL: http://127.0.0.1:8000/AdminLoginCheck/
 # What it does: Receives admin login form POST, checks credentials, sets session
+
 def AdminLoginCheck(request):
     from django.conf import settings
     if request.method == 'POST':
@@ -46,7 +50,14 @@ def AdminHome(request):
     if not request.session.get('admin'):
         return redirect('AdminLogin')
     from users.models import UserProfile, PredictionHistory
+    #from users.models import TrainedModel
     from django.db import models as dm
+    import joblib, os
+    #best_name = 'Not trained'
+    #if os.path.exists('models/best_model_name.pkl'):
+       # try: best_name = joblib.load('models/best_model_name.pkl')
+       # except: pass
+
     total_users = UserProfile.objects.count()
     active_users = UserProfile.objects.filter(is_active=True).count()
     total_preds = PredictionHistory.objects.count()
@@ -54,8 +65,11 @@ def AdminHome(request):
     context = {
         'total_users': total_users,
         'active_users': active_users,
+    
         'total_predictions': total_preds,
-        'avg_price': round(avg_price, 0)
+        'avg_price': round(avg_price, 0),
+        'recent_predictions': PredictionHistory.objects.order_by('-created_at')[:5],
+
     }
     return render(request, 'AdminHome.html', context)
  
@@ -80,3 +94,33 @@ def ActivaUsers(request):
     user.is_active = True
     user.save()
     return redirect('RegisterUsersView')
+from users.views import brand_model_map  # add this import at top
+
+def compare_cars(request):
+    if not is_logged_in(request):
+        return redirect('UserLogin')
+    return render(request, 'compare.html', {
+        "seat_options": [2, 4, 5, 6, 7, 8],
+        "brand_model_map": brand_model_map,
+    })
+@never_cache
+def AdminHome(request):
+    if not request.session.get('admin'):
+        return redirect('AdminLogin')
+    from users.models import UserProfile, PredictionHistory
+    import joblib, os
+    best_name = 'Not trained'
+    if os.path.exists('models/best_model_name.pkl'):
+        try: best_name = joblib.load('models/best_model_name.pkl')
+        except: pass
+
+    context = {
+        'total_users':       UserProfile.objects.count(),
+        'active_users':      UserProfile.objects.filter(is_active=True).count(),
+        'models_trained':    4 if os.path.exists('models/best_model.pkl') else 0,
+        'best_model':        best_name,
+        'total_predictions': PredictionHistory.objects.count(),
+        'recent_users':      UserProfile.objects.order_by('-created_at')[:5],
+        'recent_predictions': PredictionHistory.objects.order_by('-created_at')[:5],
+    }
+    return render(request, 'AdminHome.html', context)

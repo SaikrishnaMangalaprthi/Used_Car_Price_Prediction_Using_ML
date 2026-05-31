@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  .about-wrapper {
+    max-width: 680px;
+    margin: 3rem auto;
+    padding: 0 1.5rem;
+  }
+  .terminal-card {
+    background: #0f172a;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  }
+  .terminal-bar {
+    background: #1e293b;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .dot { width: 11px; height: 11px; border-radius: 50%; }
+  .dot.r { background: #ff5f57; }
+  .dot.y { background: #febc2e; }
+  .dot.g { background: #28c840; }
+  .terminal-title {
+    font-size: 12px;
+    color: #64748b;
+    margin-left: 8px;
+    font-family: monospace;
+  }
+  .terminal-body {
+    padding: 1.5rem;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.9;
+    color: #94a3b8;
+  }
+  .terminal-body .prompt { color: #22d3ee; }
+  .terminal-body .cmd    { color: #f8fafc; }
+  .terminal-body .output { color: #94a3b8; display: block; margin-left: 0; }
+  .terminal-body .green  { color: #4ade80; }
+  .terminal-body .yellow { color: #facc15; }
+  .terminal-body .blue   { color: #60a5fa; }
+  .terminal-body .cursor {
+    display: inline-block;
+    width: 9px;
+    height: 15px;
+    background: #60a5fa;
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+  .about-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 1.25rem;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .about-card .card-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+  .about-card h3 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .about-card p {
+    font-size: 13px;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.6;
+  }
+  .tags-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+  }
+  .tag {
+    font-size: 12px;
+    padding: 5px 13px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  .tag.blue   { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+  .tag.green  { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .tag.purple { background: #faf5ff; color: #7c3aed; border: 1px solid #ddd6fe; }
+  .tag.amber  { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+  .links-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.1s, opacity 0.15s;
+    border: 1.5px solid transparent;
+  }
+  .link-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+  .link-btn.linkedin { background: #0a66c2; color: #fff; }
+  .link-btn.github   { background: #0f172a; color: #fff; }
+  .link-btn.email    { background: #fff; color: #0f172a; border-color: #e2e8f0; }
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #94a3b8;
+    margin: 0 0 10px;
+  }
+</style>
+
+<div class="about-wrapper">
+
+  <!-- Terminal Card -->
+  <div class="terminal-card">
+    <div class="terminal-bar">
+      <div class="dot r"></div>
+      <div class="dot y"></div>
+      <div class="dot g"></div>
+      <span class="terminal-title">about_sk.py</span>
+    </div>
+    <div class="terminal-body">
+      <span><span class="prompt">sk@dev</span>:~$ <span class="cmd">python about_sk.py</span></span><br>
+      <span class="output">
+        <span class="green">Name    :</span>  Mangalaparthi Sai Krishna<br>
+        <span class="green">Role    :</span>  Final Year MCA Student<br>
+        <span class="green">College :</span>  Osmania University, Hyderabad<br>
+        <span class="green">Focus   :</span>  <span class="yellow">Machine Learning · Full Stack · Data Analytics</span><br>
+        <span class="green">Mission :</span>  <span class="blue">"Turn data into decisions, and ideas into products."</span><br>
+      </span>
+      <span><span class="prompt">sk@dev</span>:~$ <span class="cursor"></span></span>
+    </div>
+  </div>
+
+  <!-- Info Cards -->
+  <div class="about-grid">
+    <div class="about-card">
+      <span class="card-icon">🤖</span>
+      <h3>This Project</h3>
+      <p>Used Car Price Predictor — an ML-powered Django web app for accurate resale valuation of Indian used cars.</p>
+    </div>
+    <div class="about-card">
+      <span class="card-icon">⚡</span>
+      <h3>What I Build</h3>
+      <p>End-to-end products — from trained ML models to fully deployed web and mobile applications.</p>
+    </div>
+  </div>
+
+  <!-- Tech Stack -->
+  <p class="section-label">Tech Stack</p>
+  <div class="tags-wrap">
+    <span class="tag blue">Python</span>
+    <span class="tag blue">Django</span>
+    <span class="tag green">Machine Learning</span>
+    <span class="tag green">NumPy</span>
+    <span class="tag green">Matplotlib</span>
+    <span class="tag purple">Java</span>
+    <span class="tag purple">Flutter</span>
+    <span class="tag amber">SQL</span>
+    <span class="tag amber">MS Office</span>
+  </div>
+
+  <!-- Links -->
+  <p class="section-label">Connect</p>
+  <div class="links-row">
+    <a href="https://www.linkedin.com/in/mangalaparthi-sai-krishna/"
+       class="link-btn linkedin" target="_blank">in LinkedIn</a>
+    <a href="https://github.com/SaikrishnaMangalaprthi"
+       class="link-btn github" target="_blank">⌥ GitHub</a>
+    <a href="mailto:msaikrishna502@gmail.com"
+       class="link-btn email">✉ Email me</a>
+  </div>
+
+</div>
+{% endblock %}

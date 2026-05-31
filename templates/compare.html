@@ -1,73 +1,336 @@
 {% extends 'base.html' %}
-{% block title %}Compare Two Cars{% endblock %}
+{% block title %}Compare Cars — Auto Worth AI{% endblock %}
 {% block content %}
-<div class='container'>
-  <div class='card'>
-    <h2>⚖️ Compare Two Cars</h2>
-    <p style='color:#666;font-size:13px;margin-bottom:24px;'>
-      Fill in details for both cars. We will predict both prices and
-      show you which is the better deal.</p>
-    <form method='POST' action='/compare_result/'>
-      {% csrf_token %}
-      <div style='display:grid;grid-template-columns:1fr 1fr;gap:32px;'>
- 
-        <!-- CAR 1 -->
-        <div>
-          <h3 style='color:#1F3864;margin-bottom:16px;'>🚗 Car 1</h3>
-          <div class='form-group'><label>Brand</label>
-            <select name='brand1'>
-              <option>Maruti</option><option>Hyundai</option>
-              <option>Honda</option><option>Toyota</option>
-              <option>Tata</option><option>Mahindra</option>
-              <option>Ford</option><option>Kia</option>
-            </select></div>
-          <div class='form-group'><label>Year</label>
-            <input type='number' name='year1' min='1990' max='2025'
-                   placeholder='e.g. 2018' required></div>
-          <div class='form-group'><label>KM Driven</label>
-            <input type='number' name='km1' placeholder='e.g. 45000' required></div>
-          <div class='form-group'><label>Fuel</label>
-            <select name='fuel1'><option>Petrol</option>
-              <option>Diesel</option><option>CNG</option></select></div>
-          <div class='form-group'><label>Transmission</label>
-            <select name='transmission1'>
-              <option>Manual</option><option>Automatic</option></select></div>
-          <div class='form-group'><label>Owner</label>
-            <select name='owner1'>
-              <option>First Owner</option><option>Second Owner</option>
-              <option>Third Owner</option></select></div>
-        </div>
- 
-        <!-- CAR 2 -->
-        <div>
-          <h3 style='color:#C62828;margin-bottom:16px;'>🚙 Car 2</h3>
-          <div class='form-group'><label>Brand</label>
-            <select name='brand2'>
-              <option>Maruti</option><option>Hyundai</option>
-              <option>Honda</option><option>Toyota</option>
-              <option>Tata</option><option>Mahindra</option>
-              <option>Ford</option><option>Kia</option>
-            </select></div>
-          <div class='form-group'><label>Year</label>
-            <input type='number' name='year2' min='1990' max='2025'
-                   placeholder='e.g. 2020' required></div>
-          <div class='form-group'><label>KM Driven</label>
-            <input type='number' name='km2' placeholder='e.g. 22000' required></div>
-          <div class='form-group'><label>Fuel</label>
-            <select name='fuel2'><option>Petrol</option>
-              <option>Diesel</option><option>CNG</option></select></div>
-          <div class='form-group'><label>Transmission</label>
-            <select name='transmission2'>
-              <option>Manual</option><option>Automatic</option></select></div>
-          <div class='form-group'><label>Owner</label>
-            <select name='owner2'>
-              <option>First Owner</option><option>Second Owner</option>
-              <option>Third Owner</option></select></div>
+
+<style>
+  .cmp-page { background: var(--bg); padding: 48px 24px 80px; }
+  .cmp-wrap { max-width: 1200px; margin: 0 auto; }
+
+  .cmp-header { margin-bottom: 32px; }
+  .cmp-header h1 { font-size: 28px; font-weight: 800; color: var(--text); margin-bottom: 6px; letter-spacing: -0.5px; }
+  .cmp-header p  { font-size: 14px; color: var(--muted); }
+
+  .cars-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-bottom: 28px; }
+
+  .car-card { border-radius: 16px; border: 1.5px solid; overflow: hidden; background: var(--card); }
+  .car-card-1 { border-color: rgba(99,102,241,0.35); }
+  .car-card-2 { border-color: rgba(251,113,133,0.35); }
+
+  .car-header { padding: 16px 22px; font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 10px; }
+  .car-header-1 { background: rgba(99,102,241,0.1); border-bottom: 1px solid rgba(99,102,241,0.2); color: #818CF8; }
+  .car-header-2 { background: rgba(251,113,133,0.08); border-bottom: 1px solid rgba(251,113,133,0.2); color: #FB7185; }
+
+  .car-body { padding: 24px; }
+
+  .sec-div {
+    display: flex; align-items: center; gap: 10px;
+    margin: 24px 0 16px;
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
+  }
+  .sec-div:first-child { margin-top: 0; }
+  .sec-div::before, .sec-div::after { content: ''; flex: 1; height: 1px; }
+  .sec-div-1 { color: #818CF8; }
+  .sec-div-1::before, .sec-div-1::after { background: linear-gradient(90deg, transparent, rgba(99,102,241,0.3), transparent); }
+  .sec-div-2 { color: #FB7185; }
+  .sec-div-2::before, .sec-div-2::after { background: linear-gradient(90deg, transparent, rgba(251,113,133,0.3), transparent); }
+
+  .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; }
+  .field input, .field select {
+    background: var(--input-bg);
+    border: 1px solid var(--input-b);
+    border-radius: 10px;
+    padding: 10px 13px;
+    font-size: 13.5px;
+    color: var(--text);
+    width: 100%; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    appearance: auto;
+  }
+  .field input::placeholder { color: var(--muted); opacity: 0.5; }
+  .field input:focus, .field select:focus { border-color: #6366F1; box-shadow: 0 0 0 3px rgba(99,102,241,0.12); }
+  .car-card-2 .field input:focus, .car-card-2 .field select:focus { border-color: #FB7185; box-shadow: 0 0 0 3px rgba(251,113,133,0.12); }
+
+  /* Toggles */
+  .tog-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
+  .tog {
+    background: var(--input-bg); border: 1.5px solid var(--input-b);
+    border-radius: 9px; color: var(--muted);
+    cursor: pointer; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px; font-size: 11px; font-weight: 600;
+    padding: 10px 8px; min-width: 60px;
+    user-select: none; transition: all 0.2s;
+  }
+  .tog .ti { font-size: 16px; }
+  .tog:hover  { border-color: #6366F1; color: #818CF8; background: rgba(99,102,241,0.06); }
+  .tog.active { background: rgba(99,102,241,0.12); border-color: #6366F1; color: #818CF8; box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
+  .tog2:hover  { border-color: #FB7185; color: #FB7185; background: rgba(251,113,133,0.06); }
+  .tog2.active { background: rgba(251,113,133,0.1); border-color: #FB7185; color: #FB7185; box-shadow: 0 0 0 3px rgba(251,113,133,0.1); }
+
+  .seat-btn {
+    background: var(--input-bg); border: 1.5px solid var(--input-b);
+    border-radius: 9px; color: var(--muted);
+    cursor: pointer; font-size: 13px; font-weight: 700;
+    padding: 9px 13px; min-width: 44px; text-align: center;
+    user-select: none; transition: all 0.2s;
+  }
+  .seat-btn:hover  { border-color: #6366F1; color: #818CF8; }
+  .seat-btn.active { background: rgba(99,102,241,0.12); border-color: #6366F1; color: #818CF8; box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
+  .seat2-btn:hover  { border-color: #FB7185; color: #FB7185; }
+  .seat2-btn.active { background: rgba(251,113,133,0.1); border-color: #FB7185; color: #FB7185; box-shadow: 0 0 0 3px rgba(251,113,133,0.1); }
+
+  .cmp-btn {
+    width: 100%; padding: 16px;
+    font-size: 15px; font-weight: 700;
+    border: none; border-radius: 12px;
+    background: linear-gradient(135deg, #6366F1, #4F46E5);
+    color: #fff; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    box-shadow: 0 6px 24px rgba(99,102,241,0.4);
+    transition: all 0.25s;
+  }
+  .cmp-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(99,102,241,0.55); }
+  .cmp-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+  .info-note { margin-top: 14px; font-size: 12px; color: var(--muted); text-align: center; }
+  .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.6s linear infinite; display: none; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 768px) {
+    .cars-grid { grid-template-columns: 1fr; }
+    .g2 { grid-template-columns: 1fr; }
+  }
+  .spinner{
+    width:18px;
+    height:18px;
+    border:2px solid rgba(255,255,255,.3);
+    border-top-color:#fff;
+    border-radius:50%;
+    display:inline-block;
+    animation:spin .7s linear infinite;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+</style>
+
+<div class="cmp-page">
+<div class="cmp-wrap">
+
+  <div class="cmp-header">
+    <h1>Compare Cars</h1>
+    <p>Enter details for both cars to see which offers better value.</p>
+  </div>
+
+  <form method="POST" action="{% url 'compare_result' %}" id="compareForm">
+    {% csrf_token %}
+
+    <!-- Hidden inputs -->
+    <input type="hidden" name="fuel1"         id="c1Fuel"  value="Petrol">
+    <input type="hidden" name="transmission1" id="c1Trans" value="Manual">
+    <input type="hidden" name="seats1"        id="c1Seats" value="5">
+    <input type="hidden" name="owner1"        value="First Owner">
+    <input type="hidden" name="fuel2"         id="c2Fuel"  value="Petrol">
+    <input type="hidden" name="transmission2" id="c2Trans" value="Manual">
+    <input type="hidden" name="seats2"        id="c2Seats" value="5">
+    <input type="hidden" name="owner2"        value="First Owner">
+
+    <div class="cars-grid">
+
+      <!-- ══ CAR 1 ══════════════════════════════════ -->
+      <div class="car-card car-card-1">
+        <div class="car-header car-header-1">① Car One</div>
+        <div class="car-body">
+
+          <div class="sec-div sec-div-1">🚗 Vehicle Details</div>
+          <div class="g2" style="margin-bottom:14px;">
+            <div class="field">
+              <label>Brand</label>
+              <select name="brand1" id="brand1" required>
+                <option value="">Select Brand...</option>
+                {% for brand in brand_model_map.keys %}
+                <option value="{{ brand }}">{{ brand }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="field">
+              <label>Car Model</label>
+              <select name="car_model1" id="model1" required>
+                <option value="">Select Brand first</option>
+              </select>
+            </div>
+            <div class="field"><label>Year</label><input type="number" name="year1" placeholder="e.g. 2019" min="1995" max="2025" required></div>
+            <div class="field"><label>KMs Driven</label><input type="number" name="km1" placeholder="e.g. 45000" min="0" required></div>
+            <div class="field">
+              <label>Seller Type</label>
+              <select name="seller1">
+                <option value="Individual">Individual</option>
+                <option value="Dealer">Dealer</option>
+                <option value="Trustmark Dealer">Trustmark Dealer</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="sec-div sec-div-1">⛽ Fuel &amp; Transmission</div>
+          <div class="field" style="margin-bottom:12px;">
+            <label>Fuel Type</label>
+            <div class="tog-group" id="c1FuelGrp">
+              <div class="tog active" onclick="selTog('c1FuelGrp','c1Fuel',this,'Petrol')"><span class="ti">⛽</span>Petrol</div>
+              <div class="tog" onclick="selTog('c1FuelGrp','c1Fuel',this,'Diesel')"><span class="ti">🛢️</span>Diesel</div>
+              <div class="tog" onclick="selTog('c1FuelGrp','c1Fuel',this,'CNG')"><span class="ti">💨</span>CNG</div>
+              <div class="tog" onclick="selTog('c1FuelGrp','c1Fuel',this,'Electric')"><span class="ti">⚡</span>Electric</div>
+              <div class="tog" onclick="selTog('c1FuelGrp','c1Fuel',this,'LPG')"><span class="ti">🔥</span>LPG</div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Transmission</label>
+            <div class="tog-group" id="c1TransGrp">
+              <div class="tog active" style="flex:1;" onclick="selTog('c1TransGrp','c1Trans',this,'Manual')"><span class="ti">🕹️</span>Manual</div>
+              <div class="tog" style="flex:1;" onclick="selTog('c1TransGrp','c1Trans',this,'Automatic')"><span class="ti">🔄</span>Automatic</div>
+            </div>
+          </div>
+
+          <div class="sec-div sec-div-1">⚙️ Specifications</div>
+          <div class="g2">
+            <div class="field"><label>Mileage (kmpl)</label><input type="number" step="0.1" name="mileage1" placeholder="e.g. 18.5"></div>
+            <div class="field"><label>Engine (CC)</label><input type="number" name="engine1" placeholder="e.g. 1197"></div>
+            <div class="field"><label>Max Power (BHP)</label><input type="number" step="0.1" name="power1" placeholder="e.g. 83.1"></div>
+            <div class="field">
+              <label>Seats</label>
+              <div class="tog-group" id="c1SeatsGrp">
+                <div class="seat-btn" onclick="selTog('c1SeatsGrp','c1Seats',this,'2')">2</div>
+                <div class="seat-btn" onclick="selTog('c1SeatsGrp','c1Seats',this,'4')">4</div>
+                <div class="seat-btn active" onclick="selTog('c1SeatsGrp','c1Seats',this,'5')">5</div>
+                <div class="seat-btn" onclick="selTog('c1SeatsGrp','c1Seats',this,'6')">6</div>
+                <div class="seat-btn" onclick="selTog('c1SeatsGrp','c1Seats',this,'7')">7</div>
+                <div class="seat-btn" onclick="selTog('c1SeatsGrp','c1Seats',this,'8')">8</div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
-      <button type='submit' style='width:100%;margin-top:20px;'>
-        ⚖️ Compare Both Cars</button>
-    </form>
-  </div>
+
+      <!-- ══ CAR 2 ══════════════════════════════════ -->
+      <div class="car-card car-card-2">
+        <div class="car-header car-header-2">② Car Two</div>
+        <div class="car-body">
+
+          <div class="sec-div sec-div-2">🚗 Vehicle Details</div>
+          <div class="g2" style="margin-bottom:14px;">
+            <div class="field">
+              <label>Brand</label>
+              <select name="brand2" id="brand2" required>
+                <option value="">Select Brand...</option>
+                {% for brand in brand_model_map.keys %}
+                <option value="{{ brand }}">{{ brand }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="field">
+              <label>Car Model</label>
+              <select name="car_model2" id="model2" required>
+                <option value="">Select Brand first</option>
+              </select>
+            </div>
+            <div class="field"><label>Year</label><input type="number" name="year2" placeholder="e.g. 2020" min="1995" max="2025" required></div>
+            <div class="field"><label>KMs Driven</label><input type="number" name="km2" placeholder="e.g. 30000" min="0" required></div>
+            <div class="field">
+              <label>Seller Type</label>
+              <select name="seller2">
+                <option value="Individual">Individual</option>
+                <option value="Dealer">Dealer</option>
+                <option value="Trustmark Dealer">Trustmark Dealer</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="sec-div sec-div-2">⛽ Fuel &amp; Transmission</div>
+          <div class="field" style="margin-bottom:12px;">
+            <label>Fuel Type</label>
+            <div class="tog-group" id="c2FuelGrp">
+              <div class="tog tog2 active" onclick="selTog('c2FuelGrp','c2Fuel',this,'Petrol')"><span class="ti">⛽</span>Petrol</div>
+              <div class="tog tog2" onclick="selTog('c2FuelGrp','c2Fuel',this,'Diesel')"><span class="ti">🛢️</span>Diesel</div>
+              <div class="tog tog2" onclick="selTog('c2FuelGrp','c2Fuel',this,'CNG')"><span class="ti">💨</span>CNG</div>
+              <div class="tog tog2" onclick="selTog('c2FuelGrp','c2Fuel',this,'Electric')"><span class="ti">⚡</span>Electric</div>
+              <div class="tog tog2" onclick="selTog('c2FuelGrp','c2Fuel',this,'LPG')"><span class="ti">🔥</span>LPG</div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Transmission</label>
+            <div class="tog-group" id="c2TransGrp">
+              <div class="tog tog2 active" style="flex:1;" onclick="selTog('c2TransGrp','c2Trans',this,'Manual')"><span class="ti">🕹️</span>Manual</div>
+              <div class="tog tog2" style="flex:1;" onclick="selTog('c2TransGrp','c2Trans',this,'Automatic')"><span class="ti">🔄</span>Automatic</div>
+            </div>
+          </div>
+
+          <div class="sec-div sec-div-2">⚙️ Specifications</div>
+          <div class="g2">
+            <div class="field"><label>Mileage (kmpl)</label><input type="number" step="0.1" name="mileage2" placeholder="e.g. 21.4"></div>
+            <div class="field"><label>Engine (CC)</label><input type="number" name="engine2" placeholder="e.g. 1200"></div>
+            <div class="field"><label>Max Power (BHP)</label><input type="number" step="0.1" name="power2" placeholder="e.g. 88.5"></div>
+            <div class="field">
+              <label>Seats</label>
+              <div class="tog-group" id="c2SeatsGrp">
+                <div class="seat-btn seat2-btn" onclick="selTog('c2SeatsGrp','c2Seats',this,'2')">2</div>
+                <div class="seat-btn seat2-btn" onclick="selTog('c2SeatsGrp','c2Seats',this,'4')">4</div>
+                <div class="seat-btn seat2-btn active" onclick="selTog('c2SeatsGrp','c2Seats',this,'5')">5</div>
+                <div class="seat-btn seat2-btn" onclick="selTog('c2SeatsGrp','c2Seats',this,'6')">6</div>
+                <div class="seat-btn seat2-btn" onclick="selTog('c2SeatsGrp','c2Seats',this,'7')">7</div>
+                <div class="seat-btn seat2-btn" onclick="selTog('c2SeatsGrp','c2Seats',this,'8')">8</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <button type="submit" class="cmp-btn" id="cmpBtn">
+      <div class="spinner" id="spinner"></div>
+      <span id="btnText">⚖️ Compare Both Cars</span>
+    </button>
+    <div class="info-note">ℹ️ Enter accurate details for better comparison results.</div>
+
+  </form>
 </div>
+</div>
+
+{{ brand_model_map|json_script:"brand-model-data" }}
+
+<script>
+const modelMap = JSON.parse(document.getElementById('brand-model-data').textContent);
+
+function populateModels(brandSelId, modelSelId) {
+  const brand = document.getElementById(brandSelId).value;
+  const modelSel = document.getElementById(modelSelId);
+  modelSel.innerHTML = '<option value="">Select Model</option>';
+  if (modelMap[brand]) {
+    modelMap[brand].forEach(m => {
+      const opt = document.createElement('option');
+      opt.value = m; opt.textContent = m;
+      modelSel.appendChild(opt);
+    });
+  }
+}
+
+document.getElementById('brand1').addEventListener('change', () => populateModels('brand1', 'model1'));
+document.getElementById('brand2').addEventListener('change', () => populateModels('brand2', 'model2'));
+
+function selTog(groupId, inputId, el, value) {
+  document.querySelectorAll('#' + groupId + ' .tog, #' + groupId + ' .seat-btn, #' + groupId + ' .seat2-btn')
+    .forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(inputId).value = value;
+}
+
+
+</script>
 {% endblock %}

@@ -1,62 +1,161 @@
 {% extends 'base.html' %}
-{% block title %}My Prediction History{% endblock %}
+{% block title %}Prediction History — Used Car Price Prediction{% endblock %}
 {% block content %}
-<div class='container'>
-  <div class='card'>
-    <h2>📋 My Prediction History</h2>
- 
-    <!-- Stats Summary Row -->
-    {% if stats.total %}
-    <div style='display:flex;gap:16px;margin:20px 0;flex-wrap:wrap;'>
-      <div class='stat-card' style='background:#1565C0;padding:16px 24px;'>
-        <div class='num' style='font-size:28px;'>{{ stats.total }}</div>
-        <div class='lbl'>Total Predictions</div>
-      </div>
-      <div class='stat-card' style='background:#2E7D32;padding:16px 24px;'>
-        <div class='num' style='font-size:28px;'>&#8377;{{ stats.avg_price|floatformat:0 }}</div>
-        <div class='lbl'>Avg Predicted Price</div>
-      </div>
-      <div class='stat-card' style='background:#E65100;padding:16px 24px;'>
-        <div class='num' style='font-size:28px;'>&#8377;{{ stats.max_price|floatformat:0 }}</div>
-        <div class='lbl'>Highest Prediction</div>
-      </div>
-      <div class='stat-card' style='background:#6A1B9A;padding:16px 24px;'>
-        <div class='num' style='font-size:28px;'>&#8377;{{ stats.min_price|floatformat:0 }}</div>
-        <div class='lbl'>Lowest Prediction</div>
-      </div>
+
+<div style='max-width:1000px; margin:32px auto; padding:0 20px;'>
+
+  <!-- Page heading -->
+  <h2 style='font-size:20px;font-weight:700;color:var(--text,#374151);margin-bottom:4px;'>
+    Prediction History</h2>
+  <p style='font-size:13px;color:var(--muted,#6B7280);margin-bottom:22px;'>
+    Your recent price predictions</p>
+
+  <!-- ══ 4 STAT CARDS ══════════════════════════ -->
+  {% if stats.total %}
+  <div style='display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;'>
+
+    <!-- Total Predictions — dark blue -->
+    <div style='
+      background:#1565C0;color:white;
+      border-radius:10px;padding:20px;text-align:center;
+    '>
+      <div style='font-size:32px;font-weight:800;'>{{ stats.total }}</div>
+      <div style='font-size:12px;opacity:0.85;margin-top:4px;'>Total Predictions</div>
+    </div>
+
+    <!-- Avg Price — dark green -->
+    <div style='
+      background:#2E7D32;color:white;
+      border-radius:10px;padding:20px;text-align:center;
+    '>
+      <div style='font-size:26px;font-weight:800;'>
+        &#8377;{{ stats.avg_price|floatformat:0 }}</div>
+      <div style='font-size:12px;opacity:0.85;margin-top:4px;'>Avg Predicted Price</div>
+    </div>
+
+    <!-- Highest — orange -->
+    <div style='
+      background:#E65100;color:white;
+      border-radius:10px;padding:20px;text-align:center;
+    '>
+      <div style='font-size:26px;font-weight:800;'>
+        &#8377;{{ stats.max_price|floatformat:0 }}</div>
+      <div style='font-size:12px;opacity:0.85;margin-top:4px;'>Highest Prediction</div>
+    </div>
+
+    <!-- Lowest — purple -->
+    <div style='
+      background:#6A1B9A;color:white;
+      border-radius:10px;padding:20px;text-align:center;
+    '>
+      <div style='font-size:26px;font-weight:800;'>
+        &#8377;{{ stats.min_price|floatformat:0 }}</div>
+      <div style='font-size:12px;opacity:0.85;margin-top:4px;'>Lowest Prediction</div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- ══ HISTORY TABLE ══════════════════════════ -->
+  <div style='
+    background:var(--card,#FFFFFF);
+    border:1px solid var(--card-b,#E5E7EB);
+    border-radius:12px;
+    overflow:hidden;
+  '>
+    {% if history %}
+    <div style='overflow-x:auto;'>
+      <table style='border-collapse:collapse;width:100%;'>
+        <thead>
+          <tr style='background:#1F3864;'>
+            <th style='padding:10px 14px;font-size:12px;color:white;text-align:left;'>#</th>
+            <th style='padding:10px 14px;font-size:12px;color:white;text-align:left;'>Brand</th>
+            <th style='padding:10px 14px;font-size:12px;color:white;text-align:left;'>Vehicle Age</th>
+            <th style='padding:10px 14px;font-size:12px;color:white;text-align:left;'>Km Driven</th>
+            <th style='padding:10px 14px;font-size:12px;color:white;text-align:right;'>Predicted Price (Rs.)</th>
+            <th style='padding:10px 14px;font-size:12px;color:white;text-align:left;'>Date &amp; Time</th>
+            <th style='padding:10px 14px;font-size:12px;color:white;text-align:center;'>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for h in page_obj %}
+          <tr style='
+            border-bottom:1px solid #E5E7EB;
+            background:{% if forloop.counter|divisibleby:2 %}#F8FAFC{% else %}#FFFFFF{% endif %};
+          '>
+            <td style='padding:9px 14px;font-size:13px;color:#6B7280;'>
+              {{ forloop.counter }}</td>
+            <td style='padding:9px 14px;font-size:13px;font-weight:600;color:#374151;'>
+  <a href="{% url 'history_detail' h.id %}"
+     style='color:#2563EB;text-decoration:none;'
+     onmouseover="this.style.textDecoration='underline'"
+     onmouseout="this.style.textDecoration='none'">
+    {{ h.brand }}
+  </a>
+</td>
+
+            <td style='padding:9px 14px;font-size:13px;color:#374151;'>
+              {{ h.year }} Yr</td>
+            <td style='padding:9px 14px;font-size:13px;color:#374151;'>
+              {{ h.km_driven|floatformat:0 }} km</td>
+            <td style='padding:9px 14px;font-size:13px;font-weight:700;
+                color:#166534;text-align:right;'>
+              &#8377;{{ h.predicted_price|floatformat:0 }}</td>
+            <td style='padding:9px 14px;font-size:12px;color:#6B7280;'>
+              {{ h.created_at|date:'d M Y, g:i A' }}</td>
+            <!-- Feature 1: Delete button -->
+            <td style='padding:9px 14px;text-align:center;'>
+              <a href='/delete_prediction/{{ h.id }}/'
+                 onclick="return confirm('Delete this prediction?')"
+                 style='color:#991B1B;font-size:12px;text-decoration:none;font-weight:600;'
+                 title='Delete'>&#128465; Delete</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div style='
+      display:flex;align-items:center;justify-content:center;gap:6px;
+      padding:16px;border-top:1px solid #E5E7EB;
+    '>
+      {% if page_obj.has_previous %}
+      <a href='?page={{ page_obj.previous_page_number }}' style='
+        padding:6px 12px;border:1px solid #D1D5DB;border-radius:5px;
+        font-size:13px;color:#374151;text-decoration:none;
+      '>&lsaquo;</a>
+      {% endif %}
+      {% for num in page_obj.paginator.page_range %}
+      <a href='?page={{ num }}' style='
+        padding:6px 12px;border-radius:5px;font-size:13px;text-decoration:none;
+        background:{% if num == page_obj.number %}#2563EB{% else %}transparent{% endif %};
+        color:{% if num == page_obj.number %}white{% else %}#374151{% endif %};
+        border:1px solid {% if num == page_obj.number %}#2563EB{% else %}#D1D5DB{% endif %};
+      '>{{ num }}</a>
+      {% endfor %}
+      {% if page_obj.has_next %}
+      <a href='?page={{ page_obj.next_page_number }}' style='
+        padding:6px 12px;border:1px solid #D1D5DB;border-radius:5px;
+        font-size:13px;color:#374151;text-decoration:none;
+      '>&rsaquo;</a>
+      {% endif %}
     </div>
     {% endif %}
- 
-    {% if history %}
-    <table>
-      <tr><th>Date</th><th>Brand</th><th>Year</th><th>KM</th>
-          <th>Fuel</th><th>Trans</th><th>Predicted Price</th>
-          <th>Range</th><th>Action</th></tr>
-      {% for h in history %}
-      <tr>
-        <td>{{ h.created_at|date:'d M Y' }}</td>
-        <td><strong>{{ h.brand }}</strong></td>
-        <td>{{h.display_year }}</td>
-        <td>{{ h.km_driven|floatformat:0 }} km</td>
-        <td>{{ h.fuel }}</td>
-        <td>{{ h.transmission }}</td>
-        <td><strong style='color:#2E7D32;'>&#8377;{{ h.predicted_price|floatformat:0 }}</strong></td>
-        <td style='font-size:12px;color:#666;'>
-          &#8377;{{ h.lower_bound|floatformat:0 }} – &#8377;{{ h.upper_bound|floatformat:0 }}
-        </td>
-        <td>
-          <a href='/delete_prediction/{{ h.id }}/'
-             onclick="return confirm('Delete this record?')"
-             style='color:red;font-size:12px;text-decoration:none;'>🗑 Delete</a>
-        </td>
-      </tr>
-      {% endfor %}
-    </table>
+
     {% else %}
-    <p style='color:#999;text-align:center;padding:40px;'>No predictions yet.</p>
+    <!-- Empty state -->
+    <div style='text-align:center;padding:52px 20px;'>
+      <div style='font-size:40px;margin-bottom:12px;opacity:0.3;'>&#128203;</div>
+      <p style='font-size:14px;color:#6B7280;margin-bottom:16px;'>
+        No predictions yet.</p>
+      <a href="{% url 'prediction' %}" style='
+        background:#2563EB;color:white;padding:10px 22px;
+        border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;
+      '>Make Your First Prediction</a>
+    </div>
     {% endif %}
-    <a href="{% url 'prediction' %}" class='btn btn-primary' style='margin-top:20px;'>
-      Make a Prediction</a>
   </div>
 </div>
 {% endblock %}

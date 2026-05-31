@@ -4,42 +4,271 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Vehicle Price Estimator{% endblock %}</title>
+    <title>{% block title %}Auto Worth AI{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+<style>
+  :root {
+    --bg:       #F8FAFC;
+    --card:     #FFFFFF;
+    --card-b:   #E2E8F0;
+    --text:     #0F172A;
+    --muted:    #64748B;
+    --input-b:  #CBD5E1;
+    --input-bg: #FFFFFF;
+    --nav-bg:   #0F172A;
+    --link:     #2563EB;
+  }
+  body.dark-mode {
+    --bg:       #0B1120;
+    --card:     #1E293B;
+    --card-b:   #334155;
+    --text:     #F1F5F9;
+    --muted:    #94A3B8;
+    --input-b:  #475569;
+    --input-bg: #1E293B;
+    --nav-bg:   #060D1A;
+    --link:     #60A5FA;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    transition: background 0.25s, color 0.25s;
+  }
+
+  /* ── Navbar ── */
+/* ── Navbar ── */
+
+.navbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:16px 40px;
+    min-height:80px;
+
+    position:sticky;
+    top:0;
+    z-index:1000;
+
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    background:rgba(10,15,30,.92);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    box-shadow:0 8px 30px rgba(0,0,0,.18);
+}
+
+body:not(.dark-mode) .navbar{
+    background:rgba(255,255,255,.95);
+    border-bottom:1px solid rgba(15,23,42,.08);
+    box-shadow:0 4px 20px rgba(0,0,0,.05);
+}
+
+.nav-brand{
+    font-size:2rem;
+    font-weight:800;
+    color:var(--text);
+    text-decoration:none;
+    white-space:nowrap;
+    margin-right:40px;
+}
+
+.nav-brand span{
+    color:#38BDF8;
+}
+
+.nav-links{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    flex:1;
+}
+
+.nav-links a{
+    position:relative;
+    text-decoration:none;
+    color:var(--text);
+    font-size:15px;
+    font-weight:600;
+    padding:10px 16px;
+    border-radius:10px;
+    transition:all .25s ease;
+}
+
+.nav-links a:hover{
+    color:#38BDF8;
+    background:rgba(56,189,248,.08);
+}
+
+.nav-links a::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:4px;
+
+    width:0;
+    height:2px;
+
+    background:#38BDF8;
+    transition:.3s ease;
+
+    transform:translateX(-50%);
+}
+
+.nav-links a:hover::after{
+    width:60%;
+}
+
+.nav-links .btn-logout{
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    );
+
+    color:#fff !important;
+}
+
+.nav-links .btn-logout:hover{
+    background:#a85b31;
+    transform:translateY(-1px);
+}
+
+body:not(.dark-mode) .nav-links a{
+    color:#1e293b;
+    font-weight:600;
+}
+body:not(.dark-mode) .nav-links a:hover{
+    color:#2563eb;
+    background:#eff6ff;
+}
+body:not(.dark-mode) .nav-brand{
+    color:#0f172a;
+}
+body:not(.dark-mode) .navbar{
+    background: linear-gradient(
+        90deg,
+        #f8fafc,
+        #eff6ff,
+        #dbeafe
+    ) !important;
+
+    border-bottom:1px solid #bfdbfe !important;
+    box-shadow:0 4px 20px rgba(59,130,246,.10) !important;
+}
+  /* ── Theme toggle ── */
+  .theme-wrap{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-left:12px;
+    white-space:nowrap;
+}
+  .theme-wrap .theme-lbl {
+    font-size: 12px;
+    font-weight: 500;
+    color: #64748B;
+    letter-spacing: 0.03em;
+  }
+  
+  .switch-track {
+    width: 42px;
+    height: 24px;
+    background: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    position: relative;
+    transition: background 0.25s, border-color 0.25s;
+  }
+  .switch-track.on {
+    background: #2563EB;
+    border-color: #2563EB;
+  }
+  .switch-knob {
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 16px; height: 16px;
+    background: #FFFFFF;
+    border-radius: 50%;
+    transition: transform 0.25s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  }
+  .switch-track.on .switch-knob {
+    transform: translateX(18px);
+  }
+
+
+body:not(.dark-mode) .nav-brand{
+    color:#0f172a !important;
+}
+
+body:not(.dark-mode) .nav-links a{
+    color:#0f172a !important;
+}
+
+body:not(.dark-mode) .theme-lbl{
+    color:#475569 !important;
+}
+</style>
+{% block extra_css %}{% endblock %}
 </head>
 <body>
- 
+
 <nav class="navbar">
-    <div class="nav-brand">🚗 Vehicle Price Estimator</div>
-    <div class="nav-links">
-        <a href="{% url 'index' %}">Home</a>
-        {% if request.session.user_id %}
-            <a href="{% url 'UserHome' %}">My Dashboard</a>
-            <a href="{% url 'DatasetView' %}">Dataset</a>
-            <a href="{% url 'training' %}">Train Model</a>
-            <a href="{% url 'prediction' %}">Predict</a>
-            <a href="{% url 'compare_cars' %}">Compare Cars</a>
-            <a href="/logout/" class="btn-logout">Logout ({{ request.session.user_name }})</a>
-        {% elif request.session.admin %}
-            <a href="{% url 'AdminHome' %}">Dashboard</a>
-            <a href="{% url 'RegisterUsersView' %}">Manage Users</a>
-            <a href="/logout/" class="btn-logout">Logout (Admin)</a>
-        {% else %}
-            <a href="{% url 'UserLogin' %}">Login</a>
-            <a href="{% url 'UserRegister' %}">Register</a>
-            <a href="{% url 'AdminLogin' %}">Admin Login</a>
-        {% endif %}
+  <a href="{% url 'index' %}" class="nav-brand">Auto Worth <span>AI</span></a>
+
+  <div class="nav-links">
+    <a href="{% url 'index' %}">Home</a>
+    {% if request.session.user_id %}
+      <a href="{% url 'UserHome' %}">Dashboard</a>
+      <a href="{% url 'prediction' %}">Predict</a>
+      <a href="{% url 'compare_cars' %}">Compare Cars</a>
+      <a href="{% url 'about' %}">About</a>
+      <a href="/logout/" class="btn-logout">Logout — {{ request.session.user_name }}</a>
+    {% elif request.session.admin %}
+      <a href="{% url 'AdminHome' %}">Dashboard</a>
+      <a href="{% url 'RegisterUsersView' %}">Manage Users</a>
+      <a href="{% url 'about' %}">About</a>
+      <a href="/logout/" class="btn-logout">Logout — Admin</a>
+    {% else %}
+      <a href="{% url 'about' %}">About</a>
+      <a href="{% url 'UserLogin' %}">Login</a>
+      <a href="{% url 'UserRegister' %}">Register</a>
+      <a href="{% url 'AdminLogin' %}">Admin</a>
+    {% endif %}
+  </div>
+
+  <div class="theme-wrap" onclick="toggleTheme()" title="Toggle theme">
+    <span class="theme-lbl" id="theme-lbl">Light</span>
+    <div class="switch-track" id="switch-track">
+      <div class="switch-knob"></div>
     </div>
+  </div>
 </nav>
- 
-<main>
-    {% block content %}
-    {% endblock %}
-</main>
- 
-<footer class="footer">
-    <p>Vehicle Price Estimator &copy; 2024 | MCA Final Year Project</p>
+
+<main>{% block content %}{% endblock %}</main>
+
+<footer class="footer" style="text-align:center;padding:28px;font-size:12px;color:var(--muted);border-top:1px solid var(--card-b);margin-top:40px;">
+  Auto Worth AI &copy; 2024 &nbsp;|&nbsp; MCA Final Year Project
 </footer>
- 
+
+<script>
+function toggleTheme() {
+  var dark = document.body.classList.toggle('dark-mode');
+  document.getElementById('theme-lbl').textContent = dark ? 'Dark' : 'Light';
+  document.getElementById('switch-track').classList.toggle('on', dark);
+  localStorage.setItem('theme', dark ? 'dark' : 'light');
+}
+(function () {
+  if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+    document.getElementById('theme-lbl').textContent = 'Dark';
+    document.getElementById('switch-track').classList.add('on');
+  }
+})();
+</script>
 </body>
 </html>

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}Prediction Details — Used Car Price Prediction{% endblock %}
+{% block content %}
+
+<div style='max-width:700px; margin:32px auto; padding:0 20px;'>
+
+  <!-- Back to History link -->
+  <a href="{% url 'prediction_history' %}" style='
+    display:inline-flex;align-items:center;gap:6px;
+    color:#2563EB;text-decoration:none;font-size:13px;font-weight:600;
+    margin-bottom:20px;
+  '
+  onmouseover="this.style.textDecoration='underline'"
+  onmouseout="this.style.textDecoration='none'">
+    &#8592; Back to History
+  </a>
+
+  <!-- Main details card -->
+  <div style='
+    background:var(--card,#FFFFFF);
+    border:1px solid var(--card-b,#E5E7EB);
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 2px 10px rgba(0,0,0,0.06);
+  '>
+
+    <!-- Card header with Print button -->
+    <div style='
+      display:flex;justify-content:space-between;align-items:center;
+      padding:18px 24px;border-bottom:1px solid var(--card-b,#E5E7EB);
+    '>
+      <h2 style='font-size:17px;font-weight:700;color:var(--text,#374151);'>
+        Prediction Details</h2>
+      <button onclick='window.print()' style='
+        background:#F8FAFC;border:1px solid #D1D5DB;
+        color:#374151;padding:7px 16px;border-radius:6px;
+        font-size:12px;font-weight:600;cursor:pointer;
+        display:flex;align-items:center;gap:6px;
+      '
+      onmouseover="this.style.background='#EFF6FF';this.style.borderColor='#2563EB';this.style.color='#2563EB'"
+      onmouseout="this.style.background='#F8FAFC';this.style.borderColor='#D1D5DB';this.style.color='#374151'">
+        &#128424; Print
+      </button>
+    </div>
+
+    <!-- Two-column detail table -->
+    <div style='padding:20px 24px;'>
+      <table style='border-collapse:collapse;width:100%;'>
+        <tbody>
+          {% for label, value in details %}
+          <tr style='border-bottom:1px solid #F1F5F9;'>
+            <td style='padding:10px 0;font-size:13px;color:#6B7280;width:45%;'>
+              {{ label }}</td>
+            <td style='padding:10px 0;font-size:13px;font-weight:600;color:#374151;'>
+              {{ value }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Predicted Price highlight box -->
+    <div style='
+      margin:0 24px 24px;
+      background:#F0FDF4;
+      border:1px solid #86EFAC;
+      border-radius:10px;
+      padding:20px;
+      text-align:center;
+    '>
+      <p style='font-size:12px;color:#166534;font-weight:600;margin-bottom:8px;'>
+        Predicted Price</p>
+      <p style='font-size:28px;font-weight:800;color:#166534;'>
+        &#8377;{{ pred.predicted_price|floatformat:0 }}</p>
+      <p style='font-size:11px;color:#6B7280;margin-top:8px;'>
+        Predicted on: {{ pred.created_at|date:'d M Y, g:i A' }}</p>
+    </div>
+  </div>
+</div>
+{% endblock %

@@ -37,7 +37,7 @@ urlpatterns = [
     path('AdminLoginCheck/', mainView.AdminLoginCheck, name='AdminLoginCheck'),
     path('RegisterUsersView/', mainView.RegisterUsersView, name='RegisterUsersView'),
     path('ActivaUsers/', mainView.ActivaUsers, name='ActivaUsers'),
- 
+    path('AdminLogin/', mainView.AdminLogin, name='AdminLogin'),
     # ── USER FLOW ───────────────────────────────────────────────────
     path('UserRegisterActions/', usr.UserRegisterActions, name='UserRegisterActions'),
     path('UserLoginCheck/', usr.UserLoginCheck, name='UserLoginCheck'),
@@ -50,6 +50,18 @@ urlpatterns = [
     path('logout/', usr.logout_user, name='logout'),
     path('compare/', usr.compare_cars, name='compare_cars'),
     path('compare_result/', usr.compare_result, name='compare_result'),
+    path('UserLogin/',        mainView.UserLogin,       name='UserLogin'),
+    path('UserLoginCheck/',   usr.UserLoginCheck,       name='UserLoginCheck'),
+    path('training/',  usr.training,  name='training'),
+    path('prediction/',         usr.prediction,          name='prediction'),
+    path('prediction_history/', usr.prediction_history,  name='prediction_history'),
+    path('how-it-works/', usr.how_it_works, name='how_it_works'),
+    path('delete_prediction/<int:pk>/', usr.delete_prediction, name='delete_prediction'),
+    path('history_detail/<int:pk>/', usr.history_detail, name='history_detail'),
+    path('about/', usr.about, name='about'),
+    
+
+
 
  
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
