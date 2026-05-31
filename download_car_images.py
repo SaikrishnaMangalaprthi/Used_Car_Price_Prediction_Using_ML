@@ -1,8 +1,8 @@
 import os, time, requests, threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-GOOGLE_API_KEY   = "AIzaSyAGqqKs-XX6ahodwVGymX2GVmhkKbViY7s"
-SEARCH_ENGINE_ID = "65a8ab91bede1455d"
+
+
 
 CAR_NAMES = [
     "Audi A4", "Audi A6", "Audi A8", "Audi Q7",
