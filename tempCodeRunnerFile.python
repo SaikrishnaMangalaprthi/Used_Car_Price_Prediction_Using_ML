@@ -1,11 +1,2 @@
-import pandas as pd
-
-df = pd.read_csv("dataset/cardekho_dataset.csv")
-
-
-cars = sorted(df["car_name"].unique())
-
-print("Total:", len(cars))
-
-for car in cars:
-    print(car)
+import sklearn
+print(sklearn.__version__)
