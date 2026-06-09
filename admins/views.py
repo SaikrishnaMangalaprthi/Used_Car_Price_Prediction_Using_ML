@@ -118,7 +118,7 @@ def AdminHome(request):
     if os.path.exists('models/best_model_name.pkl'):
         try: best_name = joblib.load('models/best_model_name.pkl')
         except: pass
-     avg_price = PredictionHistory.objects.aggregate(a=dm.Avg('predicted_price'))['a'] or 0
+    avg_price = PredictionHistory.objects.aggregate(a=dm.Avg('predicted_price'))['a'] or 0
     context = {
         'total_users':       UserProfile.objects.count(),
         'active_users':      UserProfile.objects.filter(is_active=True).count(),
