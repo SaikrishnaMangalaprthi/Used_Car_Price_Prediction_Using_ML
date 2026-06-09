@@ -258,14 +258,14 @@ body:not(.dark-mode) .theme-lbl{
 <script>
 function toggleTheme() {
   var dark = document.body.classList.toggle('dark-mode');
-  document.getElementById('theme-lbl').textContent = dark ? 'Dark' : 'Light';
+  document.getElementById('theme-lbl').textContent = dark ? 'Light' : 'Dark';
   document.getElementById('switch-track').classList.toggle('on', dark);
   localStorage.setItem('theme', dark ? 'dark' : 'light');
 }
 (function () {
   if (localStorage.getItem('theme') === 'dark') {
     document.body.classList.add('dark-mode');
-    document.getElementById('theme-lbl').textContent = 'Dark';
+    document.getElementById('theme-lbl').textContent = 'Light';
     document.getElementById('switch-track').classList.add('on');
   }
 })();

@@ -90,9 +90,12 @@ def ActivaUsers(request):
         return redirect('AdminLogin')
     from users.models import UserProfile
     user_id = request.GET.get('id')
-    user = UserProfile.objects.get(id=user_id)
-    user.is_active = True
-    user.save()
+    try:
+        user = UserProfile.objects.get(id=user_id)
+        user.is_active = True
+        user.save()
+    except UserProfile.DoesNotExist:
+        pass
     return redirect('RegisterUsersView')
 from users.views import brand_model_map  # add this import at top
 
@@ -109,17 +112,20 @@ def AdminHome(request):
         return redirect('AdminLogin')
     from users.models import UserProfile, PredictionHistory
     import joblib, os
+    from django.db import models as dm
+    BASE_DIR  = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     best_name = 'Not trained'
     if os.path.exists('models/best_model_name.pkl'):
         try: best_name = joblib.load('models/best_model_name.pkl')
         except: pass
-
+     avg_price = PredictionHistory.objects.aggregate(a=dm.Avg('predicted_price'))['a'] or 0
     context = {
         'total_users':       UserProfile.objects.count(),
         'active_users':      UserProfile.objects.filter(is_active=True).count(),
         'models_trained':    4 if os.path.exists('models/best_model.pkl') else 0,
         'best_model':        best_name,
         'total_predictions': PredictionHistory.objects.count(),
+        'avg_price':          round(avg_price, 0),
         'recent_users':      UserProfile.objects.order_by('-created_at')[:5],
         'recent_predictions': PredictionHistory.objects.order_by('-created_at')[:5],
     }
