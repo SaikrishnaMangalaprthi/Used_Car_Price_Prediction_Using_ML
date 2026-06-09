@@ -17,7 +17,7 @@ def _load(name):
         _cache[name] = joblib.load(os.path.join(MODELS_DIR, name))
     return _cache[name]
 
-
+import traceback
 def predict_price(input_dict):
     model          = _load('best_model.pkl')
     scaler         = _load('scaler.pkl')
@@ -54,8 +54,17 @@ def predict_price(input_dict):
             processed[k] = float(input_dict.get(k, default) or default)
 
     arr        = pd.DataFrame([processed], columns=feature_names)
-    arr_scaled = scaler.transform(arr)
-    pred       = float(model.predict(arr_scaled)[0])
+    try:
+        arr_scaled = scaler.transform(arr)
+        print("Scaler worked")
+
+        pred = float(model.predict(arr_scaled)[0])
+        print("Prediction worked:", pred)
+
+    except Exception as e:
+        print("ERROR OCCURRED:", str(e))
+        traceback.print_exc()
+        raise
 
     return {
         'predicted':           round(pred, 0),
