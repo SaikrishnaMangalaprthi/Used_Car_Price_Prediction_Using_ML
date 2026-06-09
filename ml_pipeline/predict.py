@@ -54,17 +54,8 @@ def predict_price(input_dict):
             processed[k] = float(input_dict.get(k, default) or default)
 
     arr        = pd.DataFrame([processed], columns=feature_names)
-    try:
-        arr_scaled = scaler.transform(arr)
-        print("Scaler worked")
-
-        pred = float(model.predict(arr_scaled)[0])
-        print("Prediction worked:", pred)
-
-    except Exception as e:
-        print("ERROR OCCURRED:", str(e))
-        traceback.print_exc()
-        raise
+    arr_scaled = scaler.transform(arr)
+    pred       = float(model.predict(arr_scaled)[0])
 
     return {
         'predicted':           round(pred, 0),
