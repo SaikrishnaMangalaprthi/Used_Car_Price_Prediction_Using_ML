@@ -38,155 +38,103 @@
   }
 
   /* ── Navbar ── */
-/* ── Navbar ── */
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 40px;
+    min-height: 80px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    background: rgba(10,15,30,.92);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 8px 30px rgba(0,0,0,.18);
+  }
+  body:not(.dark-mode) .navbar {
+    background: linear-gradient(90deg, #f8fafc, #eff6ff, #dbeafe) !important;
+    border-bottom: 1px solid #bfdbfe !important;
+    box-shadow: 0 4px 20px rgba(59,130,246,.10) !important;
+  }
+  .nav-brand {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text);
+    text-decoration: none;
+    white-space: nowrap;
+    margin-right: 40px;
+  }
+  .nav-brand span { color: #38BDF8; }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex: 1;
+  }
+  .nav-links a {
+    position: relative;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 16px;
+    border-radius: 10px;
+    transition: all .25s ease;
+  }
+  .nav-links a:hover {
+    color: #38BDF8;
+    background: rgba(56,189,248,.08);
+  }
+  .nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 50%; bottom: 4px;
+    width: 0; height: 2px;
+    background: #38BDF8;
+    transition: .3s ease;
+    transform: translateX(-50%);
+  }
+  .nav-links a:hover::after { width: 60%; }
+  .nav-links .btn-logout {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    color: #fff !important;
+  }
+  .nav-links .btn-logout:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+  }
+  body:not(.dark-mode) .nav-brand  { color: #0f172a !important; }
+  body:not(.dark-mode) .nav-links a { color: #0f172a !important; font-weight: 600; }
+  body:not(.dark-mode) .nav-links a:hover { color: #2563eb !important; background: #eff6ff; }
 
-.navbar{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    padding:16px 40px;
-    min-height:80px;
-
-    position:sticky;
-    top:0;
-    z-index:1000;
-
-    backdrop-filter:blur(18px);
-    -webkit-backdrop-filter:blur(18px);
-
-    background:rgba(10,15,30,.92);
-    border-bottom:1px solid rgba(255,255,255,.08);
-    box-shadow:0 8px 30px rgba(0,0,0,.18);
-}
-
-body:not(.dark-mode) .navbar{
-    background:rgba(255,255,255,.95);
-    border-bottom:1px solid rgba(15,23,42,.08);
-    box-shadow:0 4px 20px rgba(0,0,0,.05);
-}
-
-.nav-brand{
-    font-size:2rem;
-    font-weight:800;
-    color:var(--text);
-    text-decoration:none;
-    white-space:nowrap;
-    margin-right:40px;
-}
-
-.nav-brand span{
-    color:#38BDF8;
-}
-
-.nav-links{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:12px;
-    flex:1;
-}
-
-.nav-links a{
-    position:relative;
-    text-decoration:none;
-    color:var(--text);
-    font-size:15px;
-    font-weight:600;
-    padding:10px 16px;
-    border-radius:10px;
-    transition:all .25s ease;
-}
-
-.nav-links a:hover{
-    color:#38BDF8;
-    background:rgba(56,189,248,.08);
-}
-
-.nav-links a::after{
-    content:"";
-    position:absolute;
-    left:50%;
-    bottom:4px;
-
-    width:0;
-    height:2px;
-
-    background:#38BDF8;
-    transition:.3s ease;
-
-    transform:translateX(-50%);
-}
-
-.nav-links a:hover::after{
-    width:60%;
-}
-
-.nav-links .btn-logout{
-    background: linear-gradient(
-        135deg,
-        #2563eb,
-        #3b82f6
-    );
-
-    color:#fff !important;
-}
-
-.nav-links .btn-logout:hover{
-    background:#a85b31;
-    transform:translateY(-1px);
-}
-
-body:not(.dark-mode) .nav-links a{
-    color:#1e293b;
-    font-weight:600;
-}
-body:not(.dark-mode) .nav-links a:hover{
-    color:#2563eb;
-    background:#eff6ff;
-}
-body:not(.dark-mode) .nav-brand{
-    color:#0f172a;
-}
-body:not(.dark-mode) .navbar{
-    background: linear-gradient(
-        90deg,
-        #f8fafc,
-        #eff6ff,
-        #dbeafe
-    ) !important;
-
-    border-bottom:1px solid #bfdbfe !important;
-    box-shadow:0 4px 20px rgba(59,130,246,.10) !important;
-}
   /* ── Theme toggle ── */
-  .theme-wrap{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-left:12px;
-    white-space:nowrap;
-}
-  .theme-wrap .theme-lbl {
+  .theme-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 12px;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .theme-lbl {
     font-size: 12px;
     font-weight: 500;
     color: #64748B;
     letter-spacing: 0.03em;
   }
-  
+  body:not(.dark-mode) .theme-lbl { color: #475569 !important; }
   .switch-track {
-    width: 42px;
-    height: 24px;
+    width: 42px; height: 24px;
     background: #1E293B;
     border: 1px solid #334155;
     border-radius: 12px;
     position: relative;
     transition: background 0.25s, border-color 0.25s;
   }
-  .switch-track.on {
-    background: #2563EB;
-    border-color: #2563EB;
-  }
+  .switch-track.on { background: #2563EB; border-color: #2563EB; }
   .switch-knob {
     position: absolute;
     top: 3px; left: 3px;
@@ -196,22 +144,109 @@ body:not(.dark-mode) .navbar{
     transition: transform 0.25s;
     box-shadow: 0 1px 4px rgba(0,0,0,0.4);
   }
-  .switch-track.on .switch-knob {
-    transform: translateX(18px);
+  .switch-track.on .switch-knob { transform: translateX(18px); }
+
+  /* ── Footer ── */
+  .site-footer {
+    border-top: 1px solid var(--card-b);
+    margin-top: 60px;
+    padding: 40px 40px 28px;
+    background: var(--card);
+  }
+  .footer-inner {
+    max-width: 1040px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 32px;
+  }
+  .footer-brand-name {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--text);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  .footer-brand-name span { color: #38BDF8; }
+  .footer-tagline {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 280px;
+    margin-bottom: 18px;
+  }
+  .footer-socials {
+    display: flex;
+    gap: 10px;
+  }
+  .social-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.15s;
+    border: 1px solid var(--card-b);
+    color: var(--text);
+  }
+  .social-btn:hover { opacity: 0.8; transform: translateY(-1px); }
+  .social-btn.linkedin { background: #0a66c2; color: #fff; border-color: #0a66c2; }
+  .social-btn.github   { background: #0f172a; color: #fff; border-color: #0f172a; }
+  body:not(.dark-mode) .social-btn.github { background: #1e293b; }
+
+  .footer-col-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .footer-links a {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: #38BDF8; }
+
+  .footer-bottom {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding-top: 20px;
+    border-top: 1px solid var(--card-b);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .footer-bottom-left {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .footer-bottom-left strong { color: var(--text); }
+  .footer-bottom-right {
+    font-size: 12px;
+    color: var(--muted);
   }
 
-
-body:not(.dark-mode) .nav-brand{
-    color:#0f172a !important;
-}
-
-body:not(.dark-mode) .nav-links a{
-    color:#0f172a !important;
-}
-
-body:not(.dark-mode) .theme-lbl{
-    color:#475569 !important;
-}
+  @media (max-width: 768px) {
+    .navbar { padding: 14px 20px; }
+    .nav-brand { font-size: 1.5rem; margin-right: 16px; }
+    .footer-inner { grid-template-columns: 1fr; gap: 28px; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+  }
 </style>
 {% block extra_css %}{% endblock %}
 </head>
@@ -251,16 +286,60 @@ body:not(.dark-mode) .theme-lbl{
 
 <main>{% block content %}{% endblock %}</main>
 
-<footer class="footer" style="text-align:center;padding:28px;font-size:12px;color:var(--muted);border-top:1px solid var(--card-b);margin-top:40px;">
+<!-- ── Footer ── -->
+<footer class="site-footer">
+  <div class="footer-inner">
 
-  <div style="margin-bottom:10px;">
-    <a href="{% url 'about' %}" style="color:var(--muted);text-decoration:none;margin:0 10px;">About</a>
-    |
-    <a href="{% url 'how_it_works' %}" style="color:var(--muted);text-decoration:none;margin:0 10px;">How It Works</a>
+    <!-- Brand col -->
+    <div>
+      <a href="{% url 'index' %}" class="footer-brand-name">Auto Worth <span>AI</span></a>
+      <p class="footer-tagline">
+        An ML-powered used car price estimator trained on 15,000+ real Indian listings.
+        Built as a final-year MCA project.
+      </p>
+      <div class="footer-socials">
+        <a href="https://linkedin.com/in/mangalaparthi-sai-krishna" target="_blank" class="social-btn linkedin">in LinkedIn</a>
+        <a href="https://github.com/msaikrishna19" target="_blank" class="social-btn github">⌥ GitHub</a>
+      </div>
+    </div>
+
+    <!-- Quick links -->
+    <div>
+      <div class="footer-col-title">Quick Links</div>
+      <div class="footer-links">
+        <a href="{% url 'index' %}">Home</a>
+        <a href="{% url 'how_it_works' %}">How It Works</a>
+        {% if request.session.user_id %}
+          <a href="{% url 'prediction' %}">Predict Price</a>
+          <a href="{% url 'compare_cars' %}">Compare Cars</a>
+          <a href="{% url 'prediction_history' %}">My History</a>
+        {% else %}
+          <a href="{% url 'UserLogin' %}">Login</a>
+          <a href="{% url 'UserRegister' %}">Register</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- About the builder -->
+    <div>
+      <div class="footer-col-title">About the Builder</div>
+      <div class="footer-links">
+        <a href="{% url 'about' %}">About Me</a>
+        <a href="mailto:msaikrishna502@gmail.com">✉ Email Me</a>
+        <a href="https://github.com/SaikrishnaMangalaprthi/Used_Car_Price_Prediction_Using_ML" target="_blank">⌥ View Source</a>
+      </div>
+    </div>
+
   </div>
 
-  Auto Worth AI &copy; 2024 | MCA Final Year Project
-
+  <div class="footer-bottom">
+    <div class="footer-bottom-left">
+      Built by <strong>Mangalaparthi Sai Krishna</strong> · MCA Final Year · Osmania University, Hyderabad
+    </div>
+    <div class="footer-bottom-right">
+      Auto Worth AI &copy; 2025 · Powered by Django &amp; scikit-learn
+    </div>
+  </div>
 </footer>
 
 <script>
