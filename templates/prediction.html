@@ -6,12 +6,10 @@
   .pred-page { background: var(--bg); padding: 48px 24px 80px; }
   .pred-wrap { max-width: 860px; margin: 0 auto; }
 
-  /* Header */
   .pred-header { margin-bottom: 32px; }
   .pred-header h1 { font-size: 28px; font-weight: 800; color: var(--text); margin-bottom: 6px; letter-spacing: -0.5px; }
   .pred-header p  { font-size: 14px; color: var(--muted); }
 
-  /* Error block */
   .error-box {
     background: rgba(239,68,68,0.08);
     border: 1px solid rgba(239,68,68,0.3);
@@ -24,7 +22,6 @@
   .error-box ul { margin: 0 0 0 18px; padding: 0; }
   .error-box li { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
 
-  /* Card */
   .pred-card {
     background: var(--card);
     border: 1px solid var(--card-b);
@@ -33,7 +30,6 @@
     box-shadow: 0 4px 24px rgba(0,0,0,0.06);
   }
 
-  /* Section divider */
   .sec-divider {
     display: flex; align-items: center; gap: 12px;
     margin: 32px 0 22px;
@@ -46,15 +42,13 @@
     background: linear-gradient(90deg, transparent, rgba(99,102,241,0.3), transparent);
   }
 
-  /* Grid layouts */
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+  .grid-2   { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .grid-3   { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
   .grid-7-5 { display: grid; grid-template-columns: 7fr 5fr; gap: 18px; }
-  .span-2 { grid-column: span 2; }
+  .span-2   { grid-column: span 2; }
 
-  /* Form fields */
   .field { display: flex; flex-direction: column; gap: 6px; }
-  .field label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; }
+  .field label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; display: flex; align-items: center; gap: 6px; }
   .field input, .field select {
     background: var(--input-bg);
     border: 1px solid var(--input-b);
@@ -73,7 +67,41 @@
     box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
   }
 
-  /* Toggle buttons (fuel / transmission) */
+  /* Auto-filled state */
+  .field input.auto-filled {
+    border-color: rgba(34,197,94,0.5);
+    background: rgba(34,197,94,0.04);
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.08);
+  }
+  body.dark-mode .field input.auto-filled {
+    background: rgba(34,197,94,0.07);
+  }
+  .auto-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: rgba(34,197,94,0.12);
+    border: 1px solid rgba(34,197,94,0.25);
+    color: #16a34a;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+    text-transform: none;
+  }
+  body.dark-mode .auto-badge { color: #4ade80; }
+  .auto-badge.hidden { display: none; }
+
+  /* Manual override hint */
+  .field-hint {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+    min-height: 16px;
+    transition: opacity 0.2s;
+  }
+
   .toggle-group { display: flex; flex-wrap: wrap; gap: 10px; }
   .tog {
     background: var(--input-bg);
@@ -96,7 +124,6 @@
     box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
   }
 
-  /* Seat buttons */
   .seat-group { display: flex; flex-wrap: wrap; gap: 10px; }
   .seat-btn {
     background: var(--input-bg);
@@ -112,8 +139,14 @@
     border-color: #6366F1; color: #818CF8;
     box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
   }
+  /* Auto-filled seat button */
+  .seat-btn.auto-active {
+    background: rgba(34,197,94,0.1);
+    border-color: rgba(34,197,94,0.4); color: #16a34a;
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.1);
+  }
+  body.dark-mode .seat-btn.auto-active { color: #4ade80; }
 
-  /* Submit button */
   .submit-btn {
     width: 100%; padding: 16px;
     font-size: 15px; font-weight: 700;
@@ -128,33 +161,14 @@
   .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(99,102,241,0.55); }
   .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
 
-  /* Info note */
-  .info-note {
-    margin-top: 14px; font-size: 12px; color: var(--muted);
-    display: flex; align-items: center; gap: 6px;
-  }
+  .info-note { margin-top: 14px; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
 
-  /* Spinner */
-  .spinner {
-    width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4);
-    border-top-color: #fff; border-radius: 50%;
-    animation: spin 0.6s linear infinite; display: none;
-  }
-.spinner{
-    width:18px;
-    height:18px;
-    border:2px solid rgba(255,255,255,.3);
-    border-top-color:#fff;
-    border-radius:50%;
-    display:inline-block;
-    animation:spin .7s linear infinite;
-}
 
-@keyframes spin{
-    to{
-        transform:rotate(360deg);
-    }
-}
+
+  @media (max-width: 640px) {
+    .grid-2, .grid-3, .grid-7-5 { grid-template-columns: 1fr; }
+    .span-2 { grid-column: span 1; }
+  }
 </style>
 
 <div class="pred-page">
@@ -174,14 +188,13 @@
 
   <form method="POST" id="predForm">
     {% csrf_token %}
-    <!-- Hidden inputs for toggle values -->
     <input type="hidden" name="fuel"         id="fuel_type"         value="{{ form_data.fuel|default:'Petrol' }}">
     <input type="hidden" name="transmission" id="transmission_type" value="{{ form_data.transmission|default:'Manual' }}">
     <input type="hidden" name="seats"        id="seats"             value="{{ form_data.seats|default:'5' }}">
 
     <div class="pred-card">
 
-      <!-- ── VEHICLE DETAILS ── -->
+      <!-- VEHICLE DETAILS -->
       <div class="sec-divider">🚗 Vehicle Details</div>
       <div class="grid-2">
 
@@ -222,7 +235,7 @@
         </div>
       </div>
 
-      <!-- ── FUEL & TRANSMISSION ── -->
+      <!-- FUEL & TRANSMISSION -->
       <div class="sec-divider">⛽ Fuel &amp; Transmission</div>
       <div class="grid-7-5">
 
@@ -261,65 +274,64 @@
 
       </div>
 
-      <!-- ── SPECIFICATIONS ── -->
+      <!-- SPECIFICATIONS -->
       <div class="sec-divider">⚙️ Vehicle Specifications</div>
       <div class="grid-3">
 
         <div class="field">
-          <label>Mileage (kmpl)</label>
-          <input
-    type="number"
-    step="0.1"
-    name="mileage"
-    placeholder="e.g. 22.5"
-    value="{{ form_data.mileage|default:'' }}"
-    required
-  >
+          <label>
+            Mileage (kmpl)
+          </label>
+          <input type="number" step="0.1" name="mileage" id="mileageInput"
+            placeholder="e.g. 22.5"
+            value="{{ form_data.mileage|default:'' }}" required>
+          <div class="field-hint">Enter actual mileage — varies per car condition</div>
         </div>
 
         <div class="field">
-          <label>Engine (CC)</label>
-          <input
-    type="number"
-    name="engine"
-    placeholder="e.g. 1197"
-    value="{{ form_data.engine|default:'' }}"
-    required
-  >
+          <label>
+            Engine (CC)
+            <span class="auto-badge hidden" id="engineBadge">✦ Auto-filled</span>
+          </label>
+          <input type="number" name="engine" id="engineInput"
+            placeholder="e.g. 1197"
+            value="{{ form_data.engine|default:'' }}" required>
+          <div class="field-hint" id="engineHint">Select a model to auto-fill</div>
         </div>
 
         <div class="field">
-          <label>Max Power (BHP)</label>
-          <input
-    type="number"
-    step="0.1"
-    name="max_power"
-    placeholder="e.g. 82.0"
-    value="{{ form_data.max_power|default:'' }}"
-    required
-  >
+          <label>
+            Max Power (BHP)
+            <span class="auto-badge hidden" id="powerBadge">✦ Auto-filled</span>
+          </label>
+          <input type="number" step="0.1" name="max_power" id="powerInput"
+            placeholder="e.g. 82.0"
+            value="{{ form_data.max_power|default:'' }}" required>
+          <div class="field-hint" id="powerHint">Select a model to auto-fill</div>
         </div>
 
         <div class="field span-2">
-          <label>Number of Seats</label>
+          <label>
+            Number of Seats
+            <span class="auto-badge hidden" id="seatsBadge">✦ Auto-filled</span>
+          </label>
           <div class="seat-group" id="seatsGroup">
-            <div class="seat-btn {% if form_data.seats == '2' %}active{% endif %}" onclick="selectTog('seatsGroup','seats',this,'2')">2</div>
-<div class="seat-btn {% if form_data.seats == '4' %}active{% endif %}" onclick="selectTog('seatsGroup','seats',this,'4')">4</div>
-<div class="seat-btn {% if not form_data.seats or form_data.seats == '5' %}active{% endif %}" onclick="selectTog('seatsGroup','seats',this,'5')">5</div>
-<div class="seat-btn {% if form_data.seats == '6' %}active{% endif %}" onclick="selectTog('seatsGroup','seats',this,'6')">6</div>
-<div class="seat-btn {% if form_data.seats == '7' %}active{% endif %}" onclick="selectTog('seatsGroup','seats',this,'7')">7</div>
-<div class="seat-btn {% if form_data.seats == '8' %}active{% endif %}" onclick="selectTog('seatsGroup','seats',this,'8')">8</div>
+            <div class="seat-btn {% if form_data.seats == '2' %}active{% endif %}" onclick="selectSeat(this,'2')">2</div>
+            <div class="seat-btn {% if form_data.seats == '4' %}active{% endif %}" onclick="selectSeat(this,'4')">4</div>
+            <div class="seat-btn {% if not form_data.seats or form_data.seats == '5' %}active{% endif %}" onclick="selectSeat(this,'5')">5</div>
+            <div class="seat-btn {% if form_data.seats == '6' %}active{% endif %}" onclick="selectSeat(this,'6')">6</div>
+            <div class="seat-btn {% if form_data.seats == '7' %}active{% endif %}" onclick="selectSeat(this,'7')">7</div>
+            <div class="seat-btn {% if form_data.seats == '8' %}active{% endif %}" onclick="selectSeat(this,'8')">8</div>
           </div>
+          <div class="field-hint" id="seatsHint">Select a model to auto-fill</div>
         </div>
 
       </div>
 
-      <!-- Submit -->
-      <button type="submit" class="submit-btn" id="submitBtn">
-        <div class="spinner" id="spinner"></div>
-        <span id="btnText">⚡ Predict Price</span>
+      <button type="submit" class="submit-btn">
+        ⚡ Predict Price
       </button>
-      <div class="info-note">ℹ️ Enter accurate details for better prediction results.</div>
+      <div class="info-note">ℹ️ Engine, power &amp; seats are auto-filled from dataset averages. You can still edit them manually.</div>
 
     </div>
   </form>
@@ -329,10 +341,23 @@
 {{ brand_model_map|json_script:"brand-model-data" }}
 
 <script>
-const modelMap    = JSON.parse(document.getElementById('brand-model-data').textContent);
-const brandSelect = document.getElementById('brandSelect');
-const modelSelect = document.getElementById('car_model');
+// ── Data ──────────────────────────────────────────────────────────────
+const modelMap  = JSON.parse(document.getElementById('brand-model-data').textContent);
+const carSpecs  = {"Audi": {"A4": {"engine": 1968, "max_power": 167.6, "seats": 5}, "A6": {"engine": 1968, "max_power": 174.3, "seats": 5}, "A8": {"engine": 2967, "max_power": 246.7, "seats": 5}, "Q7": {"engine": 2967, "max_power": 241.4, "seats": 7}}, "BMW": {"3": {"engine": 1995, "max_power": 184.0, "seats": 5}, "5": {"engine": 1995, "max_power": 190.0, "seats": 5}, "6": {"engine": 2993, "max_power": 261.4, "seats": 4}, "7": {"engine": 2993, "max_power": 258.0, "seats": 5}, "X1": {"engine": 1995, "max_power": 188.0, "seats": 5}, "X3": {"engine": 1995, "max_power": 184.0, "seats": 5}, "X4": {"engine": 1995, "max_power": 190.0, "seats": 5}, "X5": {"engine": 2993, "max_power": 258.0, "seats": 5}, "Z4": {"engine": 2979, "max_power": 303.9, "seats": 2}}, "Bentley": {"Continental": {"engine": 5998, "max_power": 600.0, "seats": 4}}, "Datsun": {"GO": {"engine": 1198, "max_power": 67.0, "seats": 7}, "RediGO": {"engine": 799, "max_power": 53.6, "seats": 5}, "redi-GO": {"engine": 899, "max_power": 60.3, "seats": 5}}, "Ferrari": {"GTC4Lusso": {"engine": 3855, "max_power": 601.0, "seats": 4}}, "Force": {"Gurkha": {"engine": 2596, "max_power": 80.8, "seats": 5}}, "Ford": {"Aspire": {"engine": 1498, "max_power": 99.0, "seats": 5}, "Ecosport": {"engine": 1498, "max_power": 99.0, "seats": 5}, "Endeavour": {"engine": 3198, "max_power": 197.0, "seats": 7}, "Figo": {"engine": 1399, "max_power": 68.0, "seats": 5}, "Freestyle": {"engine": 1194, "max_power": 94.7, "seats": 5}}, "Honda": {"Amaze": {"engine": 1199, "max_power": 88.8, "seats": 5}, "CR": {"engine": 2354, "max_power": 187.4, "seats": 5}, "CR-V": {"engine": 2354, "max_power": 152.0, "seats": 5}, "City": {"engine": 1497, "max_power": 117.3, "seats": 5}, "Civic": {"engine": 1799, "max_power": 130.0, "seats": 5}, "Jazz": {"engine": 1199, "max_power": 88.7, "seats": 5}, "WR-V": {"engine": 1498, "max_power": 98.6, "seats": 5}}, "Hyundai": {"Aura": {"engine": 1197, "max_power": 81.9, "seats": 5}, "Creta": {"engine": 1582, "max_power": 121.3, "seats": 5}, "Elantra": {"engine": 1582, "max_power": 126.2, "seats": 5}, "Grand": {"engine": 1197, "max_power": 81.9, "seats": 5}, "Santro": {"engine": 1086, "max_power": 62.1, "seats": 5}, "Tucson": {"engine": 1995, "max_power": 182.5, "seats": 5}, "Venue": {"engine": 998, "max_power": 118.3, "seats": 5}, "Verna": {"engine": 1582, "max_power": 121.4, "seats": 5}, "i10": {"engine": 1197, "max_power": 78.9, "seats": 5}, "i20": {"engine": 1197, "max_power": 81.9, "seats": 5}}, "ISUZU": {"MUX": {"engine": 2999, "max_power": 175.0, "seats": 7}}, "Isuzu": {"D-Max": {"engine": 2499, "max_power": 134.0, "seats": 5}, "MUX": {"engine": 2999, "max_power": 174.6, "seats": 7}}, "Jaguar": {"F-PACE": {"engine": 1999, "max_power": 177.0, "seats": 5}, "XE": {"engine": 1999, "max_power": 177.0, "seats": 5}, "XF": {"engine": 2179, "max_power": 187.7, "seats": 5}}, "Jeep": {"Compass": {"engine": 1956, "max_power": 170.0, "seats": 5}, "Wrangler": {"engine": 3604, "max_power": 280.0, "seats": 5}}, "Kia": {"Carnival": {"engine": 2199, "max_power": 197.2, "seats": 7}, "Seltos": {"engine": 1493, "max_power": 113.4, "seats": 5}}, "Land Rover": {"Rover": {"engine": 2179, "max_power": 187.7, "seats": 5}}, "Lexus": {"ES": {"engine": 2487, "max_power": 214.6, "seats": 5}, "NX": {"engine": 2499, "max_power": 194.3, "seats": 5}, "RX": {"engine": 3456, "max_power": 258.9, "seats": 5}}, "MG": {"Hector": {"engine": 1451, "max_power": 141.0, "seats": 5}}, "Mahindra": {"Alturas": {"engine": 2157, "max_power": 178.5, "seats": 7}, "Bolero": {"engine": 2523, "max_power": 63.0, "seats": 7}, "KUV": {"engine": 1198, "max_power": 79.5, "seats": 6}, "KUV100": {"engine": 1198, "max_power": 77.0, "seats": 6}, "Marazzo": {"engine": 1497, "max_power": 121.0, "seats": 7}, "Scorpio": {"engine": 2179, "max_power": 120.0, "seats": 7}, "Thar": {"engine": 2498, "max_power": 105.0, "seats": 6}, "XUV300": {"engine": 1197, "max_power": 110.0, "seats": 5}, "XUV500": {"engine": 2179, "max_power": 140.0, "seats": 7}}, "Maruti": {"Alto": {"engine": 796, "max_power": 47.3, "seats": 5}, "Baleno": {"engine": 1197, "max_power": 83.1, "seats": 5}, "Celerio": {"engine": 998, "max_power": 67.0, "seats": 5}, "Ciaz": {"engine": 1310, "max_power": 89.8, "seats": 5}, "Dzire LXI": {"engine": 1197, "max_power": 88.5, "seats": 5}, "Dzire VXI": {"engine": 1197, "max_power": 88.5, "seats": 5}, "Dzire ZXI": {"engine": 1197, "max_power": 88.5, "seats": 5}, "Eeco": {"engine": 1196, "max_power": 73.0, "seats": 5}, "Ertiga": {"engine": 1248, "max_power": 88.8, "seats": 7}, "Ignis": {"engine": 1197, "max_power": 81.8, "seats": 5}, "S-Presso": {"engine": 998, "max_power": 67.0, "seats": 5}, "Swift": {"engine": 1248, "max_power": 74.0, "seats": 5}, "Swift Dzire": {"engine": 1248, "max_power": 74.0, "seats": 5}, "Vitara": {"engine": 1248, "max_power": 88.5, "seats": 5}, "Wagon R": {"engine": 998, "max_power": 67.0, "seats": 5}, "XL6": {"engine": 1462, "max_power": 103.2, "seats": 6}}, "Maserati": {"Ghibli": {"engine": 2987, "max_power": 271.0, "seats": 5}, "Quattroporte": {"engine": 2987, "max_power": 270.9, "seats": 5}}, "Mercedes-AMG": {"C": {"engine": 2996, "max_power": 362.1, "seats": 5}}, "Mercedes-Benz": {"C-Class": {"engine": 2143, "max_power": 170.0, "seats": 5}, "CLS": {"engine": 2143, "max_power": 204.0, "seats": 4}, "E-Class": {"engine": 2143, "max_power": 203.0, "seats": 5}, "GL-Class": {"engine": 2987, "max_power": 245.0, "seats": 7}, "GLS": {"engine": 2987, "max_power": 258.0, "seats": 7}, "S-Class": {"engine": 2987, "max_power": 282.0, "seats": 5}}, "Mini": {"Cooper": {"engine": 1998, "max_power": 181.0, "seats": 5}}, "Nissan": {"Kicks": {"engine": 1461, "max_power": 108.0, "seats": 5}, "X-Trail": {"engine": 1995, "max_power": 147.6, "seats": 5}}, "Porsche": {"Cayenne": {"engine": 2967, "max_power": 240.0, "seats": 5}, "Macan": {"engine": 1984, "max_power": 250.5, "seats": 5}, "Panamera": {"engine": 4806, "max_power": 394.3, "seats": 4}}, "Renault": {"Duster": {"engine": 1461, "max_power": 83.8, "seats": 5}, "KWID": {"engine": 999, "max_power": 67.0, "seats": 5}, "Triber": {"engine": 999, "max_power": 72.0, "seats": 7}}, "Rolls-Royce": {"Ghost": {"engine": 6592, "max_power": 563.0, "seats": 4}}, "Skoda": {"Octavia": {"engine": 1896, "max_power": 141.0, "seats": 5}, "Rapid": {"engine": 1598, "max_power": 103.5, "seats": 5}, "Superb": {"engine": 1798, "max_power": 157.8, "seats": 5}}, "Tata": {"Altroz": {"engine": 1199, "max_power": 84.8, "seats": 5}, "Harrier": {"engine": 1956, "max_power": 138.1, "seats": 5}, "Hexa": {"engine": 2179, "max_power": 153.9, "seats": 7}, "Nexon": {"engine": 1497, "max_power": 108.5, "seats": 5}, "Safari": {"engine": 2179, "max_power": 138.1, "seats": 7}, "Tiago": {"engine": 1199, "max_power": 84.0, "seats": 5}, "Tigor": {"engine": 1199, "max_power": 84.0, "seats": 5}}, "Toyota": {"Camry": {"engine": 2494, "max_power": 164.7, "seats": 5}, "Fortuner": {"engine": 2982, "max_power": 171.0, "seats": 7}, "Glanza": {"engine": 1197, "max_power": 81.8, "seats": 5}, "Innova": {"engine": 2494, "max_power": 102.0, "seats": 7}, "Yaris": {"engine": 1496, "max_power": 105.5, "seats": 5}}, "Volkswagen": {"Polo": {"engine": 1199, "max_power": 75.0, "seats": 5}, "Vento": {"engine": 1598, "max_power": 103.6, "seats": 5}}, "Volvo": {"S90": {"engine": 1969, "max_power": 190.0, "seats": 5}, "XC": {"engine": 2400, "max_power": 200.0, "seats": 7}, "XC60": {"engine": 1985, "max_power": 181.0, "seats": 5}, "XC90": {"engine": 1969, "max_power": 235.0, "seats": 7}}};
 
+// ── Elements ──────────────────────────────────────────────────────────
+const brandSelect  = document.getElementById('brandSelect');
+const modelSelect  = document.getElementById('car_model');
+const engineInput  = document.getElementById('engineInput');
+const powerInput   = document.getElementById('powerInput');
+const engineBadge  = document.getElementById('engineBadge');
+const powerBadge   = document.getElementById('powerBadge');
+const seatsBadge   = document.getElementById('seatsBadge');
+const engineHint   = document.getElementById('engineHint');
+const powerHint    = document.getElementById('powerHint');
+const seatsHint    = document.getElementById('seatsHint');
+
+// ── Populate model dropdown ───────────────────────────────────────────
 function populateModels() {
   const brand = brandSelect.value;
   const saved = '{{ form_data.car_model|default:"" }}';
@@ -345,18 +370,105 @@ function populateModels() {
       modelSelect.appendChild(opt);
     });
   }
+  // Clear specs if brand changes
+  clearAutoFill();
 }
-brandSelect.addEventListener('change', populateModels);
-{% if form_data.brand %}brandSelect.value = '{{ form_data.brand }}';{% endif %}
-populateModels();
 
+// ── Auto-fill specs when model selected ──────────────────────────────
+function autoFillSpecs() {
+  const brand = brandSelect.value;
+  const model = modelSelect.value;
+
+  if (!brand || !model) { clearAutoFill(); return; }
+
+  const specs = carSpecs[brand] && carSpecs[brand][model];
+  if (!specs) { clearAutoFill(); return; }
+
+  // Engine CC
+  if (specs.engine) {
+    engineInput.value = specs.engine;
+    engineInput.classList.add('auto-filled');
+    engineBadge.classList.remove('hidden');
+    engineHint.textContent = 'Dataset average for ' + brand + ' ' + model + '. You can edit.';
+  }
+
+  // Max Power
+  if (specs.max_power) {
+    powerInput.value = specs.max_power;
+    powerInput.classList.add('auto-filled');
+    powerBadge.classList.remove('hidden');
+    powerHint.textContent = 'Dataset average for ' + brand + ' ' + model + '. You can edit.';
+  }
+
+  // Seats
+  if (specs.seats) {
+    setSeats(String(specs.seats), true);
+    seatsBadge.classList.remove('hidden');
+    seatsHint.textContent = 'Dataset average for ' + brand + ' ' + model + '. You can change.';
+  }
+}
+
+function clearAutoFill() {
+  engineInput.classList.remove('auto-filled');
+  powerInput.classList.remove('auto-filled');
+  engineBadge.classList.add('hidden');
+  powerBadge.classList.add('hidden');
+  seatsBadge.classList.add('hidden');
+  engineHint.textContent = 'Select a model to auto-fill';
+  powerHint.textContent  = 'Select a model to auto-fill';
+  seatsHint.textContent  = 'Select a model to auto-fill';
+  // Clear auto-active on seat buttons
+  document.querySelectorAll('.seat-btn').forEach(b => b.classList.remove('auto-active'));
+}
+
+// Remove auto-filled style when user manually edits
+engineInput.addEventListener('input', () => {
+  engineInput.classList.remove('auto-filled');
+  engineBadge.classList.add('hidden');
+  engineHint.textContent = 'Manually entered';
+});
+powerInput.addEventListener('input', () => {
+  powerInput.classList.remove('auto-filled');
+  powerBadge.classList.add('hidden');
+  powerHint.textContent = 'Manually entered';
+});
+
+// ── Seat buttons ──────────────────────────────────────────────────────
+function setSeats(val, isAuto) {
+  document.querySelectorAll('.seat-btn').forEach(b => {
+    b.classList.remove('active', 'auto-active');
+    if (b.textContent.trim() === val) {
+      b.classList.add(isAuto ? 'auto-active' : 'active');
+    }
+  });
+  document.getElementById('seats').value = val;
+}
+
+function selectSeat(el, val) {
+  // Manual click — remove auto styling, use normal active
+  document.querySelectorAll('.seat-btn').forEach(b => b.classList.remove('active','auto-active'));
+  el.classList.add('active');
+  document.getElementById('seats').value = val;
+  seatsBadge.classList.add('hidden');
+  seatsHint.textContent = 'Manually selected';
+}
+
+// ── Toggle buttons (fuel/transmission) ───────────────────────────────
 function selectTog(groupId, inputId, el, value) {
-  document.querySelectorAll('#' + groupId + ' .tog, #' + groupId + ' .seat-btn')
-    .forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#' + groupId + ' .tog').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
   document.getElementById(inputId).value = value;
 }
 
+// ── Init ──────────────────────────────────────────────────────────────
+brandSelect.addEventListener('change', populateModels);
+modelSelect.addEventListener('change', autoFillSpecs);
 
+{% if form_data.brand %}brandSelect.value = '{{ form_data.brand }}';{% endif %}
+populateModels();
+{% if form_data.brand and form_data.car_model %}
+// Restore auto-fill on validation error re-render
+autoFillSpecs();
+{% endif %}
 </script>
 {% endblock %}
