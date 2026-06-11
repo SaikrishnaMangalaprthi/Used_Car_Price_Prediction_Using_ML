@@ -5,133 +5,68 @@
 <style>
   .cmp-page { background: var(--bg); padding: 48px 24px 80px; }
   .cmp-wrap { max-width: 1200px; margin: 0 auto; }
-
   .cmp-header { margin-bottom: 32px; }
   .cmp-header h1 { font-size: 28px; font-weight: 800; color: var(--text); margin-bottom: 6px; letter-spacing: -0.5px; }
   .cmp-header p  { font-size: 14px; color: var(--muted); }
-
   .cars-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-bottom: 28px; }
-
   .car-card { border-radius: 16px; border: 1.5px solid; overflow: hidden; background: var(--card); }
   .car-card-1 { border-color: rgba(99,102,241,0.35); }
   .car-card-2 { border-color: rgba(251,113,133,0.35); }
-
   .car-header { padding: 16px 22px; font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 10px; }
   .car-header-1 { background: rgba(99,102,241,0.1); border-bottom: 1px solid rgba(99,102,241,0.2); color: #818CF8; }
   .car-header-2 { background: rgba(251,113,133,0.08); border-bottom: 1px solid rgba(251,113,133,0.2); color: #FB7185; }
-
   .car-body { padding: 24px; }
-
-  .sec-div {
-    display: flex; align-items: center; gap: 10px;
-    margin: 24px 0 16px;
-    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
-  }
+  .sec-div { display: flex; align-items: center; gap: 10px; margin: 24px 0 16px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
   .sec-div:first-child { margin-top: 0; }
   .sec-div::before, .sec-div::after { content: ''; flex: 1; height: 1px; }
   .sec-div-1 { color: #818CF8; }
   .sec-div-1::before, .sec-div-1::after { background: linear-gradient(90deg, transparent, rgba(99,102,241,0.3), transparent); }
   .sec-div-2 { color: #FB7185; }
   .sec-div-2::before, .sec-div-2::after { background: linear-gradient(90deg, transparent, rgba(251,113,133,0.3), transparent); }
-
   .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-
   .field { display: flex; flex-direction: column; gap: 5px; }
-  .field label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; }
-  .field input, .field select {
-    background: var(--input-bg);
-    border: 1px solid var(--input-b);
-    border-radius: 10px;
-    padding: 10px 13px;
-    font-size: 13.5px;
-    color: var(--text);
-    width: 100%; outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    appearance: auto;
-  }
+  .field label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; display: flex; align-items: center; gap: 6px; }
+  .field input, .field select { background: var(--input-bg); border: 1px solid var(--input-b); border-radius: 10px; padding: 10px 13px; font-size: 13.5px; color: var(--text); width: 100%; outline: none; transition: border-color 0.2s, box-shadow 0.2s; appearance: auto; }
   .field input::placeholder { color: var(--muted); opacity: 0.5; }
   .field input:focus, .field select:focus { border-color: #6366F1; box-shadow: 0 0 0 3px rgba(99,102,241,0.12); }
   .car-card-2 .field input:focus, .car-card-2 .field select:focus { border-color: #FB7185; box-shadow: 0 0 0 3px rgba(251,113,133,0.12); }
-
-  /* Toggles */
+  /* Auto-fill */
+  .field input.af1 { border-color: rgba(99,102,241,0.5); background: rgba(99,102,241,0.04); }
+  .field input.af2 { border-color: rgba(251,113,133,0.5); background: rgba(251,113,133,0.04); }
+  .ab { display:inline-flex; align-items:center; font-size:10px; font-weight:700; padding:2px 7px; border-radius:20px; }
+  .ab1 { background:rgba(99,102,241,0.1); border:1px solid rgba(99,102,241,0.25); color:#818CF8; }
+  .ab2 { background:rgba(251,113,133,0.1); border:1px solid rgba(251,113,133,0.25); color:#FB7185; }
+  .ab.h { display:none; }
+  .fh { font-size:11px; color:var(--muted); margin-top:2px; min-height:14px; }
   .tog-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
-  .tog {
-    background: var(--input-bg); border: 1.5px solid var(--input-b);
-    border-radius: 9px; color: var(--muted);
-    cursor: pointer; display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 4px; font-size: 11px; font-weight: 600;
-    padding: 10px 8px; min-width: 60px;
-    user-select: none; transition: all 0.2s;
-  }
+  .tog { background: var(--input-bg); border: 1.5px solid var(--input-b); border-radius: 9px; color: var(--muted); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 10px 8px; min-width: 60px; user-select: none; transition: all 0.2s; }
   .tog .ti { font-size: 16px; }
   .tog:hover  { border-color: #6366F1; color: #818CF8; background: rgba(99,102,241,0.06); }
   .tog.active { background: rgba(99,102,241,0.12); border-color: #6366F1; color: #818CF8; box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
   .tog2:hover  { border-color: #FB7185; color: #FB7185; background: rgba(251,113,133,0.06); }
   .tog2.active { background: rgba(251,113,133,0.1); border-color: #FB7185; color: #FB7185; box-shadow: 0 0 0 3px rgba(251,113,133,0.1); }
-
-  .seat-btn {
-    background: var(--input-bg); border: 1.5px solid var(--input-b);
-    border-radius: 9px; color: var(--muted);
-    cursor: pointer; font-size: 13px; font-weight: 700;
-    padding: 9px 13px; min-width: 44px; text-align: center;
-    user-select: none; transition: all 0.2s;
-  }
+  .seat-btn { background: var(--input-bg); border: 1.5px solid var(--input-b); border-radius: 9px; color: var(--muted); cursor: pointer; font-size: 13px; font-weight: 700; padding: 9px 13px; min-width: 44px; text-align: center; user-select: none; transition: all 0.2s; }
   .seat-btn:hover  { border-color: #6366F1; color: #818CF8; }
   .seat-btn.active { background: rgba(99,102,241,0.12); border-color: #6366F1; color: #818CF8; box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
   .seat2-btn:hover  { border-color: #FB7185; color: #FB7185; }
   .seat2-btn.active { background: rgba(251,113,133,0.1); border-color: #FB7185; color: #FB7185; box-shadow: 0 0 0 3px rgba(251,113,133,0.1); }
-
-  .cmp-btn {
-    width: 100%; padding: 16px;
-    font-size: 15px; font-weight: 700;
-    border: none; border-radius: 12px;
-    background: linear-gradient(135deg, #6366F1, #4F46E5);
-    color: #fff; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    box-shadow: 0 6px 24px rgba(99,102,241,0.4);
-    transition: all 0.25s;
-  }
+  .sa1.active { background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.35); color: #818CF8; }
+  .sa2.active { background: rgba(251,113,133,0.08); border-color: rgba(251,113,133,0.35); color: #FB7185; }
+  .cmp-btn { width: 100%; padding: 16px; font-size: 15px; font-weight: 700; border: none; border-radius: 12px; background: linear-gradient(135deg, #6366F1, #4F46E5); color: #fff; cursor: pointer; box-shadow: 0 6px 24px rgba(99,102,241,0.4); transition: all 0.25s; }
   .cmp-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(99,102,241,0.55); }
-  .cmp-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
-
   .info-note { margin-top: 14px; font-size: 12px; color: var(--muted); text-align: center; }
-  .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.6s linear infinite; display: none; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  @media (max-width: 768px) {
-    .cars-grid { grid-template-columns: 1fr; }
-    .g2 { grid-template-columns: 1fr; }
-  }
-  .spinner{
-    width:18px;
-    height:18px;
-    border:2px solid rgba(255,255,255,.3);
-    border-top-color:#fff;
-    border-radius:50%;
-    display:inline-block;
-    animation:spin .7s linear infinite;
-}
-
-@keyframes spin{
-    to{
-        transform:rotate(360deg);
-    }
-}
+  @media (max-width: 768px) { .cars-grid { grid-template-columns: 1fr; } .g2 { grid-template-columns: 1fr; } }
 </style>
 
 <div class="cmp-page">
 <div class="cmp-wrap">
-
   <div class="cmp-header">
     <h1>Compare Cars</h1>
     <p>Enter details for both cars to see which offers better value.</p>
   </div>
 
-  <form method="POST" action="{% url 'compare_result' %}" id="compareForm">
+  <form method="POST" action="{% url 'compare_result' %}">
     {% csrf_token %}
-
-    <!-- Hidden inputs -->
     <input type="hidden" name="fuel1"         id="c1Fuel"  value="Petrol">
     <input type="hidden" name="transmission1" id="c1Trans" value="Manual">
     <input type="hidden" name="seats1"        id="c1Seats" value="5">
@@ -143,43 +78,27 @@
 
     <div class="cars-grid">
 
-      <!-- ══ CAR 1 ══════════════════════════════════ -->
+      <!-- CAR 1 -->
       <div class="car-card car-card-1">
         <div class="car-header car-header-1">① Car One</div>
         <div class="car-body">
-
           <div class="sec-div sec-div-1">🚗 Vehicle Details</div>
           <div class="g2" style="margin-bottom:14px;">
-            <div class="field">
-              <label>Brand</label>
+            <div class="field"><label>Brand</label>
               <select name="brand1" id="brand1" required>
                 <option value="">Select Brand...</option>
-                {% for brand in brand_model_map.keys %}
-                <option value="{{ brand }}">{{ brand }}</option>
-                {% endfor %}
+                {% for brand in brand_model_map.keys %}<option value="{{ brand }}">{{ brand }}</option>{% endfor %}
               </select>
             </div>
-            <div class="field">
-              <label>Car Model</label>
-              <select name="car_model1" id="model1" required>
-                <option value="">Select Brand first</option>
-              </select>
-            </div>
-            <div class="field"><label>Year</label><input type="number" name="year1" placeholder="e.g. 2019" min="1995" max="2025" required></div>
+            <div class="field"><label>Car Model</label><select name="car_model1" id="model1" required><option value="">Select Brand first</option></select></div>
+            <div class="field"><label>Year</label><input type="number" name="year1" placeholder="e.g. 2019" min="1995" max="2026" required></div>
             <div class="field"><label>KMs Driven</label><input type="number" name="km1" placeholder="e.g. 45000" min="0" required></div>
-            <div class="field">
-              <label>Seller Type</label>
-              <select name="seller1">
-                <option value="Individual">Individual</option>
-                <option value="Dealer">Dealer</option>
-                <option value="Trustmark Dealer">Trustmark Dealer</option>
-              </select>
+            <div class="field"><label>Seller Type</label>
+              <select name="seller1"><option value="Individual">Individual</option><option value="Dealer">Dealer</option><option value="Trustmark Dealer">Trustmark Dealer</option></select>
             </div>
           </div>
-
           <div class="sec-div sec-div-1">⛽ Fuel &amp; Transmission</div>
-          <div class="field" style="margin-bottom:12px;">
-            <label>Fuel Type</label>
+          <div class="field" style="margin-bottom:12px;"><label>Fuel Type</label>
             <div class="tog-group" id="c1FuelGrp">
               <div class="tog active" onclick="selTog('c1FuelGrp','c1Fuel',this,'Petrol')"><span class="ti">⛽</span>Petrol</div>
               <div class="tog" onclick="selTog('c1FuelGrp','c1Fuel',this,'Diesel')"><span class="ti">🛢️</span>Diesel</div>
@@ -188,72 +107,53 @@
               <div class="tog" onclick="selTog('c1FuelGrp','c1Fuel',this,'LPG')"><span class="ti">🔥</span>LPG</div>
             </div>
           </div>
-          <div class="field">
-            <label>Transmission</label>
+          <div class="field"><label>Transmission</label>
             <div class="tog-group" id="c1TransGrp">
               <div class="tog active" style="flex:1;" onclick="selTog('c1TransGrp','c1Trans',this,'Manual')"><span class="ti">🕹️</span>Manual</div>
               <div class="tog" style="flex:1;" onclick="selTog('c1TransGrp','c1Trans',this,'Automatic')"><span class="ti">🔄</span>Automatic</div>
             </div>
           </div>
-
           <div class="sec-div sec-div-1">⚙️ Specifications</div>
           <div class="g2">
-            <div class="field"><label>Mileage (kmpl)</label><input type="number" step="0.1" name="mileage1" placeholder="e.g. 18.5"></div>
-            <div class="field"><label>Engine (CC)</label><input type="number" name="engine1" placeholder="e.g. 1197"></div>
-            <div class="field"><label>Max Power (BHP)</label><input type="number" step="0.1" name="power1" placeholder="e.g. 83.1"></div>
-            <div class="field">
-              <label>Seats</label>
+            <div class="field"><label>Mileage (kmpl)</label><input type="number" step="0.1" name="mileage1" placeholder="e.g. 18.5"><div class="fh">Enter actual mileage</div></div>
+            <div class="field"><label>Engine (CC) <span class="ab ab1 h" id="eb1">✦ Auto</span></label><input type="number" name="engine1" id="eng1" placeholder="e.g. 1197"><div class="fh" id="eh1">Select model to auto-fill</div></div>
+            <div class="field"><label>Max Power (BHP) <span class="ab ab1 h" id="pb1">✦ Auto</span></label><input type="number" step="0.1" name="power1" id="pwr1" placeholder="e.g. 83.1"><div class="fh" id="ph1">Select model to auto-fill</div></div>
+            <div class="field"><label>Seats <span class="ab ab1 h" id="sb1">✦ Auto</span></label>
               <div class="tog-group" id="c1SeatsGrp">
-                <div class="seat-btn" onclick="selTog('c1SeatsGrp','c1Seats',this,'2')">2</div>
-                <div class="seat-btn" onclick="selTog('c1SeatsGrp','c1Seats',this,'4')">4</div>
-                <div class="seat-btn active" onclick="selTog('c1SeatsGrp','c1Seats',this,'5')">5</div>
-                <div class="seat-btn" onclick="selTog('c1SeatsGrp','c1Seats',this,'6')">6</div>
-                <div class="seat-btn" onclick="selTog('c1SeatsGrp','c1Seats',this,'7')">7</div>
-                <div class="seat-btn" onclick="selTog('c1SeatsGrp','c1Seats',this,'8')">8</div>
+                <div class="seat-btn" onclick="mSeat('c1SeatsGrp','c1Seats',this,'2','1')">2</div>
+                <div class="seat-btn" onclick="mSeat('c1SeatsGrp','c1Seats',this,'4','1')">4</div>
+                <div class="seat-btn active" onclick="mSeat('c1SeatsGrp','c1Seats',this,'5','1')">5</div>
+                <div class="seat-btn" onclick="mSeat('c1SeatsGrp','c1Seats',this,'6','1')">6</div>
+                <div class="seat-btn" onclick="mSeat('c1SeatsGrp','c1Seats',this,'7','1')">7</div>
+                <div class="seat-btn" onclick="mSeat('c1SeatsGrp','c1Seats',this,'8','1')">8</div>
               </div>
+              <div class="fh" id="sh1">Select model to auto-fill</div>
             </div>
           </div>
-
         </div>
       </div>
 
-      <!-- ══ CAR 2 ══════════════════════════════════ -->
+      <!-- CAR 2 -->
       <div class="car-card car-card-2">
         <div class="car-header car-header-2">② Car Two</div>
         <div class="car-body">
-
           <div class="sec-div sec-div-2">🚗 Vehicle Details</div>
           <div class="g2" style="margin-bottom:14px;">
-            <div class="field">
-              <label>Brand</label>
+            <div class="field"><label>Brand</label>
               <select name="brand2" id="brand2" required>
                 <option value="">Select Brand...</option>
-                {% for brand in brand_model_map.keys %}
-                <option value="{{ brand }}">{{ brand }}</option>
-                {% endfor %}
+                {% for brand in brand_model_map.keys %}<option value="{{ brand }}">{{ brand }}</option>{% endfor %}
               </select>
             </div>
-            <div class="field">
-              <label>Car Model</label>
-              <select name="car_model2" id="model2" required>
-                <option value="">Select Brand first</option>
-              </select>
-            </div>
-            <div class="field"><label>Year</label><input type="number" name="year2" placeholder="e.g. 2020" min="1995" max="2025" required></div>
+            <div class="field"><label>Car Model</label><select name="car_model2" id="model2" required><option value="">Select Brand first</option></select></div>
+            <div class="field"><label>Year</label><input type="number" name="year2" placeholder="e.g. 2020" min="1995" max="2026" required></div>
             <div class="field"><label>KMs Driven</label><input type="number" name="km2" placeholder="e.g. 30000" min="0" required></div>
-            <div class="field">
-              <label>Seller Type</label>
-              <select name="seller2">
-                <option value="Individual">Individual</option>
-                <option value="Dealer">Dealer</option>
-                <option value="Trustmark Dealer">Trustmark Dealer</option>
-              </select>
+            <div class="field"><label>Seller Type</label>
+              <select name="seller2"><option value="Individual">Individual</option><option value="Dealer">Dealer</option><option value="Trustmark Dealer">Trustmark Dealer</option></select>
             </div>
           </div>
-
           <div class="sec-div sec-div-2">⛽ Fuel &amp; Transmission</div>
-          <div class="field" style="margin-bottom:12px;">
-            <label>Fuel Type</label>
+          <div class="field" style="margin-bottom:12px;"><label>Fuel Type</label>
             <div class="tog-group" id="c2FuelGrp">
               <div class="tog tog2 active" onclick="selTog('c2FuelGrp','c2Fuel',this,'Petrol')"><span class="ti">⛽</span>Petrol</div>
               <div class="tog tog2" onclick="selTog('c2FuelGrp','c2Fuel',this,'Diesel')"><span class="ti">🛢️</span>Diesel</div>
@@ -262,43 +162,36 @@
               <div class="tog tog2" onclick="selTog('c2FuelGrp','c2Fuel',this,'LPG')"><span class="ti">🔥</span>LPG</div>
             </div>
           </div>
-          <div class="field">
-            <label>Transmission</label>
+          <div class="field"><label>Transmission</label>
             <div class="tog-group" id="c2TransGrp">
               <div class="tog tog2 active" style="flex:1;" onclick="selTog('c2TransGrp','c2Trans',this,'Manual')"><span class="ti">🕹️</span>Manual</div>
               <div class="tog tog2" style="flex:1;" onclick="selTog('c2TransGrp','c2Trans',this,'Automatic')"><span class="ti">🔄</span>Automatic</div>
             </div>
           </div>
-
           <div class="sec-div sec-div-2">⚙️ Specifications</div>
           <div class="g2">
-            <div class="field"><label>Mileage (kmpl)</label><input type="number" step="0.1" name="mileage2" placeholder="e.g. 21.4"></div>
-            <div class="field"><label>Engine (CC)</label><input type="number" name="engine2" placeholder="e.g. 1200"></div>
-            <div class="field"><label>Max Power (BHP)</label><input type="number" step="0.1" name="power2" placeholder="e.g. 88.5"></div>
-            <div class="field">
-              <label>Seats</label>
+            <div class="field"><label>Mileage (kmpl)</label><input type="number" step="0.1" name="mileage2" placeholder="e.g. 21.4"><div class="fh">Enter actual mileage</div></div>
+            <div class="field"><label>Engine (CC) <span class="ab ab2 h" id="eb2">✦ Auto</span></label><input type="number" name="engine2" id="eng2" placeholder="e.g. 1200"><div class="fh" id="eh2">Select model to auto-fill</div></div>
+            <div class="field"><label>Max Power (BHP) <span class="ab ab2 h" id="pb2">✦ Auto</span></label><input type="number" step="0.1" name="power2" id="pwr2" placeholder="e.g. 88.5"><div class="fh" id="ph2">Select model to auto-fill</div></div>
+            <div class="field"><label>Seats <span class="ab ab2 h" id="sb2">✦ Auto</span></label>
               <div class="tog-group" id="c2SeatsGrp">
-                <div class="seat-btn seat2-btn" onclick="selTog('c2SeatsGrp','c2Seats',this,'2')">2</div>
-                <div class="seat-btn seat2-btn" onclick="selTog('c2SeatsGrp','c2Seats',this,'4')">4</div>
-                <div class="seat-btn seat2-btn active" onclick="selTog('c2SeatsGrp','c2Seats',this,'5')">5</div>
-                <div class="seat-btn seat2-btn" onclick="selTog('c2SeatsGrp','c2Seats',this,'6')">6</div>
-                <div class="seat-btn seat2-btn" onclick="selTog('c2SeatsGrp','c2Seats',this,'7')">7</div>
-                <div class="seat-btn seat2-btn" onclick="selTog('c2SeatsGrp','c2Seats',this,'8')">8</div>
+                <div class="seat-btn seat2-btn" onclick="mSeat('c2SeatsGrp','c2Seats',this,'2','2')">2</div>
+                <div class="seat-btn seat2-btn" onclick="mSeat('c2SeatsGrp','c2Seats',this,'4','2')">4</div>
+                <div class="seat-btn seat2-btn active" onclick="mSeat('c2SeatsGrp','c2Seats',this,'5','2')">5</div>
+                <div class="seat-btn seat2-btn" onclick="mSeat('c2SeatsGrp','c2Seats',this,'6','2')">6</div>
+                <div class="seat-btn seat2-btn" onclick="mSeat('c2SeatsGrp','c2Seats',this,'7','2')">7</div>
+                <div class="seat-btn seat2-btn" onclick="mSeat('c2SeatsGrp','c2Seats',this,'8','2')">8</div>
               </div>
+              <div class="fh" id="sh2">Select model to auto-fill</div>
             </div>
           </div>
-
         </div>
       </div>
 
     </div>
 
-    <button type="submit" class="cmp-btn" id="cmpBtn">
-      <div class="spinner" id="spinner"></div>
-      <span id="btnText">⚖️ Compare Both Cars</span>
-    </button>
-    <div class="info-note">ℹ️ Enter accurate details for better comparison results.</div>
-
+    <button type="submit" class="cmp-btn">⚖️ Compare Both Cars</button>
+    <div class="info-note">ℹ️ Engine, power &amp; seats auto-fill from dataset when you select a model. Mileage must be entered manually.</div>
   </form>
 </div>
 </div>
@@ -307,30 +200,78 @@
 
 <script>
 const modelMap = JSON.parse(document.getElementById('brand-model-data').textContent);
+const carSpecs = {"Audi": {"A4": {"engine": 1968, "max_power": 167.6, "seats": 5}, "A6": {"engine": 1968, "max_power": 174.3, "seats": 5}, "A8": {"engine": 2967, "max_power": 246.7, "seats": 5}, "Q7": {"engine": 2967, "max_power": 241.4, "seats": 7}}, "BMW": {"3": {"engine": 1995, "max_power": 184.0, "seats": 5}, "5": {"engine": 1995, "max_power": 190.0, "seats": 5}, "6": {"engine": 2993, "max_power": 261.4, "seats": 4}, "7": {"engine": 2993, "max_power": 258.0, "seats": 5}, "X1": {"engine": 1995, "max_power": 188.0, "seats": 5}, "X3": {"engine": 1995, "max_power": 184.0, "seats": 5}, "X4": {"engine": 1995, "max_power": 190.0, "seats": 5}, "X5": {"engine": 2993, "max_power": 258.0, "seats": 5}, "Z4": {"engine": 2979, "max_power": 303.9, "seats": 2}}, "Bentley": {"Continental": {"engine": 5998, "max_power": 600.0, "seats": 4}}, "Datsun": {"GO": {"engine": 1198, "max_power": 67.0, "seats": 7}, "RediGO": {"engine": 799, "max_power": 53.6, "seats": 5}, "redi-GO": {"engine": 899, "max_power": 60.3, "seats": 5}}, "Ferrari": {"GTC4Lusso": {"engine": 3855, "max_power": 601.0, "seats": 4}}, "Force": {"Gurkha": {"engine": 2596, "max_power": 80.8, "seats": 5}}, "Ford": {"Aspire": {"engine": 1498, "max_power": 99.0, "seats": 5}, "Ecosport": {"engine": 1498, "max_power": 99.0, "seats": 5}, "Endeavour": {"engine": 3198, "max_power": 197.0, "seats": 7}, "Figo": {"engine": 1399, "max_power": 68.0, "seats": 5}, "Freestyle": {"engine": 1194, "max_power": 94.7, "seats": 5}}, "Honda": {"Amaze": {"engine": 1199, "max_power": 88.8, "seats": 5}, "CR": {"engine": 2354, "max_power": 187.4, "seats": 5}, "CR-V": {"engine": 2354, "max_power": 152.0, "seats": 5}, "City": {"engine": 1497, "max_power": 117.3, "seats": 5}, "Civic": {"engine": 1799, "max_power": 130.0, "seats": 5}, "Jazz": {"engine": 1199, "max_power": 88.7, "seats": 5}, "WR-V": {"engine": 1498, "max_power": 98.6, "seats": 5}}, "Hyundai": {"Aura": {"engine": 1197, "max_power": 81.9, "seats": 5}, "Creta": {"engine": 1582, "max_power": 121.3, "seats": 5}, "Elantra": {"engine": 1582, "max_power": 126.2, "seats": 5}, "Grand": {"engine": 1197, "max_power": 81.9, "seats": 5}, "Santro": {"engine": 1086, "max_power": 62.1, "seats": 5}, "Tucson": {"engine": 1995, "max_power": 182.5, "seats": 5}, "Venue": {"engine": 998, "max_power": 118.3, "seats": 5}, "Verna": {"engine": 1582, "max_power": 121.4, "seats": 5}, "i10": {"engine": 1197, "max_power": 78.9, "seats": 5}, "i20": {"engine": 1197, "max_power": 81.9, "seats": 5}}, "ISUZU": {"MUX": {"engine": 2999, "max_power": 175.0, "seats": 7}}, "Isuzu": {"D-Max": {"engine": 2499, "max_power": 134.0, "seats": 5}, "MUX": {"engine": 2999, "max_power": 174.6, "seats": 7}}, "Jaguar": {"F-PACE": {"engine": 1999, "max_power": 177.0, "seats": 5}, "XE": {"engine": 1999, "max_power": 177.0, "seats": 5}, "XF": {"engine": 2179, "max_power": 187.7, "seats": 5}}, "Jeep": {"Compass": {"engine": 1956, "max_power": 170.0, "seats": 5}, "Wrangler": {"engine": 3604, "max_power": 280.0, "seats": 5}}, "Kia": {"Carnival": {"engine": 2199, "max_power": 197.2, "seats": 7}, "Seltos": {"engine": 1493, "max_power": 113.4, "seats": 5}}, "Land Rover": {"Rover": {"engine": 2179, "max_power": 187.7, "seats": 5}}, "Lexus": {"ES": {"engine": 2487, "max_power": 214.6, "seats": 5}, "NX": {"engine": 2499, "max_power": 194.3, "seats": 5}, "RX": {"engine": 3456, "max_power": 258.9, "seats": 5}}, "MG": {"Hector": {"engine": 1451, "max_power": 141.0, "seats": 5}}, "Mahindra": {"Alturas": {"engine": 2157, "max_power": 178.5, "seats": 7}, "Bolero": {"engine": 2523, "max_power": 63.0, "seats": 7}, "KUV": {"engine": 1198, "max_power": 79.5, "seats": 6}, "KUV100": {"engine": 1198, "max_power": 77.0, "seats": 6}, "Marazzo": {"engine": 1497, "max_power": 121.0, "seats": 7}, "Scorpio": {"engine": 2179, "max_power": 120.0, "seats": 7}, "Thar": {"engine": 2498, "max_power": 105.0, "seats": 6}, "XUV300": {"engine": 1197, "max_power": 110.0, "seats": 5}, "XUV500": {"engine": 2179, "max_power": 140.0, "seats": 7}}, "Maruti": {"Alto": {"engine": 796, "max_power": 47.3, "seats": 5}, "Baleno": {"engine": 1197, "max_power": 83.1, "seats": 5}, "Celerio": {"engine": 998, "max_power": 67.0, "seats": 5}, "Ciaz": {"engine": 1310, "max_power": 89.8, "seats": 5}, "Dzire LXI": {"engine": 1197, "max_power": 88.5, "seats": 5}, "Dzire VXI": {"engine": 1197, "max_power": 88.5, "seats": 5}, "Dzire ZXI": {"engine": 1197, "max_power": 88.5, "seats": 5}, "Eeco": {"engine": 1196, "max_power": 73.0, "seats": 5}, "Ertiga": {"engine": 1248, "max_power": 88.8, "seats": 7}, "Ignis": {"engine": 1197, "max_power": 81.8, "seats": 5}, "S-Presso": {"engine": 998, "max_power": 67.0, "seats": 5}, "Swift": {"engine": 1248, "max_power": 74.0, "seats": 5}, "Swift Dzire": {"engine": 1248, "max_power": 74.0, "seats": 5}, "Vitara": {"engine": 1248, "max_power": 88.5, "seats": 5}, "Wagon R": {"engine": 998, "max_power": 67.0, "seats": 5}, "XL6": {"engine": 1462, "max_power": 103.2, "seats": 6}}, "Maserati": {"Ghibli": {"engine": 2987, "max_power": 271.0, "seats": 5}, "Quattroporte": {"engine": 2987, "max_power": 270.9, "seats": 5}}, "Mercedes-AMG": {"C": {"engine": 2996, "max_power": 362.1, "seats": 5}}, "Mercedes-Benz": {"C-Class": {"engine": 2143, "max_power": 170.0, "seats": 5}, "CLS": {"engine": 2143, "max_power": 204.0, "seats": 4}, "E-Class": {"engine": 2143, "max_power": 203.0, "seats": 5}, "GL-Class": {"engine": 2987, "max_power": 245.0, "seats": 7}, "GLS": {"engine": 2987, "max_power": 258.0, "seats": 7}, "S-Class": {"engine": 2987, "max_power": 282.0, "seats": 5}}, "Mini": {"Cooper": {"engine": 1998, "max_power": 181.0, "seats": 5}}, "Nissan": {"Kicks": {"engine": 1461, "max_power": 108.0, "seats": 5}, "X-Trail": {"engine": 1995, "max_power": 147.6, "seats": 5}}, "Porsche": {"Cayenne": {"engine": 2967, "max_power": 240.0, "seats": 5}, "Macan": {"engine": 1984, "max_power": 250.5, "seats": 5}, "Panamera": {"engine": 4806, "max_power": 394.3, "seats": 4}}, "Renault": {"Duster": {"engine": 1461, "max_power": 83.8, "seats": 5}, "KWID": {"engine": 999, "max_power": 67.0, "seats": 5}, "Triber": {"engine": 999, "max_power": 72.0, "seats": 7}}, "Rolls-Royce": {"Ghost": {"engine": 6592, "max_power": 563.0, "seats": 4}}, "Skoda": {"Octavia": {"engine": 1896, "max_power": 141.0, "seats": 5}, "Rapid": {"engine": 1598, "max_power": 103.5, "seats": 5}, "Superb": {"engine": 1798, "max_power": 157.8, "seats": 5}}, "Tata": {"Altroz": {"engine": 1199, "max_power": 84.8, "seats": 5}, "Harrier": {"engine": 1956, "max_power": 138.1, "seats": 5}, "Hexa": {"engine": 2179, "max_power": 153.9, "seats": 7}, "Nexon": {"engine": 1497, "max_power": 108.5, "seats": 5}, "Safari": {"engine": 2179, "max_power": 138.1, "seats": 7}, "Tiago": {"engine": 1199, "max_power": 84.0, "seats": 5}, "Tigor": {"engine": 1199, "max_power": 84.0, "seats": 5}}, "Toyota": {"Camry": {"engine": 2494, "max_power": 164.7, "seats": 5}, "Fortuner": {"engine": 2982, "max_power": 171.0, "seats": 7}, "Glanza": {"engine": 1197, "max_power": 81.8, "seats": 5}, "Innova": {"engine": 2494, "max_power": 102.0, "seats": 7}, "Yaris": {"engine": 1496, "max_power": 105.5, "seats": 5}}, "Volkswagen": {"Polo": {"engine": 1199, "max_power": 75.0, "seats": 5}, "Vento": {"engine": 1598, "max_power": 103.6, "seats": 5}}, "Volvo": {"S90": {"engine": 1969, "max_power": 190.0, "seats": 5}, "XC": {"engine": 2400, "max_power": 200.0, "seats": 7}, "XC60": {"engine": 1985, "max_power": 181.0, "seats": 5}, "XC90": {"engine": 1969, "max_power": 235.0, "seats": 7}}};
 
-function populateModels(brandSelId, modelSelId) {
-  const brand = document.getElementById(brandSelId).value;
-  const modelSel = document.getElementById(modelSelId);
-  modelSel.innerHTML = '<option value="">Select Model</option>';
-  if (modelMap[brand]) {
-    modelMap[brand].forEach(m => {
-      const opt = document.createElement('option');
-      opt.value = m; opt.textContent = m;
-      modelSel.appendChild(opt);
+function populateModels(bId, mId) {
+  const brand = document.getElementById(bId).value;
+  const sel   = document.getElementById(mId);
+  sel.innerHTML = '<option value="">Select Model</option>';
+  if (modelMap[brand]) modelMap[brand].forEach(m => {
+    const o = document.createElement('option');
+    o.value = m; o.textContent = m; sel.appendChild(o);
+  });
+}
+
+function autoFill(n) {
+  const brand = document.getElementById('brand' + n).value;
+  const model = document.getElementById('model' + n).value;
+  const specs = brand && model && carSpecs[brand] && carSpecs[brand][model];
+
+  const eng = document.getElementById('eng' + n);
+  const pwr = document.getElementById('pwr' + n);
+  const eb  = document.getElementById('eb'  + n);
+  const pb  = document.getElementById('pb'  + n);
+  const sb  = document.getElementById('sb'  + n);
+  const eh  = document.getElementById('eh'  + n);
+  const ph  = document.getElementById('ph'  + n);
+  const sh  = document.getElementById('sh'  + n);
+  const sGrp = 'c' + n + 'SeatsGrp';
+  const sInp = 'c' + n + 'Seats';
+  const afCls = 'af' + n;
+
+  if (!specs) {
+    eng.classList.remove(afCls); pwr.classList.remove(afCls);
+    eb.classList.add('h'); pb.classList.add('h'); sb.classList.add('h');
+    eh.textContent = ph.textContent = sh.textContent = 'Select model to auto-fill';
+    document.querySelectorAll('#' + sGrp + ' .seat-btn').forEach(b => b.classList.remove('sa1','sa2'));
+    return;
+  }
+
+  const lbl = brand + ' ' + model;
+  if (specs.engine)    { eng.value = specs.engine;    eng.classList.add(afCls); eb.classList.remove('h'); eh.textContent = 'Dataset avg · ' + lbl; }
+  if (specs.max_power) { pwr.value = specs.max_power; pwr.classList.add(afCls); pb.classList.remove('h'); ph.textContent = 'Dataset avg · ' + lbl; }
+  if (specs.seats) {
+    document.getElementById(sInp).value = specs.seats;
+    document.querySelectorAll('#' + sGrp + ' .seat-btn').forEach(b => {
+      b.classList.remove('active','sa1','sa2');
+      if (b.textContent.trim() === String(specs.seats)) b.classList.add('sa' + n);
     });
+    sb.classList.remove('h'); sh.textContent = 'Dataset avg · ' + lbl;
   }
 }
 
-document.getElementById('brand1').addEventListener('change', () => populateModels('brand1', 'model1'));
-document.getElementById('brand2').addEventListener('change', () => populateModels('brand2', 'model2'));
-
-function selTog(groupId, inputId, el, value) {
-  document.querySelectorAll('#' + groupId + ' .tog, #' + groupId + ' .seat-btn, #' + groupId + ' .seat2-btn')
-    .forEach(b => b.classList.remove('active'));
+function mSeat(gId, iId, el, val, n) {
+  document.querySelectorAll('#' + gId + ' .seat-btn').forEach(b => b.classList.remove('active','sa1','sa2'));
   el.classList.add('active');
-  document.getElementById(inputId).value = value;
+  document.getElementById(iId).value = val;
+  document.getElementById('sb' + n).classList.add('h');
+  document.getElementById('sh' + n).textContent = 'Manually selected';
 }
 
+document.getElementById('eng1').addEventListener('input', () => { document.getElementById('eng1').classList.remove('af1'); document.getElementById('eb1').classList.add('h'); document.getElementById('eh1').textContent = 'Manually entered'; });
+document.getElementById('pwr1').addEventListener('input', () => { document.getElementById('pwr1').classList.remove('af1'); document.getElementById('pb1').classList.add('h'); document.getElementById('ph1').textContent = 'Manually entered'; });
+document.getElementById('eng2').addEventListener('input', () => { document.getElementById('eng2').classList.remove('af2'); document.getElementById('eb2').classList.add('h'); document.getElementById('eh2').textContent = 'Manually entered'; });
+document.getElementById('pwr2').addEventListener('input', () => { document.getElementById('pwr2').classList.remove('af2'); document.getElementById('pb2').classList.add('h'); document.getElementById('ph2').textContent = 'Manually entered'; });
 
+document.getElementById('brand1').addEventListener('change', () => { populateModels('brand1','model1'); autoFill(1); });
+document.getElementById('brand2').addEventListener('change', () => { populateModels('brand2','model2'); autoFill(2); });
+document.getElementById('model1').addEventListener('change', () => autoFill(1));
+document.getElementById('model2').addEventListener('change', () => autoFill(2));
+
+function selTog(gId, iId, el, val) {
+  document.querySelectorAll('#' + gId + ' .tog').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(iId).value = val;
+}
 </script>
 {% endblock %}

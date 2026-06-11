@@ -342,11 +342,13 @@ def compare_result(request):
     car1, car2 = build_car(1), build_car(2)
     r1,   r2   = predict_price(car1), predict_price(car2)
     winner  = 'car1' if r1['predicted'] < r2['predicted'] else 'car2'
-    savings = abs(r1['predicted'] - r2['predicted'])
+    savings_num = abs(r1['predicted'] - r2['predicted'])
+    from ml_pipeline.predict import indian_format
+    savings = indian_format(savings_num)
 
     return render(request, 'compare_result.html', {
         'car1': car1, 'car2': car2, 'r1': r1, 'r2': r2,
-        'winner': winner, 'savings': f'₹{savings:,.0f}',
+        'winner': winner, 'savings': savings,
     })
 
 

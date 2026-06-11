@@ -1,217 +1,116 @@
 {% extends 'base.html' %}
-{% block title %}Prediction Result — Used Car Price Prediction{% endblock %}
+{% block title %}Prediction Result — Auto Worth AI{% endblock %}
 {% block content %}
 
-<div style='max-width:860px; margin:32px auto; padding:0 20px;'>
+<div style='max-width:860px; margin:32px auto; padding:0 20px 60px;'>
 
-  <!-- ══ GREEN GRADIENT PRICE CARD ═════════════════════ -->
+  <!-- ══ PRICE CARD ══ -->
   <div style='
     background: linear-gradient(135deg, #166534 0%, #4CAF50 100%);
-    border-radius: 16px;
-    padding: 40px 32px;
-    text-align: center;
-    color: white;
-    margin-bottom: 20px;
+    border-radius: 16px; padding: 40px 32px;
+    text-align: center; color: white; margin-bottom: 20px;
   '>
-    <p style='font-size:14px; opacity:0.85; margin-bottom:8px;'>
-      Estimated Price</p>
+    <p style='font-size:14px; opacity:0.85; margin-bottom:8px;'>Estimated Price</p>
 
-    <!-- Big price number -->
     <div style='font-size:54px; font-weight:800; letter-spacing:-1px; margin-bottom:12px;'>
       {{ result.predicted_formatted }}
     </div>
 
-    <!-- Price range ±10% -->
     <p style='font-size:15px; opacity:0.85; margin-bottom:6px;'>
-      Range: {{ result.lower_formatted }}
-      &mdash; {{ result.upper_formatted }}
+      Range: {{ result.lower_formatted }} &mdash; {{ result.upper_formatted }}
     </p>
 
-    <!-- Feature 4: Cheap / Fair / Expensive badge -->
     {% if price_tag %}
     <div style='
-      display: inline-block;
-      background: rgba(255,255,255,0.20);
-      border-radius: 20px;
-      padding: 6px 20px;
-      margin-top: 14px;
-      font-size: 15px;
-      font-weight: 700;
-    '>
-      {{ price_tag.icon }} {{ price_tag.tag }}
-    </div>
-    <p style='
-  font-size:16px;
-  font-weight:600;
-  opacity:0.95;
-  margin-top:14px;
-  line-height:1.6;
-'>
-  {{ price_tag.note }}
-</p>
+      display:inline-block; background:rgba(255,255,255,0.20);
+      border-radius:20px; padding:6px 20px; margin-top:14px;
+      font-size:15px; font-weight:700;
+    '>{{ price_tag.icon }} {{ price_tag.tag }}</div>
+    <p style='font-size:15px; font-weight:600; opacity:0.95; margin-top:14px; line-height:1.6;'>
+      {{ price_tag.note }}
+    </p>
     {% endif %}
 
-    <!-- Best model note -->
-   <p style='
-  font-size:15px;
-  opacity:0.9;
-  margin-top:18px;
-'>
-      This is the estimated price based on our best model
-      ({{ result.model_name|default:'Gradient Boosting' }})
+    <p style='font-size:14px; opacity:0.85; margin-top:18px;'>
+      Estimated using our best model ({{ result.model_name|default:'Gradient Boosting' }})
     </p>
   </div>
 
-  <!-- ══ SIMILAR CARS IN MARKET ══════════════════ -->
-{% if similar %}
-<div style='
-  background: var(--card,#FFFFFF);
-  border: 1px solid var(--card-b,#E5E7EB);
-  border-radius: 12px;
-  padding: 22px 24px;
-  margin-bottom: 20px;
-'>
-  <h3 style='font-size:18px;font-weight:700;color:var(--text,#374151);margin-bottom:6px;'>
-    📊 Similar Cars in Market
-  </h3>
-
-  <p style='font-size:14px;color:var(--muted,#6B7280);margin-bottom:16px;'>
-    Actual sold prices for similar {{ input.brand }} {{ input.fuel_type }} vehicles
-  </p>
-
-  <table style='border-collapse:collapse;width:100%;'>
-    <thead>
-      <tr style='background:#1F3864;'>
-        <th style='padding:10px 12px;font-size:13px;color:white;text-align:left;'>Car</th>
-        <th style='padding:10px 12px;font-size:13px;color:white;text-align:left;'>Year</th>
-        <th style='padding:10px 12px;font-size:13px;color:white;text-align:left;'>KM Driven</th>
-        <th style='padding:10px 12px;font-size:13px;color:white;text-align:left;'>Fuel</th>
-        <th style='padding:10px 12px;font-size:13px;color:white;text-align:right;'>Actual Price</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      {% for car in similar %}
-      <tr style='
-        border-bottom:1px solid #E5E7EB;
-        background:{% if forloop.counter|divisibleby:2 %}#F8FAFC{% else %}#FFFFFF{% endif %};
-      '>
-
-        <td style='padding:10px 12px;font-size:13px;color:#374151;font-weight:600;'>
-          {{ car.brand }} {{ car.model }}
-        </td>
-
-        <td style='padding:10px 12px;font-size:13px;color:#374151;'>
-          {{ car.year }}
-        </td>
-
-        <td style='padding:10px 12px;font-size:13px;color:#374151;'>
-          {{ car.km }}
-        </td>
-
-        <td style='padding:10px 12px;font-size:13px;color:#374151;'>
-          {{ car.fuel }}
-        </td>
-
-        <td style='
-          padding:10px 12px;
-          font-size:13px;
-          font-weight:700;
-          color:#166534;
-          text-align:right;
-        '>
-          {{ car.price }}
-        </td>
-
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
-  <p style='font-size:12px;color:#9CA3AF;margin-top:12px;'>
-    ℹ Real sold transactions from CarDekho dataset.
-  </p>
-</div>
-{% endif %}
-
-  <!-- ══ YOUR CAR DETAILS ════════════════════ -->
+  <!-- ══ SIMILAR CARS ══ -->
+  {% if similar %}
   <div style='
-    background: var(--card,#FFFFFF);
-    border: 1px solid var(--card-b,#E5E7EB);
-    border-radius: 12px;
-    padding: 24px;
+    background:var(--card); border:1px solid var(--card-b);
+    border-radius:12px; padding:22px 24px; margin-bottom:20px;
   '>
-    <h3 style='font-size:15px;font-weight:700;color:var(--text,#374151);margin-bottom:16px;'>
-      Your Car Details</h3>
+    <h3 style='font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px;'>
+      📊 Similar Cars in Market
+    </h3>
+    <p style='font-size:14px;color:var(--muted);margin-bottom:16px;'>
+      Actual sold prices for similar {{ input.brand }} {{ input.fuel_type }} vehicles
+    </p>
+    <table style='border-collapse:collapse;width:100%;'>
+      <thead>
+        <tr style='background:#1F3864;'>
+          <th style='padding:10px 12px;font-size:13px;color:white;text-align:left;'>Car</th>
+          <th style='padding:10px 12px;font-size:13px;color:white;text-align:left;'>Year</th>
+          <th style='padding:10px 12px;font-size:13px;color:white;text-align:left;'>KM Driven</th>
+          <th style='padding:10px 12px;font-size:13px;color:white;text-align:left;'>Fuel</th>
+          <th style='padding:10px 12px;font-size:13px;color:white;text-align:right;'>Actual Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for car in similar %}
+        <tr style='border-bottom:1px solid var(--card-b);background:{% if forloop.counter|divisibleby:2 %}var(--bg){% else %}var(--card){% endif %};'>
+          <td style='padding:10px 12px;font-size:13px;color:var(--text);font-weight:600;'>{{ car.brand }} {{ car.model }}</td>
+          <td style='padding:10px 12px;font-size:13px;color:var(--text);'>{{ car.year }}</td>
+          <td style='padding:10px 12px;font-size:13px;color:var(--text);'>{{ car.km }}</td>
+          <td style='padding:10px 12px;font-size:13px;color:var(--text);'>{{ car.fuel }}</td>
+          <td style='padding:10px 12px;font-size:13px;font-weight:700;color:#166534;text-align:right;'>{{ car.price }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p style='font-size:12px;color:var(--muted);margin-top:12px;'>
+      ℹ Real sold transactions from CarDekho dataset.
+    </p>
+  </div>
+  {% endif %}
 
-    <!-- 2-column bullet list of submitted details -->
+  <!-- ══ CAR DETAILS ══ -->
+  <div style='background:var(--card);border:1px solid var(--card-b);border-radius:12px;padding:24px;'>
+    <h3 style='font-size:15px;font-weight:700;color:var(--text);margin-bottom:16px;'>Your Car Details</h3>
+
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 60px;margin-bottom:30px;">
+      <div><strong style="display:inline-block;width:140px;color:var(--muted);">Brand:</strong><span style="color:var(--text);">{{ input.brand }}</span></div>
+      <div><strong style="display:inline-block;width:140px;color:var(--muted);">Vehicle Age:</strong><span style="color:var(--text);">{{ input.vehicle_age }} Years</span></div>
+      <div><strong style="display:inline-block;width:140px;color:var(--muted);">Mileage:</strong><span style="color:var(--text);">{{ input.mileage }} kmpl</span></div>
+      <div><strong style="display:inline-block;width:140px;color:var(--muted);">Engine:</strong><span style="color:var(--text);">{{ input.engine }} cc</span></div>
+      <div><strong style="display:inline-block;width:140px;color:var(--muted);">Max Power:</strong><span style="color:var(--text);">{{ input.max_power }} bhp</span></div>
+      <div><strong style="display:inline-block;width:140px;color:var(--muted);">Fuel Type:</strong><span style="color:var(--text);">{{ input.fuel_type }}</span></div>
+      <div><strong style="display:inline-block;width:140px;color:var(--muted);">Seats:</strong><span style="color:var(--text);">{{ input.seats }}</span></div>
+      <div><strong style="display:inline-block;width:140px;color:var(--muted);">Transmission:</strong><span style="color:var(--text);">{{ input.transmission }}</span></div>
+      <div><strong style="display:inline-block;width:140px;color:var(--muted);">Km Driven:</strong><span style="color:var(--text);">{{ input.km_driven }}</span></div>
+      <div><strong style="display:inline-block;width:140px;color:var(--muted);">Seller Type:</strong><span style="color:var(--text);">{{ input.seller_type }}</span></div>
+    </div>
 
-  <div><strong style="display:inline-block;width:140px;">Brand:</strong>{{ input.brand }}</div>
-  <div><strong style="display:inline-block;width:140px;">Vehicle Age:</strong>{{ input.vehicle_age }} Years</div>
+    <div style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-top:10px;">
+      <a href="{% url 'prediction' %}" style='
+        display:inline-flex;align-items:center;justify-content:center;
+        min-width:200px;height:50px;
+        background:linear-gradient(135deg,#6366F1,#8B5CF6);
+        color:white;border-radius:12px;font-size:15px;font-weight:700;
+        text-decoration:none;box-shadow:0 8px 24px rgba(99,102,241,0.35);
+      '>🔄 Predict Another Car</a>
 
-  <div><strong style="display:inline-block;width:140px;">Mileage:</strong>{{ input.mileage }} kmpl</div>
-  <div><strong style="display:inline-block;width:140px;">Engine:</strong>{{ input.engine }} cc</div>
-
-  <div><strong style="display:inline-block;width:140px;">Max Power:</strong>{{ input.max_power }} bhp</div>
-  <div><strong style="display:inline-block;width:140px;">Fuel Type:</strong>{{ input.fuel_type }}</div>
-
-  <div><strong style="display:inline-block;width:140px;">Seats:</strong>{{ input.seats }}</div>
-  <div><strong style="display:inline-block;width:140px;">Transmission:</strong>{{ input.transmission }}</div>
-
-  <div><strong style="display:inline-block;width:140px;">Km Driven:</strong>{{ input.km_driven }}</div>
-  <div><strong style="display:inline-block;width:140px;">Seller Type:</strong>{{ input.seller_type }}</div>
-
-</div>
-   <div style="
-    display:flex;
-    justify-content:center;
-    gap:18px;
-    flex-wrap:nowwrap;
-    margin-top:30px;
-">
-
-  <!-- Predict Again -->
-  <a href="{% url 'prediction' %}" style='
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-width:200px;
-    height:50px;
-    background:linear-gradient(135deg,#6366F1,#8B5CF6);
-    color:white;
-    border:none;
-    border-radius:12px;
-    font-size:15px;
-    font-weight:700;
-    text-decoration:none;
-    box-shadow:0 8px 24px rgba(99,102,241,0.35);
-    transition:all .25s ease;
-  '>
-    🔄 Predict Another Car
-  </a>
-
-  <!-- History -->
-  <a href="{% url 'prediction_history' %}" style='
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-width:200px;
-    height:50px;
-    background:linear-gradient(135deg,#0EA5E9,#06B6D4);
-    color:white;
-    border:none;
-    border-radius:12px;
-    font-size:15px;
-    font-weight:700;
-    text-decoration:none;
-    box-shadow:0 8px 24px rgba(14,165,233,0.35);
-    transition:all .25s ease;
-  '>
-    📜 Prediction History
-  </a>
+      <a href="{% url 'prediction_history' %}" style='
+        display:inline-flex;align-items:center;justify-content:center;
+        min-width:200px;height:50px;
+        background:linear-gradient(135deg,#0EA5E9,#06B6D4);
+        color:white;border-radius:12px;font-size:15px;font-weight:700;
+        text-decoration:none;box-shadow:0 8px 24px rgba(14,165,233,0.35);
+      '>📜 Prediction History</a>
+    </div>
+  </div>
 
 </div>
-
 {% endblock %}
-

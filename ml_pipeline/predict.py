@@ -17,7 +17,7 @@ def _load(name):
         _cache[name] = joblib.load(os.path.join(MODELS_DIR, name))
     return _cache[name]
 
-import traceback
+
 def predict_price(input_dict):
     model          = _load('best_model.pkl')
     scaler         = _load('scaler.pkl')
@@ -61,9 +61,9 @@ def predict_price(input_dict):
         'predicted':           round(pred, 0),
         'lower':               round(pred * 0.90, 0),
         'upper':               round(pred * 1.10, 0),
-        'predicted_formatted': f'₹{pred:,.0f}',
-        'lower_formatted':     f'₹{pred*0.90:,.0f}',
-        'upper_formatted':     f'₹{pred*1.10:,.0f}',
+        'predicted_formatted': indian_format(pred),
+        'lower_formatted':     indian_format(pred * 0.90),
+        'upper_formatted':     indian_format(pred * 1.10),
     }
 
 
@@ -127,7 +127,7 @@ def get_similar_cars(brand, fuel, vehicle_age, car_model=None, sample_size=5):
                 'year':  year,
                 'km':    f"{int(row[km_col]):,} km" if km_col and pd.notna(row[km_col]) else 'N/A',
                 'fuel':  row[fuel_col] if fuel_col else fuel,
-                'price': f"₹{int(row[price_col]):,}" if pd.notna(row[price_col]) else 'N/A',
+                'price': indian_format(int(row[price_col])) if pd.notna(row[price_col]) else 'N/A',
             })
         return results
 
@@ -181,14 +181,37 @@ def get_price_tag(predicted_price, brand, fuel, vehicle_age=None, car_model=None
 
         if pct_diff <= -15:
             return {'tag': 'Affordable', 'color': '#2E7D32', 'icon': '✅',
-                    'note': f'Price is {abs(pct_diff):.0f}% below market average (₹{avg_price:,.0f}). Good deal!'}
+                    'note': f'Price is {abs(pct_diff):.0f}% below market average ({indian_format(avg_price)}). Good deal!'}
         elif pct_diff >= 15:
             return {'tag': 'Expensive', 'color': '#C62828', 'icon': '⚠️',
-                    'note': f'Price is {pct_diff:.0f}% above market average (₹{avg_price:,.0f}). Consider negotiating.'}
+                    'note': f'Price is {pct_diff:.0f}% above market average ({indian_format(avg_price)}). Consider negotiating.'}
         else:
             return {'tag': 'Fair Value', 'color': '#F57C00', 'icon': '⚖️',
-                    'note': f'Price is within ±15% of market average (₹{avg_price:,.0f}). Fair deal.'}
+                    'note': f'Price is within ±15% of market average ({indian_format(avg_price)}). Fair deal.'}
 
     except Exception as e:
         print("get_price_tag ERROR:", e)
         return {'tag': 'Fair Value', 'color': '#F57C00', 'icon': '⚖️', 'note': 'Could not compute market comparison.'}
+
+
+def indian_format(n):
+    """Format number in Indian style: ₹5.50 L, ₹1.45 Cr, ₹87,000"""
+    n = int(n)
+    if n >= 10000000:
+        return f'₹{n/10000000:.2f} Cr'
+    elif n >= 100000:
+        return f'₹{n/100000:.2f} L'
+    else:
+        s = str(n)
+        if len(s) <= 3:
+            return f'₹{s}'
+        last3 = s[-3:]
+        rest  = s[:-3]
+        groups = []
+        while len(rest) > 2:
+            groups.append(rest[-2:])
+            rest = rest[:-2]
+        if rest:
+            groups.append(rest)
+        groups.reverse()
+        return '₹' + ','.join(groups) + ',' + last3
