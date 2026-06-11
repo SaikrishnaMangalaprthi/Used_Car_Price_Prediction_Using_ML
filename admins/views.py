@@ -86,8 +86,7 @@ def ActivaUsers(request):
         user.save()
     except UserProfile.DoesNotExist:
         pass
-<<<<<<< HEAD
+
     return redirect('RegisterUsersView')
-=======
-    return redirect('RegisterUsersView')
->>>>>>> 0634513e97b5e5dad1e8bfc6d853e99a6d213274
+
+
