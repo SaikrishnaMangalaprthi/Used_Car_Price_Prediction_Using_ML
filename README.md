@@ -230,8 +230,6 @@ After training, the admin dashboard displays:
 
 ---
 
-## 🔮 Future Improvements
-
 ## 🔮 Future Enhancements
 
 - REST API with Django REST Framework
