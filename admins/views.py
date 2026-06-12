@@ -26,13 +26,19 @@ def UserRegister(request):
 def AdminLoginCheck(request):
     from django.conf import settings
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '').strip()
+
+        print("Entered username:", repr(username))
+        print("Entered password:", repr(password))
+        print("Expected username:", repr(settings.ADMIN_USERNAME))
+        print("Expected password:", repr(settings.ADMIN_PASSWORD))
+
         if username == settings.ADMIN_USERNAME and password == settings.ADMIN_PASSWORD:
             request.session['admin'] = True
             return redirect('AdminHome')
+
         return render(request, 'AdminLogin.html', {'error': 'Invalid credentials'})
-    return redirect('AdminLogin')
 
 
 @never_cache

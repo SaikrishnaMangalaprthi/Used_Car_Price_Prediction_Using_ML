@@ -63,10 +63,7 @@ def UserLoginCheck(request):
                 request.session['user_id']   = user.id
                 request.session['user_name'] = user.name
                 return redirect('UserHome')
-            else:
-                return render(request, 'UserLogin.html', {
-                    'error': 'Account not activated. Please contact the admin.'
-                })
+            
         except UserProfile.DoesNotExist:
             return render(request, 'UserLogin.html', {
                 'error': 'Invalid email or password. Please try again.'
