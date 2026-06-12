@@ -118,6 +118,21 @@ used_car_project/
 
 ---
 
+## 🏗 System Architecture
+
+Dataset
+↓
+Feature Engineering
+↓
+Model Training
+↓
+Saved .pkl Models
+↓
+Django Backend
+↓
+Prediction Engine
+↓
+User Interface
 ## 🚀 Running Locally
 
 ### Prerequisites
@@ -166,23 +181,45 @@ Set `ADMIN_USERNAME` and `ADMIN_PASSWORD` in your `settings.py` or as environmen
 
 ## 📸 Screenshots
 
-| Home | Predict | Results |
-|---|---|---|
-| Dark-themed landing page with feature highlights | Form with brand/model dropdowns, fuel, transmission | Predicted price with confidence range and market tag |
-![Home Page](screenshots/Home_Page.png.png)
+### 🏠 Home Page
 
-![Prediction Form](screenshots/Prediction_form.png.png)
+![Home](screenshots/Home_Page.png.png)
 
-![Prediction Result](screenshots/Prediction_result.png.png)
-
-![User Dashboard](screenshots/User_home.png.png)
-
-![Prediction History](screenshots/Prediction_history.png)
-
-![Compare Cars](screenshots/Comparing_result.png.png)
-
-![Admin Dashboard](screenshots/Admin_panel.png.png)
 ---
+
+### 🔮 Prediction Form
+
+![Prediction](screenshots/Prediction_form.png.png)
+
+---
+
+### 📈 Prediction Result
+
+![Result](screenshots/Prediction_result.png.png)
+
+---
+
+### 🏡 User Dashboard
+
+![Dashboard](screenshots/User_home.png.png)
+
+---
+
+### 📜 Prediction History
+
+![History](screenshots/Prediction_history.png)
+
+---
+
+### ⚖️ Car Comparison
+
+![Compare](screenshots/Comparing_result.png.png)
+
+---
+
+### 🔐 Admin Dashboard
+
+![Admin](screenshots/Admin_panel.png.png)
 
 ## 📊 Model Performance Visualization
 
@@ -195,11 +232,14 @@ After training, the admin dashboard displays:
 
 ## 🔮 Future Improvements
 
-- [ ] REST API using Django REST Framework
-- [ ] Password reset through email
-- [ ] Model retraining automation
-- [ ] Docker containerization
-- [ ] Recommendation engine
+## 🔮 Future Enhancements
+
+- REST API with Django REST Framework
+- Password reset through email
+- Recommendation system
+- Docker containerization
+- Automated model retraining
+- CI/CD with GitHub Actions
 ---
 
 ## 👨‍💻 Author
