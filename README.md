@@ -4,6 +4,11 @@
 
 **Live Demo →** [auto-worth-ai.onrender.com](https://auto-worth-ai.onrender.com)
 
+![Python](https://img.shields.io/badge/Python-3.14-blue)
+![Django](https://img.shields.io/badge/Django-6.0-green)
+![ScikitLearn](https://img.shields.io/badge/Scikit--Learn-ML-orange)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)
+![Render](https://img.shields.io/badge/Render-Deployed-purple)
 ---
 
 ## 📌 Overview
