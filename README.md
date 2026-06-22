@@ -1,10 +1,24 @@
 #  Auto Worth AI — Used Car Price Prediction
-
+<p align="center">
+  <img src="screenshots/Home_Page.png.png" width="90%">
+</p>
 > An end-to-end Machine Learning web application that predicts the fair market price of used cars in India using real CarDekho listings data.
 
-**Live Demo →** [auto-worth-ai.onrender.com](https://auto-worth-ai.onrender.com)
 
----
+
+![Python](https://img.shields.io/badge/Python-3.14-blue)
+![Django](https://img.shields.io/badge/Django-6.0-green)
+![ScikitLearn](https://img.shields.io/badge/Scikit--Learn-ML-orange)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)
+![Render](https://img.shields.io/badge/Render-Deployed-purple)
+--
+## 🌐 Live Demo
+
+🔗 https://auto-worth-ai.onrender.com
+
+## 📂 Source Code
+
+🔗 https://github.com/SaikrishnaMangalaprthi/Used_Car_Price_Prediction_Using_ML
 
 ## 📌 Overview
 
@@ -66,7 +80,7 @@ seller_type, brand, car_model, mileage, engine, max_power, seats
 **Backend**
 - Python 3.11
 - Django 4.2
-- SQLite (development) / PostgreSQL-ready
+- PostgreSQL
 - scikit-learn, XGBoost, pandas, numpy, matplotlib, seaborn
 
 **Frontend**
@@ -104,6 +118,21 @@ used_car_project/
 
 ---
 
+## 🏗 System Architecture
+
+Dataset
+↓
+Feature Engineering
+↓
+Model Training
+↓
+Saved .pkl Models
+↓
+Django Backend
+↓
+Prediction Engine
+↓
+User Interface
 ## 🚀 Running Locally
 
 ### Prerequisites
@@ -152,11 +181,45 @@ Set `ADMIN_USERNAME` and `ADMIN_PASSWORD` in your `settings.py` or as environmen
 
 ## 📸 Screenshots
 
-| Home | Predict | Results |
-|---|---|---|
-| Dark-themed landing page with feature highlights | Form with brand/model dropdowns, fuel, transmission | Predicted price with confidence range and market tag |
+### 🏠 Home Page
+
+![Home](screenshots/Home_Page.png.png)
 
 ---
+
+### 🔮 Prediction Form
+
+![Prediction](screenshots/Prediction_form.png.png)
+
+---
+
+### 📈 Prediction Result
+
+![Result](screenshots/Prediction_result.png.png)
+
+---
+
+### 🏡 User Dashboard
+
+![Dashboard](screenshots/User_home.png.png)
+
+---
+
+### 📜 Prediction History
+
+![History](screenshots/Prediction_history.png)
+
+---
+
+### ⚖️ Car Comparison
+
+![Compare](screenshots/Comparing_result.png.png)
+
+---
+
+### 🔐 Admin Dashboard
+
+![Admin](screenshots/Admin_panel.png.png)
 
 ## 📊 Model Performance Visualization
 
@@ -167,15 +230,14 @@ After training, the admin dashboard displays:
 
 ---
 
-## 🔮 Future Improvements
+## 🔮 Future Enhancements
 
-- [ ] Add XGBoost to training pipeline
-- [ ] PostgreSQL integration for production
-- [ ] PDF export of prediction report
-- [ ] RESTful API endpoints for mobile apps
-- [ ] MAPE metric display on results page
-- [ ] Email-based user registration & password reset
-
+- REST API with Django REST Framework
+- Password reset through email
+- Recommendation system
+- Docker containerization
+- Automated model retraining
+- CI/CD with GitHub Actions
 ---
 
 ## 👨‍💻 Author
@@ -193,5 +255,5 @@ Final Year MCA — University Post Graduate College, Secunderabad (Osmania Unive
 This project is built for academic purposes as a final-year MCA project submission.
 
 ---
-
+![Visitor Count](https://komarev.com/ghpvc/?username=SaikrishnaMangalaprthi)
 *Built with ❤️ using Django + scikit-learn | Deployed on Render*
