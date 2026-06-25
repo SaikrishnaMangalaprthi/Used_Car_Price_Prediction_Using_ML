@@ -73,24 +73,80 @@
             <th style='padding:10px 14px;font-size:12px;color:white;text-align:left;'>Km Driven</th>
             <th style='padding:10px 14px;font-size:12px;color:white;text-align:right;'>Predicted Price (Rs.)</th>
             <th style='padding:10px 14px;font-size:12px;color:white;text-align:left;'>Date &amp; Time</th>
-            <th style='padding:10px 14px;font-size:12px;color:white;text-align:center;'>Action</th>
+           <th style="width:90px;padding:10px 14px;font-size:12px;color:white;text-align:center;">
+    Action
+</th>
           </tr>
         </thead>
         <tbody>
           {% for h in page_obj %}
-          <tr style='
-            border-bottom:1px solid #E5E7EB;
-            background:{% if forloop.counter|divisibleby:2 %}#F8FAFC{% else %}#FFFFFF{% endif %};
-          '>
-      <td style="padding:9px 14px;">
-    <a href="{% url 'history_detail' h.id %}"
-       style="text-decoration:none;display:block;">
+          <tr style="
+    border-bottom:1px solid #E5E7EB;
+    background:{% if forloop.counter|divisibleby:2 %}#F8FAFC{% else %}#FFFFFF{% endif %};
+">
 
-        <div style="font-weight:700;color:#2563EB;">
-            {{ h.brand }} {{ h.car_model }}
-        </div>
+    <!-- Serial Number -->
+    <td style="padding:10px 14px;font-size:13px;color:#6B7280;">
+        {{ forloop.counter }}
+    </td>
 
-    </a>
+    <!-- Vehicle -->
+    <td style="padding:10px 14px;">
+        <a href="{% url 'history_detail' h.id %}"
+           style="text-decoration:none;display:block;">
+
+            <div style="font-size:15px;font-weight:700;color:#2563EB;">
+                {{ h.brand }} {{ h.car_model }}
+            </div>
+
+        </a>
+    </td>
+
+    <!-- Vehicle Age -->
+    <td style="padding:10px 14px;font-size:13px;color:#374151;">
+        {{ h.vehicle_age }} Yr
+    </td>
+
+    <!-- KM -->
+    <td style="padding:10px 14px;font-size:13px;color:#374151;">
+        {{ h.km_driven|floatformat:0 }} km
+    </td>
+
+    <!-- Price -->
+    <td style="
+        padding:10px 14px;
+        text-align:right;
+        font-size:14px;
+        font-weight:800;
+        color:#166534;
+    ">
+        &#8377;{{ h.predicted_price|floatformat:0 }}
+    </td>
+
+    <!-- Date -->
+    <td style="padding:10px 14px;font-size:12px;color:#6B7280;">
+        {{ h.created_at|date:'d M Y, g:i A' }}
+    </td>
+
+    <!-- Delete -->
+    <td style="padding:10px 14px;text-align:center;width:90px;">
+        <a href="/delete_prediction/{{ h.id }}/"
+           onclick="return confirm('Delete this prediction?')"
+           style="
+                display:inline-block;
+                background:#FEF2F2;
+                color:#DC2626;
+                padding:6px 10px;
+                border-radius:6px;
+                text-decoration:none;
+                font-size:12px;
+                font-weight:600;
+           ">
+            🗑
+        </a>
+    </td>
+
+</tr>
 </td>
 
             <td style='padding:9px 14px;font-size:13px;color:#374151;'>
