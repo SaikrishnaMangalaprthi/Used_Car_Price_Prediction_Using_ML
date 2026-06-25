@@ -68,7 +68,7 @@
         <thead>
           <tr style='background:#1F3864;'>
             <th style='padding:10px 14px;font-size:12px;color:white;text-align:left;'>#</th>
-            <th style='padding:10px 14px;font-size:12px;color:white;text-align:left;'>Brand</th>
+            <th style='padding:10px 14px;font-size:12px;color:white;text-align:left;'>Vehicle</th>
             <th style='padding:10px 14px;font-size:12px;color:white;text-align:left;'>Vehicle Age</th>
             <th style='padding:10px 14px;font-size:12px;color:white;text-align:left;'>Km Driven</th>
             <th style='padding:10px 14px;font-size:12px;color:white;text-align:right;'>Predicted Price (Rs.)</th>
@@ -82,15 +82,15 @@
             border-bottom:1px solid #E5E7EB;
             background:{% if forloop.counter|divisibleby:2 %}#F8FAFC{% else %}#FFFFFF{% endif %};
           '>
-            <td style='padding:9px 14px;font-size:13px;color:#6B7280;'>
-              {{ forloop.counter }}</td>
-            <td style='padding:9px 14px;font-size:13px;font-weight:600;color:#374151;'>
-  <a href="{% url 'history_detail' h.id %}"
-     style='color:#2563EB;text-decoration:none;'
-     onmouseover="this.style.textDecoration='underline'"
-     onmouseout="this.style.textDecoration='none'">
-    {{ h.brand }}
-  </a>
+      <td style="padding:9px 14px;">
+    <a href="{% url 'history_detail' h.id %}"
+       style="text-decoration:none;display:block;">
+
+        <div style="font-weight:700;color:#2563EB;">
+            {{ h.brand }} {{ h.car_model }}
+        </div>
+
+    </a>
 </td>
 
             <td style='padding:9px 14px;font-size:13px;color:#374151;'>
